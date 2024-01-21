@@ -1,0 +1,119 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int      @id @default(autoincrement())
+  username          String   @unique
+  role              Role     @default(USER)
+  password          String
+  created_at        DateTime @default(now())
+  // Права доступа
+  cell              String   @default("NONE")
+  additionally      String   @default("NONE")
+  deliveredSC       String   @default("NONE")
+  deliveredPVZ      String   @default("NONE")
+  deliveredKGT      String   @default("NONE")
+  dispatchPVZ       String   @default("NONE")
+  name              String   @default("NONE")
+  fromName          String   @default("NONE")
+  issued            String   @default("NONE")
+  orderAccount      String   @default("NONE")
+  orderPVZ          String   @default("NONE")
+  percentClient     String   @default("NONE")
+  notation          String   @default("NONE")
+  priceProgram      String   @default("NONE")
+  priceSite         String   @default("NONE")
+  productLink       String   @default("NONE")
+  productName       String   @default("NONE")
+  dataOurRansom     String   @default("NONE")
+  dataClientRansom  String   @default("NONE")
+  amountFromClient1 String   @default("NONE")
+  amountFromClient2 String   @default("NONE")
+  clientLink1       String   @default("NONE")
+  clientLink2       String   @default("NONE")
+  profit1           String   @default("NONE")
+  profit2           String   @default("NONE")
+}
+
+model OurRansom {
+  id                Int       @id @default(autoincrement())
+  clientLink1       String
+  cell              String    @default("0")
+  name              String?
+  fromName          String?
+  productLink       String?
+  productName       String
+  notation          String?   @default("")
+  priceSite         Int       @default(0)
+  percentClient     Float     @default(0.1)
+  deliveredKGT      Int       @default(0)
+  amountFromClient1 Int
+  dispatchPVZ       String?
+  orderPVZ          String?
+  orderAccount      String?
+  deliveredSC       DateTime?
+  deliveredPVZ      DateTime?
+  issued            DateTime?
+  additionally      String?
+  profit1           Int
+  deleted           DateTime?
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @default(now()) @updatedAt
+  createdUser       String
+  updatedUser       String
+}
+
+model ClientRansom {
+  id                Int       @id @default(autoincrement())
+  clientLink2       String
+  cell              String    @default("0")
+  name              String?
+  fromName          String?
+  productLink       String?
+  productName       String
+  priceProgram      Int       @default(0)
+  percentClient     Float     @default(0.1)
+  deliveredKGT      Int       @default(0)
+  amountFromClient2 Int
+  dispatchPVZ       String?
+  orderPVZ          String?
+  deliveredSC       DateTime?
+  deliveredPVZ      DateTime?
+  issued            DateTime?
+  additionally      String?
+  profit2           Int
+  deleted           DateTime?
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @default(now()) @updatedAt
+  createdUser       String
+  updatedUser       String
+}
+
+model PVZ {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model SortingCenter {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model OrderAccount {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+enum Role {
+  USER
+  ADMIN
+}

@@ -1,0 +1,39 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@nuxtjs/tailwindcss": "^6.10.1",
+    "nuxt": "^3.8.2",
+    "nuxt-icon": "^0.6.7",
+    "prisma": "^5.7.1",
+    "vue": "^3.3.12",
+    "vue-router": "^4.2.5"
+  },
+  "dependencies": {
+    "@nuxtjs/supabase": "^1.1.4",
+    "@pinia/nuxt": "^0.5.1",
+    "@prisma/client": "^5.7.1",
+    "@types/bcrypt": "^5.0.2",
+    "@types/crypto-js": "^4.2.1",
+    "@types/js-cookie": "^3.0.6",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/node": "^20.11.5",
+    "@vite-pwa/nuxt": "^0.3.6",
+    "bcrypt": "^5.1.1",
+    "crypto-js": "^4.2.0",
+    "js-cookie": "^3.0.5",
+    "jsonwebtoken": "^9.0.2",
+    "qrcode.vue": "^3.4.1",
+    "vue-toastification": "^2.0.0-rc.5",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.1/xlsx-0.20.1.tgz"
+  }
+}
