@@ -243,7 +243,7 @@ const handleCheckboxChange = (rowId: number): void => {
         </tr>
       </thead>
       <tbody>
-        <tr class="bg-white border-b text-center text-sm" v-for="row in rows">
+        <tr :class="{'bg-orange-100': isChecked(row.id)}" class="bg-white border-b text-center text-sm" v-for="row in rows">
           <td
             v-if="user.dataClientRansom === 'WRITE'"
             class="px-6 py-4 underline text-secondary-color whitespace-nowrap uppercase overflow-hidden max-w-[200px]"
