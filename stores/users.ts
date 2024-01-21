@@ -28,7 +28,8 @@ export const useUsersStore = defineStore("users", () => {
                 },
                 body: JSON.stringify({ username: username, password: password, role: role }),
             });
-            if (!data.value?.error) {
+
+            if (data && data.value && !data.value.error) {
                 const { user, token } = data.value.data;
 
                 userData = user;
@@ -39,20 +40,19 @@ export const useUsersStore = defineStore("users", () => {
                 if (userData.role === 'ADMIN') {
                     router.push('/admin/main');
                 } else {
-                    router.push('/user/main')
+                    router.push('/user/main');
                 }
-
             } else {
-                return data.value.error
+                return data?.value?.error || 'Unknown error';
             }
-
         } catch (error) {
             if (error instanceof Error) {
                 console.error('Ошибка во время входа в систему:', error.message);
-                return error.message
+                return error.message;
             }
         }
     }
+
 
     async function signOut() {
         Cookies.remove('token')
