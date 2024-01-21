@@ -6,8 +6,6 @@ import { read, utils, writeFile } from "xlsx";
 
 const storeUsers = useUsersStore();
 
-
-
 defineProps({
   rows: { type: Array as PropType<IOurRansom[] | IClientRansom[]> },
 });

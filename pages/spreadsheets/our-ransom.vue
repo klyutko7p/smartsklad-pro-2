@@ -433,6 +433,7 @@ const token = Cookies.get("token");
             :user="user"
             @delete-row="deleteRow"
             @open-modal="openModal"
+            @delete-selected-rows="deleteSelectedRows"
             @update-delivery-rows="updateDeliveryRows"
             v-if="filteredRows"
           />
@@ -442,7 +443,7 @@ const token = Cookies.get("token");
             <h1>Извините, записи по данным фильтрам не были найдены!</h1>
             <h1>Попробуйте поставить другие фильтры или очистить их</h1>
           </div>
-          
+
           <UIModal v-show="isOpen" @close-modal="closeModal">
             <template v-slot:header>
               <div class="custom-header" v-if="rowData.id">
@@ -686,7 +687,7 @@ const token = Cookies.get("token");
               v-if="rowData.id"
             >
               <UIMainButton @click="updateRow">Сохранить</UIMainButton>
-              <UIErrorButton @click="closeModal">Отменить</UIErrorButton>
+              <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>
             <div class="flex items-center justify-center gap-3 mt-10" v-else>
               <UIMainButton @click="createRow">Создать</UIMainButton>

@@ -3,25 +3,38 @@ import Cookies from "js-cookie";
 const storeUsers = useUsersStore();
 const storeRansom = useRansomStore();
 const route = useRoute();
-const link = route.params.link;
+let link = route.params.link;
+link = link.toString();
 
 let isLoading = ref(false);
 
 let user = ref({} as User);
-let rows = ref<Array<OurRansom>>();
-let copyRows = ref<Array<OurRansom>>();
+let rows = ref<Array<IOurRansom | IClientRansom>>();
+let copyRows = ref<Array<IOurRansom | IClientRansom>>();
 let name = ref<string>();
 
 function getAmountToBePaid(flag: string) {
   let amountToPaid = 0;
-  if (rows.value && flag === "NONE") {
-    amountToPaid = rows.value
-      .filter((value) => !value.issued)
-      .reduce((acc, value) => acc + value.amountFromClient1, 0);
-  } else if (rows.value && flag === "PVZ") {
-    amountToPaid = rows.value
-      .filter((value) => value.deliveredPVZ && !value.issued)
-      .reduce((acc, value) => acc + value.amountFromClient1, 0);
+  if (link.startsWith('1')) {
+    if (rows.value && flag === "NONE") {
+      amountToPaid = rows.value
+        .filter((value) => !value.issued)
+        .reduce((acc, value) => acc + value.amountFromClient1, 0);
+    } else if (rows.value && flag === "PVZ") {
+      amountToPaid = rows.value
+        .filter((value) => value.deliveredPVZ && !value.issued)
+        .reduce((acc, value) => acc + value.amountFromClient1, 0);
+    }
+  } else {
+    if (rows.value && flag === "NONE") {
+      amountToPaid = rows.value
+        .filter((value) => !value.issued)
+        .reduce((acc, value) => acc + value.amountFromClient2, 0);
+    } else if (rows.value && flag === "PVZ") {
+      amountToPaid = rows.value
+        .filter((value) => value.deliveredPVZ && !value.issued)
+        .reduce((acc, value) => acc + value.amountFromClient2, 0);
+    }
   }
   return amountToPaid;
 }
@@ -40,7 +53,12 @@ function enableReceivedItems() {
 onMounted(async () => {
   isLoading.value = true;
   user.value = await storeUsers.getUser();
-  rows.value = await storeRansom.getRansomRowsByLink(link);
+  if (link.startsWith('1')) {
+    rows.value = await storeRansom.getRansomRowsByLink(link, "OurRansom");
+  } else {
+    rows.value = await storeRansom.getRansomRowsByLink(link, "ClientRansom");
+  }
+
   if (rows.value) {
     copyRows.value = [...rows.value];
     name.value = rows.value.find((value) => value.name)?.name;
