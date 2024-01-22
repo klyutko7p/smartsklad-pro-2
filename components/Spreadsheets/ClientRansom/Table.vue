@@ -66,7 +66,23 @@ const handleCheckboxChange = (rowId: number): void => {
 };
 </script>
 <template>
-  <div class="flex justify-end">
+  <div class="flex items-center justify-between mt-10">
+    <div>
+      <a href="#down">
+        <Icon
+          name="material-symbols:arrow-circle-down"
+          class="text-secondary-color hover:opacity-50 duration-200"
+          size="40"
+        />
+      </a>
+      <a href="#right">
+        <Icon
+          name="material-symbols:arrow-circle-right-rounded"
+          class="text-secondary-color hover:opacity-50 duration-200"
+          size="40"
+        />
+      </a>
+    </div>
     <Icon
       v-if="user.role === 'ADMIN'"
       class="duration-200 hover:text-secondary-color cursor-pointer"
@@ -466,9 +482,11 @@ const handleCheckboxChange = (rowId: number): void => {
               size="32"
             />
           </td>
+          <div id="right"></div>
         </tr>
       </tbody>
     </table>
+    <div id="down"></div>
   </div>
 </template>
 
