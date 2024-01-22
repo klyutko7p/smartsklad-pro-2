@@ -281,7 +281,7 @@ const handleCheckboxChange = (rowId: number): void => {
           <th
             scope="col"
             class="exclude-row px-6 py-3"
-            v-if="user.dataOurRansom === 'WRITE'"
+            v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'"
           >
             удаление
           </th>
