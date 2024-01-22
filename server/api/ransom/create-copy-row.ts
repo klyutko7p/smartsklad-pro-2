@@ -34,6 +34,7 @@ export default defineEventHandler(async (event) => {
             orderPVZ: row.orderPVZ,
             deliveredSC: row.deliveredSC,
             deliveredPVZ: row.deliveredPVZ,
+            orderAccount: row.orderAccount,
             issued: row.issued,
             additionally: row.additionally,
             profit1: +row.profit1,

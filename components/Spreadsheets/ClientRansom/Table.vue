@@ -254,7 +254,7 @@ const handleCheckboxChange = (rowId: number): void => {
       </thead>
       <tbody>
         <tr
-          :class="{'bg-orange-100': isChecked(row.id)}"
+          :class="{ 'bg-orange-100': isChecked(row.id) }"
           class="border-b text-center text-sm"
           v-for="row in rows"
         >
@@ -294,7 +294,10 @@ const handleCheckboxChange = (rowId: number): void => {
               {{ row.clientLink2 }}
             </NuxtLink>
           </td>
-          <td v-if="user.cell === 'READ' || user.cell === 'WRITE'" class="px-6 py-4 border-2">
+          <td
+            v-if="user.cell === 'READ' || user.cell === 'WRITE'"
+            class="px-6 py-4 border-2"
+          >
             {{ row.cell }}
           </td>
           <td
@@ -392,7 +395,10 @@ const handleCheckboxChange = (rowId: number): void => {
               {{ row.deliveredPVZ ? storeUsers.getNormalizedDate(row.deliveredPVZ) : "" }}
             </h1>
           </td>
-          <td class="px-3 py-4 border-2" v-if="user.issued === 'READ' || user.issued === 'WRITE'">
+          <td
+            class="px-3 py-4 border-2"
+            v-if="user.issued === 'READ' || user.issued === 'WRITE'"
+          >
             <Icon
               @click="updateDeliveryRow(row, 'issued')"
               v-if="!row.issued && user.issued === 'WRITE'"
