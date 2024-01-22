@@ -27,10 +27,10 @@ defineProps({
       </thead>
       <tbody>
         <tr class="bg-white border-b text-center" v-for="row in rows">
-          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+          <th scope="row" class="px-6 py-4 border-2 font-medium text-gray-900 whitespace-nowrap">
             {{ row.name }}
           </th>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             <Icon
               @click="openModal(row)"
               class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
@@ -38,7 +38,7 @@ defineProps({
               size="32"
             />
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             <Icon
               @click="deleteRow(row.id)"
               class="text-red-600 cursor-pointer hover:text-red-300 duration-200"
