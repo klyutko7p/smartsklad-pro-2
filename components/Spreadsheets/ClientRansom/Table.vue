@@ -76,7 +76,7 @@ const handleCheckboxChange = (rowId: number): void => {
     />
   </div>
   <div
-    class="fixed z-40 flex flex-col gap-3 top-24 left-1/2 translate-x-[-50%] translate-y-[-50%]"
+    class="fixed z-40 flex flex-col gap-3 top-28 left-1/2 translate-x-[-50%] translate-y-[-50%]"
     v-if="user.dataClientRansom === 'WRITE' && checkedRows.length > 0"
   >
     <UIActionButton
