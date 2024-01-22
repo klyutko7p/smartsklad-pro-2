@@ -96,11 +96,11 @@ const handleCheckboxChange = (rowId: number): void => {
     v-if="user.dataClientRansom === 'WRITE' && checkedRows.length > 0"
   >
     <UIActionButton
-      v-if="user.role === 'ADMIN' && checkedRows.length === 1"
+      v-if="user.dataClientRansom === 'WRITE' && checkedRows.length === 1"
       @click="createCopyRow"
       >Скопировать запись</UIActionButton
     >
-    <UIActionButton v-if="user.role === 'ADMIN'" @click="deleteSelectedRows"
+    <UIActionButton v-if="user.role === 'ADMIN' && user.dataClientRansom === 'WRITE'" @click="deleteSelectedRows"
       >Удалить выделенные записи</UIActionButton
     >
     <UIActionButton v-if="user.deliveredSC === 'WRITE'" @click="updateDeliveryRows('SC')"
@@ -269,7 +269,7 @@ const handleCheckboxChange = (rowId: number): void => {
           <th
             scope="col"
             class="exclude-row px-6 py-3"
-            v-if="user.dataClientRansom === 'WRITE'"
+            v-if="user.dataClientRansom === 'WRITE' && user.role === 'ADMIN'"
           >
             удаление
           </th>
