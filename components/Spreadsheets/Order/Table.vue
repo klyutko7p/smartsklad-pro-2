@@ -68,6 +68,12 @@ function exportToExcel() {
             сумма с клиента
           </th>
           <th
+          scope="col"
+          class="px-6 py-3"
+        >
+          предоплата
+        </th>
+          <th
             scope="col"
             class="px-6 py-3"
           >
@@ -119,10 +125,20 @@ function exportToExcel() {
           >
             {{ row.productName }}
           </td>
+          <td v-if="row.amountFromClient1"
+            class="px-6 py-4 border-2"
+          >
+            {{ Math.round(row.amountFromClient1 / 10) * 10 }}
+          </td>
+          <td v-if="row.amountFromClient2"
+            class="px-6 py-4 border-2"
+          >
+            {{ Math.round(row.amountFromClient2 / 10) * 10 }}
+          </td>
           <td
             class="px-6 py-4 border-2"
           >
-            {{ row.amountFromClient1 }}
+            {{ row.prepayment }}
           </td>
           <td
             class="px-3 py-4 border-2"

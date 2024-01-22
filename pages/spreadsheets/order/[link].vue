@@ -81,10 +81,10 @@ const token = Cookies.get("token");
         </h1>
         <h1 class="text-xl mt-5">Заказ на имя – {{ name ? name : "Пусто" }}</h1>
         <h1 class="text-xl">
-          Оставшаяся сумма к оплате: {{ getAmountToBePaid("NONE") }} руб.
+          Оставшаяся сумма к оплате: {{ Math.round(getAmountToBePaid("NONE") / 10) * 10 }} руб.
         </h1>
         <h1 class="text-xl">
-          Сумма к оплате на выдачу: {{ getAmountToBePaid("PVZ") }} руб.
+          Сумма к оплате на выдачу: {{ Math.round(getAmountToBePaid("PVZ") / 10) * 10 }} руб.
         </h1>
         <UIMainButton v-if="showReceivedItems" class="mt-5" @click="disableReceivedItems"
           >Скрыть полученные товары</UIMainButton
