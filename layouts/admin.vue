@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div class="flex ">
     <Sidebar />
     <div class="mx-auto container px-3">
       <slot />
