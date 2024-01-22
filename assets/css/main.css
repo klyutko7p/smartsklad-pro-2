@@ -12,6 +12,14 @@ input[type="checkbox"] {
   display: none;
 }
 
+.rtl-grid {
+  direction: rtl;
+}
+
+.rtl-grid-swap {
+  direction: ltr;
+}
+
 :root {
   --primary-color: #0d0d0d;
   --secondary-color: #f09819;

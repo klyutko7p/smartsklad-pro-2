@@ -98,7 +98,7 @@ const handleCheckboxChange = (rowId: number): void => {
       >Выдать клиенту</UIActionButton
     >
   </div>
-  <div class="relative max-h-[760px] overflow-x-auto mt-5 mb-10">
+  <div class="relative max-h-[760px] overflow-x-auto overflow-y-auto mt-5 mb-10">
     <table
       id="theTable"
       class="w-full border-x-2 border-gray-50 text-sm text-left rtl:text-right text-gray-500"
