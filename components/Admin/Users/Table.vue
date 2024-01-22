@@ -82,6 +82,9 @@ defineProps({
             {{ userData.priceSite }}
           </td>
           <td class="px-6 py-4 border-2">
+            {{ userData.prepayment }}
+          </td>
+          <td class="px-6 py-4 border-2">
             {{ userData.productLink }}
           </td>
           <td class="px-6 py-4 border-2">

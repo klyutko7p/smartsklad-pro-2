@@ -164,6 +164,13 @@ const handleCheckboxChange = (rowId: number): void => {
           <th
             scope="col"
             class="px-6 py-3"
+            v-if="user.prepayment === 'READ' || user.prepayment === 'WRITE'"
+          >
+            предоплата
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-3"
             v-if="user.percentClient === 'READ' || user.percentClient === 'WRITE'"
           >
             процент с клиента (%)
@@ -337,6 +344,12 @@ const handleCheckboxChange = (rowId: number): void => {
           </td>
           <td
             class="px-6 py-4 border-2"
+            v-if="user.prepayment === 'READ' || user.prepayment === 'WRITE'"
+          >
+            {{ row.prepayment }}
+          </td>
+          <td
+            class="px-6 py-4 border-2"
             v-if="user.percentClient === 'READ' || user.percentClient === 'WRITE'"
           >
             {{ row.percentClient }}
@@ -351,7 +364,7 @@ const handleCheckboxChange = (rowId: number): void => {
             class="px-6 py-4 border-2"
             v-if="user.amountFromClient2 === 'READ' || user.amountFromClient2 === 'WRITE'"
           >
-            {{ row.amountFromClient2 }}
+          {{ Math.round(row.amountFromClient2 / 10) * 10 }}
           </td>
           <td
             class="px-6 py-4 border-2"

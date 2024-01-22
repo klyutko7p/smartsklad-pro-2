@@ -7,6 +7,7 @@ interface IOurRansom {
     productLink: string;
     productName: string;
     notation: string;
+    prepayment: number;
     priceSite: number;
     percentClient: number;
     deliveredKGT: number;

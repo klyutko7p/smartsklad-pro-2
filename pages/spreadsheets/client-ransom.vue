@@ -43,91 +43,90 @@ function closeModal() {
 async function updateDeliveryRow(obj: any) {
   isLoading.value = true;
   let answer = confirm("Вы точно хотите изменить статус доставки?");
-  if (answer) await storeRansom.updateDeliveryStatus(obj.row, obj.flag, 'ClientRansom');
-  filteredRows.value = await storeRansom.getRansomRows('ClientRansom');
-  rows.value = await storeRansom.getRansomRows('ClientRansom');
+  if (answer) await storeRansom.updateDeliveryStatus(obj.row, obj.flag, "ClientRansom");
+  filteredRows.value = await storeRansom.getRansomRows("ClientRansom");
+  rows.value = await storeRansom.getRansomRows("ClientRansom");
   isLoading.value = false;
 }
 
 async function updateDeliveryRows(obj: any) {
   isLoading.value = true;
   let answer = confirm("Вы точно хотите изменить статус доставки?");
-  if (answer) await storeRansom.updateDeliveryRowsStatus(obj.idArray, obj.flag, 'ClientRansom');
-  filteredRows.value = await storeRansom.getRansomRows('ClientRansom');
-  rows.value = await storeRansom.getRansomRows('ClientRansom');
+  if (answer)
+    await storeRansom.updateDeliveryRowsStatus(obj.idArray, obj.flag, "ClientRansom");
+  filteredRows.value = await storeRansom.getRansomRows("ClientRansom");
+  rows.value = await storeRansom.getRansomRows("ClientRansom");
   isLoading.value = false;
 }
-
 
 async function deleteRow(id: number) {
   isLoading.value = true;
   let answer = confirm("Вы точно хотите удалить данную строку?");
-  if (answer) await storeRansom.deleteRansomRow(id, 'ClientRansom');
-  filteredRows.value = await storeRansom.getRansomRows('ClientRansom');
-  rows.value = await storeRansom.getRansomRows('ClientRansom');
+  if (answer) await storeRansom.deleteRansomRow(id, "ClientRansom");
+  filteredRows.value = await storeRansom.getRansomRows("ClientRansom");
+  rows.value = await storeRansom.getRansomRows("ClientRansom");
   isLoading.value = false;
 }
 
 async function deleteSelectedRows(idArray: number[]) {
   isLoading.value = true;
   let answer = confirm("Вы точно хотите удалить данные строки?");
-  if (answer) await storeRansom.deleteRansomSelectedRows(idArray, 'ClientRansom');
-  filteredRows.value = await storeRansom.getRansomRows('ClientRansom');
-  rows.value = await storeRansom.getRansomRows('ClientRansom');
+  if (answer) await storeRansom.deleteRansomSelectedRows(idArray, "ClientRansom");
+  filteredRows.value = await storeRansom.getRansomRows("ClientRansom");
+  rows.value = await storeRansom.getRansomRows("ClientRansom");
   isLoading.value = false;
 }
 
 async function updateRow() {
   isLoading.value = true;
-  await storeRansom.updateRansomRow(rowData.value, user.value.username, 'ClientRansom');
-  filteredRows.value = await storeRansom.getRansomRows('ClientRansom');
-  rows.value = await storeRansom.getRansomRows('ClientRansom');
+  await storeRansom.updateRansomRow(rowData.value, user.value.username, "ClientRansom");
+  filteredRows.value = await storeRansom.getRansomRows("ClientRansom");
+  rows.value = await storeRansom.getRansomRows("ClientRansom");
   closeModal();
   isLoading.value = false;
 }
 
 async function createRow() {
   isLoading.value = true;
-  await storeRansom.createRansomRow(rowData.value, user.value.username, 'ClientRansom');
-  filteredRows.value = await storeRansom.getRansomRows('ClientRansom');
-  rows.value = await storeRansom.getRansomRows('ClientRansom');
+  await storeRansom.createRansomRow(rowData.value, user.value.username, "ClientRansom");
+  filteredRows.value = await storeRansom.getRansomRows("ClientRansom");
+  rows.value = await storeRansom.getRansomRows("ClientRansom");
   closeModal();
   isLoading.value = false;
 }
 
 async function createCopyRow(id: number) {
   isLoading.value = true;
-  await storeRansom.createCopyRow(id, 'ClientRansom');
-  filteredRows.value = await storeRansom.getRansomRows('ClientRansom');
-  rows.value = await storeRansom.getRansomRows('ClientRansom');
+  await storeRansom.createCopyRow(id, "ClientRansom");
+  filteredRows.value = await storeRansom.getRansomRows("ClientRansom");
+  rows.value = await storeRansom.getRansomRows("ClientRansom");
   isLoading.value = false;
 }
 
 async function deleteIssuedRows() {
   isLoading.value = true;
   let answer = confirm("Вы точно хотите удалить выданные товары?");
-  if (answer) await storeRansom.deleteIssuedRows('ClientRansom');
-  filteredRows.value = await storeRansom.getRansomRows('ClientRansom');
-  rows.value = await storeRansom.getRansomRows('ClientRansom');
+  if (answer) await storeRansom.deleteIssuedRows("ClientRansom");
+  filteredRows.value = await storeRansom.getRansomRows("ClientRansom");
+  rows.value = await storeRansom.getRansomRows("ClientRansom");
   isLoading.value = false;
 }
 
 const filteredRows = ref<Array<IClientRansom>>();
 
 function handleFilteredRows(filteredRowsData: IClientRansom[]) {
-  filteredRows.value = filteredRowsData
+  filteredRows.value = filteredRowsData;
 }
-
 
 onMounted(async () => {
   isLoading.value = true;
   user.value = await storeUsers.getUser();
-  rows.value = await storeRansom.getRansomRows('ClientRansom');
+  rows.value = await storeRansom.getRansomRows("ClientRansom");
   pvz.value = await storePVZ.getPVZ();
   sortingCenters.value = await storeSortingCenters.getSortingCenters();
 
   if (rows.value) {
-    handleFilteredRows(rows.value)
+    handleFilteredRows(rows.value);
   }
 
   isLoading.value = false;
@@ -153,8 +152,15 @@ const token = Cookies.get("token");
       <NuxtLayout name="admin">
         <div v-if="!isLoading" class="mt-3">
           <div>
-            <SpreadsheetsClientRansomFilters v-if="rows" @filtered-rows="handleFilteredRows" :rows="rows" />
-            <div class="mt-5 flex items-center gap-3" v-if="user.dataOurRansom === 'WRITE'">
+            <SpreadsheetsClientRansomFilters
+              v-if="rows"
+              @filtered-rows="handleFilteredRows"
+              :rows="rows"
+            />
+            <div
+              class="mt-5 flex items-center gap-3"
+              v-if="user.dataOurRansom === 'WRITE'"
+            >
               <UIMainButton @click="deleteIssuedRows">Удалить выданное</UIMainButton>
               <UIMainButton @click="openModal">Создать новую запись</UIMainButton>
             </div>
@@ -251,8 +257,6 @@ const token = Cookies.get("token");
                 />
               </div>
 
-
-
               <div
                 class="grid grid-cols-2 mb-5"
                 v-if="user.priceProgram === 'READ' || user.priceProgram === 'WRITE'"
@@ -262,6 +266,19 @@ const token = Cookies.get("token");
                   :disabled="user.priceProgram === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.priceProgram"
+                  type="number"
+                />
+              </div>
+
+              <div
+                class="grid grid-cols-2 mb-5"
+                v-if="user.prepayment === 'READ' || user.prepayment === 'WRITE'"
+              >
+                <label for="name">Предоплата</label>
+                <input
+                  :disabled="user.prepayment === 'READ'"
+                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                  v-model="rowData.prepayment"
                   type="number"
                 />
               </div>
@@ -385,10 +402,7 @@ const token = Cookies.get("token");
               </div>
             </div>
 
-            <div
-              class="flex items-center justify-center gap-3 mt-10"
-              v-if="rowData.id"
-            >
+            <div class="flex items-center justify-center gap-3 mt-10" v-if="rowData.id">
               <UIMainButton @click="updateRow">Сохранить</UIMainButton>
               <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>
@@ -407,7 +421,11 @@ const token = Cookies.get("token");
       <NuxtLayout name="user">
         <div v-if="!isLoading" class="mt-3">
           <div>
-            <SpreadsheetsClientRansomFilters v-if="rows" @filtered-rows="handleFilteredRows" :rows="rows" />
+            <SpreadsheetsClientRansomFilters
+              v-if="rows"
+              @filtered-rows="handleFilteredRows"
+              :rows="rows"
+            />
 
             <div class="mt-5" v-if="user.dataOurRansom === 'WRITE'">
               <UIMainButton @click="openModal">Создать новую запись</UIMainButton>
@@ -505,8 +523,6 @@ const token = Cookies.get("token");
                 />
               </div>
 
-
-
               <div
                 class="grid grid-cols-2 mb-5"
                 v-if="user.priceProgram === 'READ' || user.priceProgram === 'WRITE'"
@@ -516,6 +532,19 @@ const token = Cookies.get("token");
                   :disabled="user.priceProgram === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.priceProgram"
+                  type="number"
+                />
+              </div>
+
+              <div
+                class="grid grid-cols-2 mb-5"
+                v-if="user.prepayment === 'READ' || user.prepayment === 'WRITE'"
+              >
+                <label for="name">Предоплата</label>
+                <input
+                  :disabled="user.prepayment === 'READ'"
+                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                  v-model="rowData.prepayment"
                   type="number"
                 />
               </div>
@@ -639,10 +668,7 @@ const token = Cookies.get("token");
               </div>
             </div>
 
-            <div
-              class="flex items-center justify-center gap-3 mt-10"
-              v-if="rowData.id"
-            >
+            <div class="flex items-center justify-center gap-3 mt-10" v-if="rowData.id">
               <UIMainButton @click="updateRow">Сохранить</UIMainButton>
               <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>

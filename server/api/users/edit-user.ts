@@ -33,6 +33,7 @@ export default defineEventHandler(async (event) => {
                 notation: user.notation,
                 priceProgram: user.priceProgram,
                 priceSite: user.priceSite,
+                prepayment: user.prepayment,
                 productLink: user.productLink,
                 productName: user.productName,
                 dataOurRansom: user.dataOurRansom,

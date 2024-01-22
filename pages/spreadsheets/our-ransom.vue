@@ -282,6 +282,19 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
+                v-if="user.prepayment === 'READ' || user.prepayment === 'WRITE'"
+              >
+                <label for="name">Предоплата</label>
+                <input
+                  :disabled="user.prepayment === 'READ'"
+                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                  v-model="rowData.prepayment"
+                  type="number"
+                />
+              </div>
+
+              <div
+                class="grid grid-cols-2 mb-5"
                 v-if="user.percentClient === 'READ' || user.percentClient === 'WRITE'"
               >
                 <label for="name">Процент с клиента</label>

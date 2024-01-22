@@ -18,6 +18,7 @@ interface User {
     orderPVZ: string;
     percentClient: string;
     notation: string;
+    prepayment: string;
     priceProgram: string;
     priceSite: string;
     productLink: string;

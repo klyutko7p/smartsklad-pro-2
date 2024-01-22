@@ -8,6 +8,7 @@ interface IClientRansom {
     productName: string;
     notation: string;
     priceProgram: number;
+    prepayment: number;
     percentClient: number;
     deliveredKGT: number;
     amountFromClient2: number;

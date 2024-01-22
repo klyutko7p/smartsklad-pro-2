@@ -24,6 +24,7 @@ const fields = [
   "примечание",
   "стоимость выкупа товара",
   "стоимость сайт",
+  "предоплата",
   "товар (ссылка)",
   "название товара",
   "данные (Наш выкуп)",
@@ -324,6 +325,18 @@ definePageMeta({
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
                 v-model="userData.priceSite"
+              >
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Предоплата</label>
+              <select
+                class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
+                v-model="userData.prepayment"
               >
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
