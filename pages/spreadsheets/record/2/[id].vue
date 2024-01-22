@@ -48,7 +48,11 @@ const token = Cookies.get("token");
       <NuxtLayout name="admin">
         <div class="mt-5" v-if="!isLoading">
           <RecordBody :user="user" :row="row" @update-delivery-row="updateDeliveryRow" />
-          <RecordQR class="mt-10" :row="row" :value="route.fullPath" />
+          <RecordQR
+            class="mt-10"
+            :row="row"
+            :value="`https://scintillating-donut-6d93ed.netlify.app/spreadsheets/order/${row.clientLink2}`"
+          />
         </div>
         <div v-else>
           <UISpinner />
@@ -59,7 +63,11 @@ const token = Cookies.get("token");
       <NuxtLayout name="user">
         <div class="mt-5" v-if="!isLoading">
           <RecordBody :user="user" :row="row" @update-delivery-row="updateDeliveryRow" />
-          <RecordQR class="mt-10" :row="row" :value="route.fullPath" />
+          <RecordQR
+            class="mt-10"
+            :row="row"
+            :value="`https://scintillating-donut-6d93ed.netlify.app/spreadsheets/order/${row.clientLink2}`"
+          />
         </div>
         <div v-else>
           <UISpinner />

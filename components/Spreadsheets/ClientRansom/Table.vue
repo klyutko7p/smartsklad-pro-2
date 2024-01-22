@@ -13,6 +13,7 @@ const emit = defineEmits([
   "updateDeliveryRow",
   "deleteSelectedRows",
   "updateDeliveryRows",
+  "createCopyRow",
 ]);
 
 function updateDeliveryRow(row: IClientRansom, flag: string) {
@@ -33,6 +34,10 @@ function deleteRow(id: number) {
 
 function deleteSelectedRows() {
   emit("deleteSelectedRows", checkedRows.value);
+}
+
+function createCopyRow() {
+  emit("createCopyRow", checkedRows.value[0]);
 }
 
 defineProps({
@@ -74,6 +79,11 @@ const handleCheckboxChange = (rowId: number): void => {
     class="fixed z-40 flex flex-col gap-3 top-24 left-1/2 translate-x-[-50%] translate-y-[-50%]"
     v-if="user.dataClientRansom === 'WRITE' && checkedRows.length > 0"
   >
+    <UIActionButton
+      v-if="user.role === 'ADMIN' && checkedRows.length === 1"
+      @click="createCopyRow"
+      >Скопировать запись</UIActionButton
+    >
     <UIActionButton v-if="user.role === 'ADMIN'" @click="deleteSelectedRows"
       >Удалить выделенные записи</UIActionButton
     >
@@ -156,7 +166,7 @@ const handleCheckboxChange = (rowId: number): void => {
             class="px-6 py-3"
             v-if="user.percentClient === 'READ' || user.percentClient === 'WRITE'"
           >
-            процент с клиента
+            процент с клиента (%)
           </th>
           <th
             scope="col"
@@ -186,7 +196,7 @@ const handleCheckboxChange = (rowId: number): void => {
           >
             заказано на сц
           </th>
-          
+
           <th
             scope="col"
             class="px-6 py-3"
@@ -243,10 +253,14 @@ const handleCheckboxChange = (rowId: number): void => {
         </tr>
       </thead>
       <tbody>
-        <tr :class="{'bg-orange-100': isChecked(row.id)}" class="bg-white border-b text-center text-sm" v-for="row in rows">
+        <tr
+          :class="{'bg-orange-100': isChecked(row.id)}"
+          class="border-b text-center text-sm"
+          v-for="row in rows"
+        >
           <td
             v-if="user.dataClientRansom === 'WRITE'"
-            class="px-6 py-4 underline text-secondary-color whitespace-nowrap uppercase overflow-hidden max-w-[200px]"
+            class="px-6 py-4 underline border-2 text-secondary-color whitespace-nowrap uppercase overflow-hidden max-w-[200px]"
           >
             <input
               type="checkbox"
@@ -258,7 +272,7 @@ const handleCheckboxChange = (rowId: number): void => {
 
           <th
             scope="row"
-            class="px-6 py-4 font-medium underline text-secondary-color whitespace-nowrap"
+            class="px-6 py-4 font-medium border-2 underline text-secondary-color whitespace-nowrap"
           >
             <NuxtLink
               target="_blank"
@@ -269,7 +283,7 @@ const handleCheckboxChange = (rowId: number): void => {
             </NuxtLink>
           </th>
           <td
-            class="px-6 py-4 underline text-secondary-color whitespace-nowrap uppercase overflow-hidden max-w-[200px]"
+            class="px-3 py-4 underline border-2 text-secondary-color whitespace-nowrap uppercase overflow-hidden max-w-[200px]"
             v-if="user.clientLink2 === 'READ' || user.clientLink2 === 'WRITE'"
           >
             <NuxtLink
@@ -280,23 +294,23 @@ const handleCheckboxChange = (rowId: number): void => {
               {{ row.clientLink2 }}
             </NuxtLink>
           </td>
-          <td v-if="user.cell === 'READ' || user.cell === 'WRITE'" class="px-6 py-4">
+          <td v-if="user.cell === 'READ' || user.cell === 'WRITE'" class="px-6 py-4 border-2">
             {{ row.cell }}
           </td>
           <td
             v-if="user.name === 'READ' || user.name === 'WRITE'"
-            class="px-6 py-4 whitespace-nowrap"
+            class="px-6 py-4 border-2 whitespace-nowrap"
           >
             {{ row.name }}
           </td>
           <td
             v-if="user.fromName === 'READ' || user.fromName === 'WRITE'"
-            class="px-6 py-4"
+            class="px-6 py-4 border-2"
           >
             {{ row.fromName }}
           </td>
           <td
-            class="underline text-secondary-color whitespace-nowrap overflow-hidden max-w-[200px]"
+            class="underline border-2 text-secondary-color whitespace-nowrap overflow-hidden max-w-[200px]"
             v-if="user.productLink === 'READ' || user.productLink === 'WRITE'"
           >
             <a
@@ -307,49 +321,49 @@ const handleCheckboxChange = (rowId: number): void => {
             >
           </td>
           <td
-            class="py-4 px-6 whitespace-nowrap"
+            class="py-4 px-6 border-2 whitespace-nowrap"
             v-if="user.productName === 'READ' || user.productName === 'WRITE'"
           >
             {{ row.productName }}
           </td>
           <td
-            class="px-6 py-4"
+            class="px-6 py-4 border-2"
             v-if="user.priceProgram === 'READ' || user.priceProgram === 'WRITE'"
           >
             {{ row.priceProgram }}
           </td>
           <td
-            class="px-6 py-4"
+            class="px-6 py-4 border-2"
             v-if="user.percentClient === 'READ' || user.percentClient === 'WRITE'"
           >
             {{ row.percentClient }}
           </td>
           <td
-            class="px-6 py-4"
+            class="px-6 py-4 border-2"
             v-if="user.deliveredKGT === 'READ' || user.deliveredKGT === 'WRITE'"
           >
             {{ row.deliveredKGT }}
           </td>
           <td
-            class="px-6 py-4"
+            class="px-6 py-4 border-2"
             v-if="user.amountFromClient2 === 'READ' || user.amountFromClient2 === 'WRITE'"
           >
             {{ row.amountFromClient2 }}
           </td>
           <td
-            class="px-6 py-4"
+            class="px-6 py-4 border-2"
             v-if="user.dispatchPVZ === 'READ' || user.dispatchPVZ === 'WRITE'"
           >
             {{ row.dispatchPVZ }}
           </td>
           <td
-            class="px-6 py-4"
+            class="px-6 py-4 border-2"
             v-if="user.orderPVZ === 'READ' || user.orderPVZ === 'WRITE'"
           >
             {{ row.orderPVZ }}
           </td>
           <td
-            class="px-3 py-4"
+            class="px-3 py-4 border-2"
             v-if="user.deliveredSC === 'READ' || user.deliveredSC === 'WRITE'"
           >
             <Icon
@@ -364,7 +378,7 @@ const handleCheckboxChange = (rowId: number): void => {
             </h1>
           </td>
           <td
-            class="px-3 py-4"
+            class="px-3 py-4 border-2"
             v-if="user.deliveredPVZ === 'READ' || user.deliveredPVZ === 'WRITE'"
           >
             <Icon
@@ -378,7 +392,7 @@ const handleCheckboxChange = (rowId: number): void => {
               {{ row.deliveredPVZ ? storeUsers.getNormalizedDate(row.deliveredPVZ) : "" }}
             </h1>
           </td>
-          <td class="px-3 py-4" v-if="user.issued === 'READ' || user.issued === 'WRITE'">
+          <td class="px-3 py-4 border-2" v-if="user.issued === 'READ' || user.issued === 'WRITE'">
             <Icon
               @click="updateDeliveryRow(row, 'issued')"
               v-if="!row.issued && user.issued === 'WRITE'"
@@ -391,30 +405,30 @@ const handleCheckboxChange = (rowId: number): void => {
             </h1>
           </td>
           <td
-            class="px-6 py-4"
+            class="px-6 py-4 border-2"
             v-if="user.additionally === 'READ' || user.additionally === 'WRITE'"
           >
             {{ row.additionally ? row.additionally : "Пусто" }}
           </td>
           <td
-            class="px-6 py-4"
+            class="px-6 py-4 border-2"
             v-if="user.profit2 === 'READ' || user.profit2 === 'WRITE'"
           >
             {{ row.profit2 }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ storeUsers.getNormalizedDate(row.created_at) }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ storeUsers.getNormalizedDate(row.updated_at) }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ row.createdUser }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ row.updatedUser }}
           </td>
-          <td class="px-6 py-4" v-if="user.dataClientRansom === 'WRITE'">
+          <td class="px-6 py-4 border-2" v-if="user.dataClientRansom === 'WRITE'">
             <Icon
               @click="openModal(row)"
               class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
@@ -423,7 +437,7 @@ const handleCheckboxChange = (rowId: number): void => {
             />
           </td>
           <td
-            class="px-6 py-4"
+            class="px-6 py-4 border-2"
             v-if="user.dataClientRansom === 'WRITE' && user.role === 'ADMIN'"
           >
             <Icon

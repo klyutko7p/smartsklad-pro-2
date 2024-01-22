@@ -14,15 +14,15 @@ let row = ref({} as IOurRansom);
 async function updateDeliveryRow(obj: any) {
   isLoading.value = true;
   let answer = confirm("Вы точно хотите изменить статус доставки?");
-  if (answer) await storeRansom.updateDeliveryStatus(obj.row, obj.flag, 'OurRansom');
-  row.value = await storeRansom.getRansomRow(id, 'OurRansom');
+  if (answer) await storeRansom.updateDeliveryStatus(obj.row, obj.flag, "OurRansom");
+  row.value = await storeRansom.getRansomRow(id, "OurRansom");
   isLoading.value = false;
 }
 
 onMounted(async () => {
   isLoading.value = true;
   user.value = await storeUsers.getUser();
-  row.value = await storeRansom.getRansomRow(id, 'OurRansom');
+  row.value = await storeRansom.getRansomRow(id, "OurRansom");
   isLoading.value = false;
 });
 
@@ -48,7 +48,11 @@ const token = Cookies.get("token");
       <NuxtLayout name="admin">
         <div class="mt-5" v-if="!isLoading">
           <RecordBody :user="user" :row="row" @update-delivery-row="updateDeliveryRow" />
-          <RecordQR class="mt-10" :row="row" :value="route.fullPath" />
+          <RecordQR
+            class="mt-10"
+            :row="row"
+            :value="`https://scintillating-donut-6d93ed.netlify.app/spreadsheets/order/${row.clientLink1}`"
+          />
         </div>
         <div v-else>
           <UISpinner />
@@ -59,7 +63,11 @@ const token = Cookies.get("token");
       <NuxtLayout name="user">
         <div class="mt-5" v-if="!isLoading">
           <RecordBody :user="user" :row="row" @update-delivery-row="updateDeliveryRow" />
-          <RecordQR class="mt-10" :row="row" :value="route.fullPath" />
+          <RecordQR
+            class="mt-10"
+            :row="row"
+            :value="`https://scintillating-donut-6d93ed.netlify.app/spreadsheets/order/${row.clientLink1}`"
+          />
         </div>
         <div v-else>
           <UISpinner />

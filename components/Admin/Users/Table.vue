@@ -29,89 +29,89 @@ defineProps({
       </thead>
       <tbody>
         <tr class="bg-white border-b text-center" v-for="userData in users">
-          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+          <th scope="row" class="px-6 py-4 border-2 font-medium text-gray-900 whitespace-nowrap">
             {{ userData.username }}
           </th>
-          <td class="px-6 py-4">{{ userData.role }}</td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">{{ userData.role }}</td>
+          <td class="px-6 py-4 border-2">
             {{ storeUsers.getNormalizedDate(userData.created_at) }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.cell }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.additionally }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.deliveredSC }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.deliveredPVZ }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.deliveredKGT }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.dispatchPVZ }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.name }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.fromName }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.issued }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.orderAccount }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.orderPVZ }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.percentClient }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.notation }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.priceProgram }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.priceSite }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.productLink }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.productName }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.dataOurRansom }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.dataClientRansom }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.amountFromClient1 }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.amountFromClient2 }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.clientLink1 }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.clientLink2 }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.profit1 }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ userData.profit2 }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             <Icon
               @click="openModal(userData)"
               class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
@@ -119,7 +119,7 @@ defineProps({
               size="32"
             />
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             <Icon
               @click="deleteUser(userData.username)"
               class="text-red-600 cursor-pointer hover:text-red-300 duration-200"

@@ -96,16 +96,16 @@ function exportToExcel() {
       </thead>
       <tbody>
         <tr class="bg-white border-b text-center text-sm" v-for="row in rows">
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ row.cell }}
           </td>
           <td
-            class="px-6 py-4"
+            class="px-6 py-4 border-2"
           >
             {{ row.fromName }}
           </td>
           <td
-            class="underline text-secondary-color whitespace-nowrap overflow-hidden max-w-[200px]"
+            class="underline border-2 text-secondary-color whitespace-nowrap overflow-hidden max-w-[200px]"
           >
             <a
               :href="row.productLink"
@@ -115,40 +115,40 @@ function exportToExcel() {
             >
           </td>
           <td
-            class="py-4 px-6 whitespace-nowrap"
+            class="py-4 px-6 border-2 whitespace-nowrap"
           >
             {{ row.productName }}
           </td>
           <td
-            class="px-6 py-4"
+            class="px-6 py-4 border-2"
           >
             {{ row.amountFromClient1 }}
           </td>
           <td
-            class="px-3 py-4"
+            class="px-3 py-4 border-2"
           >
             <h1 class="font-bold text-green-500">
               {{ row.deliveredSC ? storeUsers.getNormalizedDate(row.deliveredSC) : "" }}
             </h1>
           </td>
           <td
-            class="px-3 py-4"
+            class="px-3 py-4 border-2"
           >
             <h1 class="font-bold text-green-500">
               {{ row.deliveredPVZ ? storeUsers.getNormalizedDate(row.deliveredPVZ) : "" }}
             </h1>
           </td>
-          <td class="px-3 py-4" >
+          <td class="px-3 py-4 border-2" >
             <h1 class="font-bold text-green-500">
               {{ row.issued ? storeUsers.getNormalizedDate(row.issued) : "" }}
             </h1>
           </td>
           <td
-            class="px-6 py-4"
+            class="px-6 py-4 border-2"
           >
             {{ row.additionally ? row.additionally : "Пусто" }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 border-2">
             {{ storeUsers.getNormalizedDate(row.created_at) }}
           </td>
         </tr>

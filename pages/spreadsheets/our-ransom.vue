@@ -97,6 +97,23 @@ async function createRow() {
   isLoading.value = false;
 }
 
+async function createCopyRow(id: number) {
+  isLoading.value = true;
+  await storeRansom.createCopyRow(id, 'OurRansom');
+  filteredRows.value = await storeRansom.getRansomRows('OurRansom');
+  rows.value = await storeRansom.getRansomRows('OurRansom');
+  isLoading.value = false;
+}
+
+async function deleteIssuedRows() {
+  isLoading.value = true;
+  let answer = confirm("Вы точно хотите удалить выданные товары?");
+  if (answer) await storeRansom.deleteIssuedRows('OurRansom');
+  filteredRows.value = await storeRansom.getRansomRows('OurRansom');
+  rows.value = await storeRansom.getRansomRows('OurRansom');
+  isLoading.value = false;
+}
+
 const filteredRows = ref<Array<IOurRansom>>();
 
 function handleFilteredRows(filteredRowsData: IOurRansom[]) {
@@ -139,7 +156,8 @@ const token = Cookies.get("token");
         <div v-if="!isLoading" class="mt-3">
           <div>
             <SpreadsheetsOurRansomFilters v-if="rows" @filtered-rows="handleFilteredRows" :rows="rows" />
-            <div class="mt-5" v-if="user.dataOurRansom === 'WRITE'">
+            <div class="mt-5 flex items-center gap-3" v-if="user.dataOurRansom === 'WRITE'">
+              <UIMainButton @click="deleteIssuedRows">Удалить выданное</UIMainButton>
               <UIMainButton @click="openModal">Создать новую запись</UIMainButton>
             </div>
           </div>
@@ -152,6 +170,7 @@ const token = Cookies.get("token");
             @open-modal="openModal"
             @delete-selected-rows="deleteSelectedRows"
             @update-delivery-rows="updateDeliveryRows"
+            @create-copy-row="createCopyRow"
             v-if="filteredRows"
           />
 
@@ -270,7 +289,7 @@ const token = Cookies.get("token");
                   :disabled="user.percentClient === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.percentClient"
-                  placeholder="По умолчанию: 0.1"
+                  placeholder="По умолчанию: 10"
                   type="number"
                 />
               </div>
@@ -435,6 +454,7 @@ const token = Cookies.get("token");
             @open-modal="openModal"
             @delete-selected-rows="deleteSelectedRows"
             @update-delivery-rows="updateDeliveryRows"
+            @create-copy-row="createCopyRow"
             v-if="filteredRows"
           />
 
@@ -553,7 +573,7 @@ const token = Cookies.get("token");
                   :disabled="user.percentClient === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.percentClient"
-                  placeholder="По умолчанию: 0.1"
+                  placeholder="По умолчанию: 10"
                   type="number"
                 />
               </div>

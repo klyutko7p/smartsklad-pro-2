@@ -3,7 +3,7 @@ import type { PropType } from "vue";
 
 defineProps({
   value: { type: String },
-  row: { type: Object as PropType<OurRansom>, required: true },
+  row: { type: Object as PropType<IOurRansom | IClientRansom>, required: true },
 });
 
 function printPage() {

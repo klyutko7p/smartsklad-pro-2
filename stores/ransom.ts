@@ -22,11 +22,35 @@ function generateLink(phoneNumber: string, flag: string) {
 
 export const useRansomStore = defineStore("ransom", () => {
 
+    async function createCopyRow(id: number, flag: string) {
+        try {
+            let data = await useFetch('/api/ransom/create-copy-row', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: id, flag: flag }),
+            });
+
+            if (data.data.value === undefined) {
+                toast.success("Запись успешно скопирована!")
+            } else {
+                console.log(data.data.value);
+                toast.error("Произошла ошибка")
+            }
+
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error(error.message);
+            }
+        }
+    }
+
     async function createRansomRow(row: IOurRansom | IClientRansom, username: string, flag: string) {
 
         try {
             if (flag === 'OurRansom') {
-                if (row.percentClient === undefined) row.percentClient = 0.1;
+                if (row.percentClient === undefined) row.percentClient = 10;
                 if (row.priceSite === undefined) row.priceSite = 0;
                 if (row.deliveredKGT === undefined) row.deliveredKGT = 0;
                 if (row.productName === undefined) row.productName = '';
@@ -40,10 +64,10 @@ export const useRansomStore = defineStore("ransom", () => {
                     row.clientLink1 = ''
                 }
 
-                row.amountFromClient1 = ((row.priceSite * (1 + row.percentClient) + row.deliveredKGT) / 10.0) * 10;
+                row.amountFromClient1 = row.priceSite + (row.priceSite * row.percentClient / 100) + row.deliveredKGT + 10;
                 row.profit1 = row.amountFromClient1 - row.priceSite;
             } else if (flag === 'ClientRansom') {
-                if (row.percentClient === undefined) row.percentClient = 0.1;
+                if (row.percentClient === undefined) row.percentClient = 10;
                 if (row.priceProgram === undefined) row.priceProgram = 0;
                 if (row.deliveredKGT === undefined) row.deliveredKGT = 0;
                 if (row.productName === undefined) row.productName = '';
@@ -57,8 +81,8 @@ export const useRansomStore = defineStore("ransom", () => {
                     row.clientLink2 = ''
                 }
 
-                row.amountFromClient2 = ((row.priceProgram * (1 + row.percentClient) + row.deliveredKGT) / 10.0) * 10;
-                row.profit2 = row.amountFromClient2 - row.priceProgram;
+                row.amountFromClient2 = row.priceProgram * row.percentClient / 100;
+                row.profit2 = row.amountFromClient2;
             }
 
 
@@ -120,7 +144,7 @@ export const useRansomStore = defineStore("ransom", () => {
     async function updateRansomRow(row: IOurRansom | IClientRansom, username: string, flag: string) {
         try {
             if (flag === 'OurRansom') {
-                if (row.percentClient === undefined || row.percentClient === 0) row.percentClient = 0.1;
+                if (row.percentClient === undefined || row.percentClient === 0) row.percentClient = 10;
                 if (row.priceSite === undefined || row.priceSite === 0) row.priceSite = 0;
                 if (row.deliveredKGT === undefined || row.deliveredKGT === 0) row.deliveredKGT = 0;
                 if (row.productName === undefined || row.productName === '') row.productName = '';
@@ -134,12 +158,12 @@ export const useRansomStore = defineStore("ransom", () => {
                     row.clientLink1 = ''
                 }
 
-                row.amountFromClient1 = ((row.priceSite * (1 + row.percentClient) + row.deliveredKGT) / 10.0) * 10;
+                row.amountFromClient1 = row.priceSite + (row.priceSite * row.percentClient / 100) + row.deliveredKGT + 10;
                 row.profit1 = row.amountFromClient1 - row.priceSite;
 
 
             } else if (flag === 'ClientRansom') {
-                if (row.percentClient === undefined || row.percentClient === 0) row.percentClient = 0.1;
+                if (row.percentClient === undefined || row.percentClient === 0) row.percentClient = 10;
                 if (row.priceProgram === undefined || row.priceProgram === 0) row.priceProgram = 0;
                 if (row.deliveredKGT === undefined || row.deliveredKGT === 0) row.deliveredKGT = 0;
                 if (row.productName === undefined || row.productName === '') row.productName = '';
@@ -153,8 +177,8 @@ export const useRansomStore = defineStore("ransom", () => {
                     row.clientLink2 = ''
                 }
 
-                row.amountFromClient2 = ((row.priceProgram * (1 + row.percentClient) + row.deliveredKGT) / 10.0) * 10;
-                row.profit2 = row.amountFromClient2 - row.priceProgram;
+                row.amountFromClient2 = row.priceProgram * row.percentClient / 100;
+                row.profit2 = row.amountFromClient2;
             }
 
             let data = await useFetch('/api/ransom/edit-row', {
@@ -225,6 +249,23 @@ export const useRansomStore = defineStore("ransom", () => {
         }
     }
 
+    async function deleteIssuedRows(flag: string) {
+        try {
+            let data = await useFetch('/api/ransom/delete-issued-rows', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ flag: flag }),
+            });
+            toast.success("Записи успешно удалены!")
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error(error.message);
+            }
+        }
+    }
+
     async function deleteRansomSelectedRows(idArray: number[], flag: string) {
         try {
             let data = await useFetch('/api/ransom/delete-selected-rows', {
@@ -270,5 +311,5 @@ export const useRansomStore = defineStore("ransom", () => {
         return Array.from(uniqueNonEmptyValues);
     };
 
-    return { createRansomRow, getRansomRows, updateRansomRow, deleteRansomRow, updateDeliveryStatus, getUniqueNonEmptyValues, getRansomRow, deleteRansomSelectedRows, getRansomRowsByLink, updateDeliveryRowsStatus }
+    return { createRansomRow, getRansomRows, updateRansomRow, deleteRansomRow, updateDeliveryStatus, getUniqueNonEmptyValues, getRansomRow, deleteRansomSelectedRows, getRansomRowsByLink, updateDeliveryRowsStatus, createCopyRow, deleteIssuedRows }
 })
