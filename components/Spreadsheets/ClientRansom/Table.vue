@@ -138,15 +138,15 @@ const toggleShowDeletedRows = () => {
       @click="deleteSelectedRows"
       >Удалить выделенные записи</UIActionButton
     >
-    <UIActionButton v-if="user.deliveredSC === 'WRITE'" @click="updateDeliveryRows('SC')"
+    <UIActionButton v-if="user.deliveredSC1 === 'WRITE'" @click="updateDeliveryRows('SC')"
       >Доставить на сц</UIActionButton
     >
     <UIActionButton
-      v-if="user.deliveredPVZ === 'WRITE'"
+      v-if="user.deliveredPVZ1 === 'WRITE'"
       @click="updateDeliveryRows('PVZ')"
       >Доставить на пвз</UIActionButton
     >
-    <UIActionButton v-if="user.issued === 'WRITE'" @click="updateDeliveryRows('issued')"
+    <UIActionButton v-if="user.issued1 === 'WRITE'" @click="updateDeliveryRows('issued')"
       >Выдать клиенту</UIActionButton
     >
   </div>
@@ -174,35 +174,35 @@ const toggleShowDeletedRows = () => {
           <th
             scope="col"
             class="px-6 py-3"
-            v-if="user.cell === 'READ' || user.cell === 'WRITE'"
+            v-if="user.cell1 === 'READ' || user.cell1 === 'WRITE'"
           >
             ячейка
           </th>
           <th
             scope="col"
             class="px-6 py-3"
-            v-if="user.name === 'READ' || user.name === 'WRITE'"
+            v-if="user.name1 === 'READ' || user.name1 === 'WRITE'"
           >
             имя
           </th>
           <th
             scope="col"
             class="px-6 py-3"
-            v-if="user.fromName === 'READ' || user.fromName === 'WRITE'"
+            v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'"
           >
             телефон
           </th>
           <th
             scope="col"
             class="px-6 py-3"
-            v-if="user.productLink === 'READ' || user.productLink === 'WRITE'"
+            v-if="user.productLink1 === 'READ' || user.productLink1 === 'WRITE'"
           >
             товар (ссылка)
           </th>
           <th
             scope="col"
             class="px-6 py-3"
-            v-if="user.productName === 'READ' || user.productName === 'WRITE'"
+            v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'"
           >
             название товара
           </th>
@@ -216,21 +216,21 @@ const toggleShowDeletedRows = () => {
           <th
             scope="col"
             class="px-6 py-3"
-            v-if="user.prepayment === 'READ' || user.prepayment === 'WRITE'"
+            v-if="user.prepayment1 === 'READ' || user.prepayment1 === 'WRITE'"
           >
             предоплата
           </th>
           <th
             scope="col"
             class="px-6 py-3"
-            v-if="user.percentClient === 'READ' || user.percentClient === 'WRITE'"
+            v-if="user.percentClient1 === 'READ' || user.percentClient1 === 'WRITE'"
           >
             процент с клиента (%)
           </th>
           <th
             scope="col"
             class="px-6 py-3"
-            v-if="user.deliveredKGT === 'READ' || user.deliveredKGT === 'WRITE'"
+            v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'"
           >
             доставка кгт
           </th>
@@ -244,14 +244,14 @@ const toggleShowDeletedRows = () => {
           <th
             scope="col"
             class="px-6 py-3"
-            v-if="user.dispatchPVZ === 'READ' || user.dispatchPVZ === 'WRITE'"
+            v-if="user.dispatchPVZ1 === 'READ' || user.dispatchPVZ1 === 'WRITE'"
           >
             отправка в пвз
           </th>
           <th
             scope="col"
             class="px-6 py-3"
-            v-if="user.orderPVZ === 'READ' || user.orderPVZ === 'WRITE'"
+            v-if="user.orderPVZ1 === 'READ' || user.orderPVZ1 === 'WRITE'"
           >
             заказано на сц
           </th>
@@ -259,28 +259,28 @@ const toggleShowDeletedRows = () => {
           <th
             scope="col"
             class="px-6 py-3"
-            v-if="user.deliveredSC === 'READ' || user.deliveredSC === 'WRITE'"
+            v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'"
           >
             доставлено на сц
           </th>
           <th
             scope="col"
             class="px-6 py-3"
-            v-if="user.deliveredPVZ === 'READ' || user.deliveredPVZ === 'WRITE'"
+            v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'"
           >
             доставлено на пвз
           </th>
           <th
             scope="col"
             class="px-6 py-3"
-            v-if="user.issued === 'READ' || user.issued === 'WRITE'"
+            v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'"
           >
             выдан клиенту
           </th>
           <th
             scope="col"
             class="px-6 py-3"
-            v-if="user.additionally === 'READ' || user.additionally === 'WRITE'"
+            v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'"
           >
             дополнительно
           </th>
@@ -356,26 +356,26 @@ const toggleShowDeletedRows = () => {
             </NuxtLink>
           </td>
           <td
-            v-if="user.cell === 'READ' || user.cell === 'WRITE'"
+            v-if="user.cell1 === 'READ' || user.cell1 === 'WRITE'"
             class="px-6 py-4 border-2"
           >
             {{ row.cell }}
           </td>
           <td
-            v-if="user.name === 'READ' || user.name === 'WRITE'"
+            v-if="user.name1 === 'READ' || user.name1 === 'WRITE'"
             class="px-6 py-4 border-2 whitespace-nowrap"
           >
             {{ row.name }}
           </td>
           <td
-            v-if="user.fromName === 'READ' || user.fromName === 'WRITE'"
+            v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'"
             class="px-6 py-4 border-2"
           >
             {{ row.fromName }}
           </td>
           <td
             class="underline border-2 text-secondary-color whitespace-nowrap overflow-hidden max-w-[200px]"
-            v-if="user.productLink === 'READ' || user.productLink === 'WRITE'"
+            v-if="user.productLink1 === 'READ' || user.productLink1 === 'WRITE'"
           >
             <a
               :href="row.productLink"
@@ -386,7 +386,7 @@ const toggleShowDeletedRows = () => {
           </td>
           <td
             class="py-4 px-6 border-2 whitespace-nowrap"
-            v-if="user.productName === 'READ' || user.productName === 'WRITE'"
+            v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'"
           >
             {{ row.productName }}
           </td>
@@ -398,19 +398,19 @@ const toggleShowDeletedRows = () => {
           </td>
           <td
             class="px-6 py-4 border-2"
-            v-if="user.prepayment === 'READ' || user.prepayment === 'WRITE'"
+            v-if="user.prepayment1 === 'READ' || user.prepayment1 === 'WRITE'"
           >
             {{ row.prepayment }}
           </td>
           <td
             class="px-6 py-4 border-2"
-            v-if="user.percentClient === 'READ' || user.percentClient === 'WRITE'"
+            v-if="user.percentClient1 === 'READ' || user.percentClient1 === 'WRITE'"
           >
             {{ row.percentClient }}
           </td>
           <td
             class="px-6 py-4 border-2"
-            v-if="user.deliveredKGT === 'READ' || user.deliveredKGT === 'WRITE'"
+            v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'"
           >
             {{ row.deliveredKGT }}
           </td>
@@ -422,23 +422,23 @@ const toggleShowDeletedRows = () => {
           </td>
           <td
             class="px-6 py-4 border-2"
-            v-if="user.dispatchPVZ === 'READ' || user.dispatchPVZ === 'WRITE'"
+            v-if="user.dispatchPVZ1 === 'READ' || user.dispatchPVZ1 === 'WRITE'"
           >
             {{ row.dispatchPVZ }}
           </td>
           <td
             class="px-6 py-4 border-2"
-            v-if="user.orderPVZ === 'READ' || user.orderPVZ === 'WRITE'"
+            v-if="user.orderPVZ1 === 'READ' || user.orderPVZ1 === 'WRITE'"
           >
             {{ row.orderPVZ }}
           </td>
           <td
             class="px-3 py-4 border-2"
-            v-if="user.deliveredSC === 'READ' || user.deliveredSC === 'WRITE'"
+            v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'"
           >
             <Icon
               @click="updateDeliveryRow(row, 'SC')"
-              v-if="!row.deliveredSC && user.deliveredSC === 'WRITE'"
+              v-if="!row.deliveredSC && user.deliveredSC1 === 'WRITE'"
               class="text-green-500 cursor-pointer hover:text-green-300 duration-200"
               name="mdi:checkbox-multiple-marked-circle"
               size="32"
@@ -449,11 +449,11 @@ const toggleShowDeletedRows = () => {
           </td>
           <td
             class="px-3 py-4 border-2"
-            v-if="user.deliveredPVZ === 'READ' || user.deliveredPVZ === 'WRITE'"
+            v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'"
           >
             <Icon
               @click="updateDeliveryRow(row, 'PVZ')"
-              v-if="!row.deliveredPVZ && user.deliveredPVZ === 'WRITE'"
+              v-if="!row.deliveredPVZ && user.deliveredPVZ1 === 'WRITE'"
               class="text-green-500 cursor-pointer hover:text-green-300 duration-200"
               name="mdi:checkbox-multiple-marked-circle"
               size="32"
@@ -464,11 +464,11 @@ const toggleShowDeletedRows = () => {
           </td>
           <td
             class="px-3 py-4 border-2"
-            v-if="user.issued === 'READ' || user.issued === 'WRITE'"
+            v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'"
           >
             <Icon
               @click="updateDeliveryRow(row, 'issued')"
-              v-if="!row.issued && user.issued === 'WRITE'"
+              v-if="!row.issued && user.issued1 === 'WRITE'"
               class="text-green-500 cursor-pointer hover:text-green-300 duration-200"
               name="mdi:checkbox-multiple-marked-circle"
               size="32"
@@ -479,7 +479,7 @@ const toggleShowDeletedRows = () => {
           </td>
           <td
             class="px-6 py-4 border-2"
-            v-if="user.additionally === 'READ' || user.additionally === 'WRITE'"
+            v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'"
           >
             {{ row.additionally ? row.additionally : "Пусто" }}
           </td>

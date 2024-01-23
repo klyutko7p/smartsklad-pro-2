@@ -194,11 +194,11 @@ const token = Cookies.get("token");
             <div class="text-black">
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.cell === 'READ' || user.cell === 'WRITE'"
+                v-if="user.cell1 === 'READ' || user.cell1 === 'WRITE'"
               >
-                <label for="name">Ячейка</label>
+                <label for="cell1">Ячейка</label>
                 <input
-                  :disabled="user.cell === 'READ'"
+                  :disabled="user.cell1 === 'READ'"
                   class="bg-transparent rounded-md border-2 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.cell"
                   type="text"
@@ -207,11 +207,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.fromName === 'READ' || user.fromName === 'WRITE'"
+                v-if="user.name1 === 'READ' || user.name1 === 'WRITE'"
               >
-                <label for="name">Имя</label>
+                <label for="name1">Имя</label>
                 <input
-                  :disabled="user.name === 'READ'"
+                  :disabled="user.name1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.name"
                   type="text"
@@ -220,11 +220,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.fromName === 'READ' || user.fromName === 'WRITE'"
+                v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'"
               >
-                <label for="name">Телефон</label>
+                <label for="fromName1">Телефон</label>
                 <input
-                  :disabled="user.fromName === 'READ'"
+                  :disabled="user.fromName1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.fromName"
                   type="text"
@@ -233,11 +233,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.productLink === 'READ' || user.productLink === 'WRITE'"
+                v-if="user.productLink1 === 'READ' || user.productLink1 === 'WRITE'"
               >
-                <label for="name">Товар (ссылка)</label>
+                <label for="productLink1">Товар (ссылка)</label>
                 <input
-                  :disabled="user.productLink === 'READ'"
+                  :disabled="user.productLink1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.productLink"
                   type="text"
@@ -246,11 +246,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.productName === 'READ' || user.productName === 'WRITE'"
+                v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'"
               >
-                <label for="name">Название товара</label>
+                <label for="productName1">Название товара</label>
                 <input
-                  :disabled="user.productName === 'READ'"
+                  :disabled="user.productName1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.productName"
                   type="text"
@@ -261,7 +261,7 @@ const token = Cookies.get("token");
                 class="grid grid-cols-2 mb-5"
                 v-if="user.priceProgram === 'READ' || user.priceProgram === 'WRITE'"
               >
-                <label for="name">Стоимость выкупа товара</label>
+                <label for="priceProgram">Стоимость выкупа товара</label>
                 <input
                   :disabled="user.priceProgram === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
@@ -272,11 +272,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.prepayment === 'READ' || user.prepayment === 'WRITE'"
+                v-if="user.prepayment1 === 'READ' || user.prepayment1 === 'WRITE'"
               >
-                <label for="name">Предоплата</label>
+                <label for="prepayment1">Предоплата</label>
                 <input
-                  :disabled="user.prepayment === 'READ'"
+                  :disabled="user.prepayment1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.prepayment"
                   type="number"
@@ -285,11 +285,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.percentClient === 'READ' || user.percentClient === 'WRITE'"
+                v-if="user.percentClient1 === 'READ' || user.percentClient1 === 'WRITE'"
               >
-                <label for="name">Процент с клиента</label>
+                <label for="percentClient1">Процент с клиента</label>
                 <input
-                  :disabled="user.percentClient === 'READ'"
+                  :disabled="user.percentClient1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.percentClient"
                   placeholder="По умолчанию: 10"
@@ -299,11 +299,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.productLink === 'READ' || user.productLink === 'WRITE'"
+                v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'"
               >
-                <label for="name">Доставка КГТ</label>
+                <label for="deliveredKGT1">Доставка КГТ</label>
                 <input
-                  :disabled="user.deliveredKGT === 'READ'"
+                  :disabled="user.deliveredKGT1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.deliveredKGT"
                   placeholder="По умолчанию: 0"
@@ -313,13 +313,13 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.dispatchPVZ === 'READ' || user.dispatchPVZ === 'WRITE'"
+                v-if="user.dispatchPVZ1 === 'READ' || user.dispatchPVZ1 === 'WRITE'"
               >
-                <label for="name">Отправка в ПВЗ</label>
+                <label for="dispatchPVZ1">Отправка в ПВЗ</label>
                 <select
                   class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
                   v-model="rowData.dispatchPVZ"
-                  :disabled="user.dispatchPVZ === 'READ'"
+                  :disabled="user.dispatchPVZ1 === 'READ'"
                 >
                   <option v-for="pvzData in pvz" :value="pvzData.name">
                     {{ pvzData.name }}
@@ -329,13 +329,13 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.orderPVZ === 'READ' || user.orderPVZ === 'WRITE'"
+                v-if="user.orderPVZ1 === 'READ' || user.orderPVZ1 === 'WRITE'"
               >
-                <label for="name">Заказано на СЦ</label>
+                <label for="orderPVZ1">Заказано на СЦ</label>
                 <select
                   class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
                   v-model="rowData.orderPVZ"
-                  :disabled="user.orderPVZ === 'READ'"
+                  :disabled="user.orderPVZ1 === 'READ'"
                 >
                   <option
                     v-for="sortingCenter in sortingCenters"
@@ -348,11 +348,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.deliveredSC === 'READ' || user.deliveredSC === 'WRITE'"
+                v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'"
               >
-                <label for="name">Доставлено на СЦ</label>
+                <label for="deliveredSC1">Доставлено на СЦ</label>
                 <input
-                  :disabled="user.deliveredSC === 'READ'"
+                  :disabled="user.deliveredSC1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.deliveredSC"
                   type="datetime-local"
@@ -361,11 +361,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.deliveredPVZ === 'READ' || user.deliveredPVZ === 'WRITE'"
+                v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'"
               >
-                <label for="name">Доставлено на ПВЗ</label>
+                <label for="deliveredPVZ1">Доставлено на ПВЗ</label>
                 <input
-                  :disabled="user.deliveredPVZ === 'READ'"
+                  :disabled="user.deliveredPVZ1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.deliveredPVZ"
                   type="datetime-local"
@@ -374,11 +374,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.issued === 'READ' || user.issued === 'WRITE'"
+                v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'"
               >
-                <label for="name">Выдан клиенту</label>
+                <label for="issued1">Выдан клиенту</label>
                 <input
-                  :disabled="user.issued === 'READ'"
+                  :disabled="user.issued1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.issued"
                   type="datetime-local"
@@ -387,13 +387,13 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.additionally === 'READ' || user.additionally === 'WRITE'"
+                v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'"
               >
-                <label for="name">Дополнительно</label>
+                <label for="additionally1">Дополнительно</label>
                 <select
                   class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
                   v-model="rowData.additionally"
-                  :disabled="user.additionally === 'READ'"
+                  :disabled="user.additionally1 === 'READ'"
                 >
                   <option value="Оплачено онлайн">Оплачено онлайн</option>
                   <option value="Отказ клиент">Отказ клиент</option>
@@ -460,11 +460,11 @@ const token = Cookies.get("token");
             <div class="text-black">
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.cell === 'READ' || user.cell === 'WRITE'"
+                v-if="user.cell1 === 'READ' || user.cell1 === 'WRITE'"
               >
-                <label for="name">Ячейка</label>
+                <label for="cell1">Ячейка</label>
                 <input
-                  :disabled="user.cell === 'READ'"
+                  :disabled="user.cell1 === 'READ'"
                   class="bg-transparent rounded-md border-2 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.cell"
                   type="text"
@@ -473,11 +473,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.fromName === 'READ' || user.fromName === 'WRITE'"
+                v-if="user.name1 === 'READ' || user.name1 === 'WRITE'"
               >
-                <label for="name">Имя</label>
+                <label for="name1">Имя</label>
                 <input
-                  :disabled="user.name === 'READ'"
+                  :disabled="user.name1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.name"
                   type="text"
@@ -486,11 +486,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.fromName === 'READ' || user.fromName === 'WRITE'"
+                v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'"
               >
-                <label for="name">Телефон</label>
+                <label for="fromName1">Телефон</label>
                 <input
-                  :disabled="user.fromName === 'READ'"
+                  :disabled="user.fromName1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.fromName"
                   type="text"
@@ -499,11 +499,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.productLink === 'READ' || user.productLink === 'WRITE'"
+                v-if="user.productLink1 === 'READ' || user.productLink1 === 'WRITE'"
               >
-                <label for="name">Товар (ссылка)</label>
+                <label for="productLink1">Товар (ссылка)</label>
                 <input
-                  :disabled="user.productLink === 'READ'"
+                  :disabled="user.productLink1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.productLink"
                   type="text"
@@ -512,11 +512,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.productName === 'READ' || user.productName === 'WRITE'"
+                v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'"
               >
-                <label for="name">Название товара</label>
+                <label for="productName1">Название товара</label>
                 <input
-                  :disabled="user.productName === 'READ'"
+                  :disabled="user.productName1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.productName"
                   type="text"
@@ -527,7 +527,7 @@ const token = Cookies.get("token");
                 class="grid grid-cols-2 mb-5"
                 v-if="user.priceProgram === 'READ' || user.priceProgram === 'WRITE'"
               >
-                <label for="name">Стоимость выкупа товара</label>
+                <label for="priceProgram">Стоимость выкупа товара</label>
                 <input
                   :disabled="user.priceProgram === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
@@ -538,11 +538,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.prepayment === 'READ' || user.prepayment === 'WRITE'"
+                v-if="user.prepayment1 === 'READ' || user.prepayment1 === 'WRITE'"
               >
-                <label for="name">Предоплата</label>
+                <label for="prepayment1">Предоплата</label>
                 <input
-                  :disabled="user.prepayment === 'READ'"
+                  :disabled="user.prepayment1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.prepayment"
                   type="number"
@@ -551,11 +551,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.percentClient === 'READ' || user.percentClient === 'WRITE'"
+                v-if="user.percentClient1 === 'READ' || user.percentClient1 === 'WRITE'"
               >
-                <label for="name">Процент с клиента</label>
+                <label for="percentClient1">Процент с клиента</label>
                 <input
-                  :disabled="user.percentClient === 'READ'"
+                  :disabled="user.percentClient1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.percentClient"
                   placeholder="По умолчанию: 10"
@@ -565,11 +565,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.productLink === 'READ' || user.productLink === 'WRITE'"
+                v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'"
               >
-                <label for="name">Доставка КГТ</label>
+                <label for="deliveredKGT1">Доставка КГТ</label>
                 <input
-                  :disabled="user.deliveredKGT === 'READ'"
+                  :disabled="user.deliveredKGT1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.deliveredKGT"
                   placeholder="По умолчанию: 0"
@@ -579,13 +579,13 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.dispatchPVZ === 'READ' || user.dispatchPVZ === 'WRITE'"
+                v-if="user.dispatchPVZ1 === 'READ' || user.dispatchPVZ1 === 'WRITE'"
               >
-                <label for="name">Отправка в ПВЗ</label>
+                <label for="dispatchPVZ1">Отправка в ПВЗ</label>
                 <select
                   class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
                   v-model="rowData.dispatchPVZ"
-                  :disabled="user.dispatchPVZ === 'READ'"
+                  :disabled="user.dispatchPVZ1 === 'READ'"
                 >
                   <option v-for="pvzData in pvz" :value="pvzData.name">
                     {{ pvzData.name }}
@@ -595,13 +595,13 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.orderPVZ === 'READ' || user.orderPVZ === 'WRITE'"
+                v-if="user.orderPVZ1 === 'READ' || user.orderPVZ1 === 'WRITE'"
               >
-                <label for="name">Заказано на СЦ</label>
+                <label for="orderPVZ1">Заказано на СЦ</label>
                 <select
                   class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
                   v-model="rowData.orderPVZ"
-                  :disabled="user.orderPVZ === 'READ'"
+                  :disabled="user.orderPVZ1 === 'READ'"
                 >
                   <option
                     v-for="sortingCenter in sortingCenters"
@@ -614,11 +614,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.deliveredSC === 'READ' || user.deliveredSC === 'WRITE'"
+                v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'"
               >
-                <label for="name">Доставлено на СЦ</label>
+                <label for="deliveredSC1">Доставлено на СЦ</label>
                 <input
-                  :disabled="user.deliveredSC === 'READ'"
+                  :disabled="user.deliveredSC1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.deliveredSC"
                   type="datetime-local"
@@ -627,11 +627,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.deliveredPVZ === 'READ' || user.deliveredPVZ === 'WRITE'"
+                v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'"
               >
-                <label for="name">Доставлено на ПВЗ</label>
+                <label for="deliveredPVZ1">Доставлено на ПВЗ</label>
                 <input
-                  :disabled="user.deliveredPVZ === 'READ'"
+                  :disabled="user.deliveredPVZ1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.deliveredPVZ"
                   type="datetime-local"
@@ -640,11 +640,11 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.issued === 'READ' || user.issued === 'WRITE'"
+                v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'"
               >
-                <label for="name">Выдан клиенту</label>
+                <label for="issued1">Выдан клиенту</label>
                 <input
-                  :disabled="user.issued === 'READ'"
+                  :disabled="user.issued1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.issued"
                   type="datetime-local"
@@ -653,13 +653,13 @@ const token = Cookies.get("token");
 
               <div
                 class="grid grid-cols-2 mb-5"
-                v-if="user.additionally === 'READ' || user.additionally === 'WRITE'"
+                v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'"
               >
-                <label for="name">Дополнительно</label>
+                <label for="additionally1">Дополнительно</label>
                 <select
                   class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
                   v-model="rowData.additionally"
-                  :disabled="user.additionally === 'READ'"
+                  :disabled="user.additionally1 === 'READ'"
                 >
                   <option value="Оплачено онлайн">Оплачено онлайн</option>
                   <option value="Отказ клиент">Отказ клиент</option>

@@ -37,43 +37,79 @@ defineProps({
             {{ storeUsers.getNormalizedDate(userData.created_at) }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.cell }}
+            {{ userData.cell1 }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.additionally }}
+            {{ userData.cell2 }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.deliveredSC }}
+            {{ userData.additionally1 }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.deliveredPVZ }}
+            {{ userData.additionally2 }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.deliveredKGT }}
+            {{ userData.deliveredSC1 }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.dispatchPVZ }}
+            {{ userData.deliveredSC2 }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.name }}
+            {{ userData.deliveredPVZ1 }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.fromName }}
+            {{ userData.deliveredPVZ2 }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.issued }}
+            {{ userData.deliveredKGT1 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.deliveredKGT2 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.dispatchPVZ1 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.dispatchPVZ2 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.name1 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.name2 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.fromName1 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.fromName2 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.issued1 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.issued2 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.orderAccount }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.orderPVZ }}
+            {{ userData.orderPVZ1 }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.percentClient }}
+            {{ userData.orderPVZ2 }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.notation }}
+            {{ userData.percentClient1 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.percentClient2 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.notation1 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.notation2 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.priceProgram }}
@@ -82,13 +118,22 @@ defineProps({
             {{ userData.priceSite }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.prepayment }}
+            {{ userData.prepayment1 }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.productLink }}
+            {{ userData.prepayment2 }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.productName }}
+            {{ userData.productLink1 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.productLink2 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.productName1 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.productName2 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.dataOurRansom }}

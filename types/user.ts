@@ -1,34 +1,48 @@
-
 interface User {
     id: number;
-    username: string;
-    password: string;
-    role: string | Role;
-    created_at: Date | number;
-    cell: string;
-    additionally: string;
-    deliveredSC: string;
-    deliveredPVZ: string;
-    deliveredKGT: string;
-    dispatchPVZ: string;
-    name: string;
-    fromName: string;
-    issued: string;
-    orderAccount: string;
-    orderPVZ: string;
-    percentClient: string;
-    notation: string;
-    prepayment: string;
-    priceProgram: string;
-    priceSite: string;
-    productLink: string;
-    productName: string;
-    dataOurRansom: string;
-    dataClientRansom: string;
-    amountFromClient1: string;
-    amountFromClient2: string;
-    clientLink1: string;
-    clientLink2: string;
-    profit1: string;
-    profit2: string;
+    username: string,
+    password: string,
+    role: string | Role,
+    created_at: Date | number,
+    cell1: string,
+    cell2: string,
+    additionally1: string,
+    additionally2: string,
+    deliveredSC1: string,
+    deliveredSC2: string,
+    deliveredPVZ1: string,
+    deliveredPVZ2: string,
+    deliveredKGT1: string,
+    deliveredKGT2: string,
+    dispatchPVZ1: string,
+    dispatchPVZ2: string,
+    name1: string,
+    name2: string,
+    fromName1: string,
+    fromName2: string,
+    issued1: string,
+    issued2: string,
+    orderAccount: string,
+    orderPVZ1: string,
+    orderPVZ2: string,
+    percentClient1: string,
+    percentClient2: string,
+    notation1: string,
+    notation2: string,
+    priceProgram: string,
+    priceSite: string,
+    prepayment1: string,
+    prepayment2: string,
+    productLink1: string,
+    productLink2: string,
+    productName1: string,
+    productName2: string,
+    dataOurRansom: string,
+    dataClientRansom: string,
+    amountFromClient1: string,
+    amountFromClient2: string,
+    clientLink1: string,
+    clientLink2: string,
+    profit1: string,
+    profit2: string,
 }

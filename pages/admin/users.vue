@@ -9,32 +9,47 @@ const fields = [
   "имя пользователя",
   "роль",
   "дата создания",
-  "ячейка",
-  "дополнительно",
-  "доставлено на СЦ",
-  "доставлено на ПВЗ",
-  "доставлено КГТ",
-  "отправка в ПВЗ",
-  "имя",
-  "телефон",
-  "выдан клиенту",
+  "ячейка (наш выкуп)",
+  "ячейка (выкуп клиента)",
+  "дополнительно (наш выкуп)",
+  "дополнительно (выкуп клиента)",
+  "доставлено на СЦ (наш выкуп)",
+  "доставлено на СЦ (выкуп клиента)",
+  "доставлено на ПВЗ (наш выкуп)",
+  "доставлено на ПВЗ (выкуп клиента)",
+  "доставлено КГТ (наш выкуп)",
+  "доставлено КГТ (выкуп клиента)",
+  "отправка в ПВЗ (наш выкуп)",
+  "отправка в ПВЗ (выкуп клиента)",
+  "имя (наш выкуп)",
+  "имя (выкуп клиента)",
+  "телефон (наш выкуп)",
+  "телефон (выкуп клиента)",
+  "выдан клиенту (наш выкуп)",
+  "выдан клиенту (выкуп клиента)",
   "аккаунт заказа",
-  "заказано на сортировочный центр",
-  "процент с клиента",
-  "примечание",
+  "заказано на сортировочный центр (наш выкуп)",
+  "заказано на сортировочный центр (выкуп клиента)",
+  "процент с клиента (наш выкуп)",
+  "процент с клиента (выкуп клиента)",
+  "примечание (наш выкуп)",
+  "примечание (выкуп клиента)",
   "стоимость выкупа товара",
   "стоимость сайт",
-  "предоплата",
-  "товар (ссылка)",
-  "название товара",
+  "предоплата (наш выкуп)",
+  "предоплата (выкуп клиента)",
+  "товар (ссылка) (наш выкуп)",
+  "товар (ссылка) (выкуп клиента)",
+  "название товара (наш выкуп)",
+  "название товара (выкуп клиента)",
   "данные (Наш выкуп)",
   "данные (Выкуп клиента)",
-  "сумма с клиента",
-  "сумма с клиента",
-  "ссылка для клиента",
-  "ссылка для клиента",
-  "прибыль (доход)",
-  "прибыль (доход)",
+  "сумма с клиента (Наш выкуп)",
+  "сумма с клиента (Выкуп клиента)",
+  "ссылка для клиента (Наш выкуп)",
+  "ссылка для клиента (Выкуп клиента)",
+  "прибыль (доход) (Наш выкуп)",
+  "прибыль (доход) (Выкуп клиента)",
   "изменение",
   "удаление",
 ];
@@ -116,13 +131,15 @@ definePageMeta({
 
         <UIModal v-show="isOpen" @close-modal="closeModal">
           <template v-slot:header>
-            <div class="custom-header">Изменение пользователя - <b> {{ userData.username }}</b> </div>
+            <div class="custom-header">
+              Изменение пользователя - <b> {{ userData.username }}</b>
+            </div>
           </template>
           <div class="text-black max-sm:text-sm">
             <div class="grid grid-cols-2 mb-5">
               <label for="name">Имя пользователя</label>
               <input
-              class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"
+                class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"
                 v-model="userData.username"
                 type="text"
               />
@@ -140,10 +157,13 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Ячейка</label>
+              <label for="cell"
+                >Ячейка <br />
+                (Наш выкуп)</label
+              >
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
-                v-model="userData.cell"
+                v-model="userData.cell1"
               >
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -152,10 +172,13 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Дополнительно</label>
+              <label for="cell"
+                >Ячейка <br />
+                (Выкуп клиента)</label
+              >
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
-                v-model="userData.additionally"
+                v-model="userData.cell2"
               >
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -164,10 +187,10 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Доставлено на СЦ</label>
+              <label for="cell">Дополнительно <br> (Наш выкуп)</label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
-                v-model="userData.deliveredSC"
+                v-model="userData.additionally1"
               >
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -176,10 +199,10 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Доставлено на ПВЗ</label>
+              <label for="cell">Дополнительно <br> (Выкуп клиента)</label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
-                v-model="userData.deliveredPVZ"
+                v-model="userData.additionally2"
               >
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -188,10 +211,10 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Доставлено КГТ</label>
+              <label for="cell">Доставлено на СЦ <br> (Наш выкуп)</label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
-                v-model="userData.deliveredKGT"
+                v-model="userData.deliveredSC1"
               >
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -200,10 +223,10 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Отправка в ПВЗ</label>
+              <label for="cell">Доставлено на СЦ <br> (Выкуп клиента)</label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
-                v-model="userData.dispatchPVZ"
+                v-model="userData.deliveredSC2"
               >
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -212,23 +235,10 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Имя</label>
+              <label for="cell">Доставлено на ПВЗ <br> (Наш выкуп)</label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
-                v-model="userData.name"
-              >
-                <option value="NONE">NONE</option>
-                <option value="READ">READ</option>
-                <option value="WRITE">WRITE</option>
-              </select>
-            </div>
-
-
-            <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Телефон</label>
-              <select
-                class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
-                v-model="userData.fromName"
+                v-model="userData.deliveredPVZ1"
               >
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -237,10 +247,10 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Выдан клиенту</label>
+              <label for="cell">Доставлено на ПВЗ <br> (Выкуп клиента)</label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
-                v-model="userData.issued"
+                v-model="userData.deliveredPVZ2"
               >
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -249,10 +259,118 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Выдан клиенту</label>
+              <label for="cell">Доставлено КГТ <br> (Наш выкуп)</label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
-                v-model="userData.issued"
+                v-model="userData.deliveredKGT1"
+              >
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Доставлено КГТ <br> (Выкуп клиента)</label>
+              <select
+                class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
+                v-model="userData.deliveredKGT2"
+              >
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Отправка в ПВЗ <br> (Наш выкуп)</label>
+              <select
+                class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
+                v-model="userData.dispatchPVZ1"
+              >
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Отправка в ПВЗ <br> (Выкуп клиента)</label>
+              <select
+                class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
+                v-model="userData.dispatchPVZ2"
+              >
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Имя <br> (Наш выкуп)</label>
+              <select
+                class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
+                v-model="userData.name1"
+              >
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Имя <br> (Выкуп клиента)</label>
+              <select
+                class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
+                v-model="userData.name2"
+              >
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Телефон <br> (Наш выкуп)</label>
+              <select
+                class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
+                v-model="userData.fromName1"
+              >
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Телефон <br> (Выкуп клиента)</label>
+              <select
+                class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
+                v-model="userData.fromName2"
+              >
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Выдан клиенту <br> (Наш выкуп)</label>
+              <select
+                class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
+                v-model="userData.issued1"
+              >
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Выдан клиенту <br> (Выкуп клиента)</label>
+              <select
+                class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
+                v-model="userData.issued2"
               >
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -273,10 +391,10 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Заказано на СЦ</label>
+              <label for="cell">Заказано на СЦ <br> (Наш выкуп)</label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
-                v-model="userData.orderPVZ"
+                v-model="userData.orderPVZ1"
               >
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -285,10 +403,10 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Процент с клиента</label>
+              <label for="cell">Заказано на СЦ <br> (Выкуп клиента)</label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
-                v-model="userData.percentClient"
+                v-model="userData.orderPVZ2"
               >
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -297,10 +415,46 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Примечание</label>
+              <label for="cell">Процент с клиента <br> (Наш выкуп)</label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
-                v-model="userData.notation"
+                v-model="userData.percentClient1"
+              >
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Процент с клиента <br> (Выкуп клиента)</label>
+              <select
+                class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
+                v-model="userData.percentClient2"
+              >
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Примечание <br> (Наш выкуп)</label>
+              <select
+                class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
+                v-model="userData.notation1"
+              >
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Примечание <br> (Выкуп клиента)</label>
+              <select
+                class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
+                v-model="userData.notation2"
               >
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -333,10 +487,10 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Предоплата</label>
+              <label for="cell">Предоплата <br> (Наш выкуп)</label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
-                v-model="userData.prepayment"
+                v-model="userData.prepayment1"
               >
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -345,10 +499,10 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Товар (ссылка)</label>
+              <label for="cell">Предоплата <br> (Выкуп клиента)</label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
-                v-model="userData.productLink"
+                v-model="userData.prepayment2"
               >
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -357,10 +511,10 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Название товара</label>
+              <label for="cell">Товар (ссылка) <br> (Наш выкуп)</label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
-                v-model="userData.productName"
+                v-model="userData.productLink1"
               >
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -369,7 +523,46 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Данные <br> (Наш Выкуп)</label>
+              <label for="cell">Товар (ссылка) <br> (Выкуп клиента)</label>
+              <select
+                class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
+                v-model="userData.productLink2"
+              >
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Название товара <br> (Наш выкуп)</label>
+              <select
+                class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
+                v-model="userData.productName1"
+              >
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Название товара <br> (Выкуп клиента)</label>
+              <select
+                class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
+                v-model="userData.productName2"
+              >
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell"
+                >Данные <br />
+                (Наш Выкуп)</label
+              >
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
                 v-model="userData.dataOurRansom"
@@ -381,7 +574,10 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Данные <br> (Выкуп Клиента)</label>
+              <label for="cell"
+                >Данные <br />
+                (Выкуп Клиента)</label
+              >
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
                 v-model="userData.dataClientRansom"
@@ -393,7 +589,7 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Сумма с клиента</label>
+              <label for="cell">Сумма с клиента <br> (Наш выкуп)</label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
                 v-model="userData.amountFromClient1"
@@ -405,7 +601,7 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Сумма с клиента</label>
+              <label for="cell">Сумма с клиента <br> (Выкуп клиента)</label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
                 v-model="userData.amountFromClient2"
@@ -417,7 +613,7 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Ссылка для клиента</label>
+              <label for="cell">Ссылка для клиента <br> (Наш выкуп)</label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
                 v-model="userData.clientLink1"
@@ -429,7 +625,7 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Ссылка для клиента</label>
+              <label for="cell">Ссылка для клиента <br> (Выкуп клиента)<br></label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
                 v-model="userData.clientLink2"
@@ -441,7 +637,7 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Прибыль (доход)</label>
+              <label for="cell">Прибыль (доход) <br> (Наш выкуп)</label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
                 v-model="userData.profit1"
@@ -453,7 +649,7 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Прибыль (доход)</label>
+              <label for="cell">Прибыль (доход) <br> (Выкуп клиента)</label>
               <select
                 class="py-1 px-2 border-2 bg-transparent rounded-lg text-base"
                 v-model="userData.profit2"
