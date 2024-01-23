@@ -39,7 +39,7 @@ function deleteSelectedRows() {
   emit("deleteSelectedRows", checkedRows.value);
 }
 
-defineProps({
+const props = defineProps({
   user: { type: Object as PropType<User>, required: true },
   rows: { type: Array as PropType<IOurRansom[]> },
 });
@@ -63,24 +63,57 @@ const handleCheckboxChange = (rowId: number): void => {
     checkedRows.value.push(rowId);
   }
 };
+
+const showDeletedRows = ref(false);
+
+const filteredRows = computed(() => {
+  if (showDeletedRows.value) {
+    return props.rows;
+  } else {
+    return props.rows?.filter((row) => !row.deleted);
+  }
+});
+
+const toggleShowDeletedRows = () => {
+  showDeletedRows.value = !showDeletedRows.value;
+};
 </script>
 <template>
   <div class="flex items-center justify-between mt-10">
     <div>
-      <a href="#down">
-        <Icon
-          name="material-symbols:arrow-circle-down"
-          class="text-secondary-color hover:opacity-50 duration-200"
-          size="40"
-        />
-      </a>
-      <a href="#right">
-        <Icon
-          name="material-symbols:arrow-circle-right-rounded"
-          class="text-secondary-color hover:opacity-50 duration-200"
-          size="40"
-        />
-      </a>
+      <div class="flex items-center gap-5">
+        <UIMainButton @click="toggleShowDeletedRows">Показать удаленное</UIMainButton>
+        <div>
+          <a href="#up">
+            <Icon
+              name="material-symbols:arrow-circle-up-rounded"
+              class="text-secondary-color hover:opacity-50 duration-200"
+              size="40"
+            />
+          </a>
+          <a href="#down">
+            <Icon
+              name="material-symbols:arrow-circle-down"
+              class="text-secondary-color hover:opacity-50 duration-200"
+              size="40"
+            />
+          </a>
+          <a href="#left">
+            <Icon
+              name="material-symbols:arrow-circle-left-rounded"
+              class="text-secondary-color hover:opacity-50 duration-200"
+              size="40"
+            />
+          </a>
+          <a href="#right">
+            <Icon
+              name="material-symbols:arrow-circle-right-rounded"
+              class="text-secondary-color hover:opacity-50 duration-200"
+              size="40"
+            />
+          </a>
+        </div>
+      </div>
     </div>
     <Icon
       v-if="user.role === 'ADMIN'"
@@ -99,7 +132,9 @@ const handleCheckboxChange = (rowId: number): void => {
       @click="createCopyRow"
       >Скопировать запись</UIActionButton
     >
-    <UIActionButton v-if="user.role === 'ADMIN' && user.dataOurRansom === 'WRITE'" @click="deleteSelectedRows"
+    <UIActionButton
+      v-if="user.role === 'ADMIN' && user.dataOurRansom === 'WRITE'"
+      @click="deleteSelectedRows"
       >Удалить выделенные записи</UIActionButton
     >
     <UIActionButton v-if="user.deliveredSC === 'WRITE'" @click="updateDeliveryRows('SC')"
@@ -115,6 +150,7 @@ const handleCheckboxChange = (rowId: number): void => {
     >
   </div>
   <div class="relative max-h-[760px] overflow-x-auto mt-5 mb-10">
+    <div id="up"></div>
     <table
       id="theTable"
       class="w-full border-x-2 border-gray-50 text-sm text-left rtl:text-right text-gray-500"
@@ -269,6 +305,7 @@ const handleCheckboxChange = (rowId: number): void => {
           </th>
           <th scope="col" class="px-6 py-3">создан (время)</th>
           <th scope="col" class="px-6 py-3">изменен (время)</th>
+          <th scope="col" class="px-6 py-3">удален (время)</th>
           <th scope="col" class="px-6 py-3">создан</th>
           <th scope="col" class="px-6 py-3">изменен</th>
           <th
@@ -288,10 +325,11 @@ const handleCheckboxChange = (rowId: number): void => {
         </tr>
       </thead>
       <tbody>
+        <div id="left"></div>
         <tr
           :class="{ 'bg-orange-100': isChecked(row.id) }"
           class="border-b text-center text-sm"
-          v-for="row in rows"
+          v-for="row in filteredRows"
         >
           <td
             v-if="user.dataOurRansom === 'WRITE'"
@@ -480,6 +518,9 @@ const handleCheckboxChange = (rowId: number): void => {
           </td>
           <td class="px-6 py-4 border-2">
             {{ storeUsers.getNormalizedDate(row.updated_at) }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ storeUsers.getNormalizedDate(row.deleted) }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ row.createdUser }}

@@ -61,8 +61,8 @@ const filterRows = () => {
       (!selectedDispatchPVZ.value || row.dispatchPVZ === selectedDispatchPVZ.value) &&
       (!selectedOrderPVZ.value || row.orderPVZ === selectedOrderPVZ.value) &&
       (!selectedAdditionally.value || row.additionally === selectedAdditionally.value) &&
-      (!startingDate.value || new Date(row.created_at) >= new Date(startingDate.value)) &&
-      (!endDate.value || new Date(row.created_at) <= new Date(endDate.value))
+      (!startingDate.value || new Date(row.issued) >= new Date(startingDate.value)) &&
+      (!endDate.value || new Date(row.issued) <= new Date(endDate.value))
     );
   });
   emit("filtered-rows", filteredRows.value);
@@ -198,7 +198,7 @@ watch(
       </div>
       <div class="mt-10 grid grid-cols-1">
         <div class="grid grid-cols-2 m-3">
-          <h1>Начальная дата</h1>
+          <h1>Начальная дата (Выдача клиенту)</h1>
           <input
             class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
             type="date"
@@ -206,7 +206,7 @@ watch(
           />
         </div>
         <div class="grid grid-cols-2 m-3">
-          <h1>Конечная дата</h1>
+          <h1>Конечная дата (Выдача клиенту)</h1>
           <input
             class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
             type="date"

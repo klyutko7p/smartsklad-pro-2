@@ -157,7 +157,7 @@ const token = Cookies.get("token");
           <div>
             <SpreadsheetsOurRansomFilters v-if="rows" @filtered-rows="handleFilteredRows" :rows="rows" />
             <div class="mt-5 flex items-center gap-3" v-if="user.dataOurRansom === 'WRITE'">
-              <UIMainButton @click="deleteIssuedRows">Удалить выданное</UIMainButton>
+              <UIMainButton @click="deleteIssuedRows" v-if="user.role === 'ADMIN'">Удалить выданное</UIMainButton>
               <UIMainButton @click="openModal">Создать новую запись</UIMainButton>
             </div>
           </div>

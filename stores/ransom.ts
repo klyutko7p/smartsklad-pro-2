@@ -74,6 +74,7 @@ export const useRansomStore = defineStore("ransom", () => {
                 if (row.priceProgram === undefined) row.priceProgram = 0;
                 if (row.deliveredKGT === undefined) row.deliveredKGT = 0;
                 if (row.productName === undefined) row.productName = '';
+                if (row.prepayment === undefined) row.prepayment = 0;
 
                 row.createdUser = username;
                 row.updatedUser = username;
@@ -171,6 +172,7 @@ export const useRansomStore = defineStore("ransom", () => {
                 if (row.priceProgram === undefined || row.priceProgram === 0) row.priceProgram = 0;
                 if (row.deliveredKGT === undefined || row.deliveredKGT === 0) row.deliveredKGT = 0;
                 if (row.productName === undefined || row.productName === '') row.productName = '';
+                if (row.prepayment === undefined) row.prepayment = 0;
 
                 row.updatedUser = username;
                 row.updated_at = new Date().toISOString();

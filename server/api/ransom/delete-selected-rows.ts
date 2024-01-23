@@ -13,20 +13,26 @@ export default defineEventHandler(async (event) => {
         const { idArray, flag } = await readBody<IRequestBody>(event);
 
         if (flag === 'OurRansom') {
-            const deleteRows = await prisma.ourRansom.deleteMany({
+            const deleteRows = await prisma.ourRansom.updateMany({
                 where: {
                     id: {
                         in: idArray,
                     },
                 },
+                data: {
+                    deleted: new Date(),
+                }
             })
         } else if (flag === 'ClientRansom') {
-            const deleteRows = await prisma.clientRansom.deleteMany({
+            const deleteRows = await prisma.clientRansom.updateMany({
                 where: {
                     id: {
                         in: idArray,
                     },
                 },
+                data: {
+                    deleted: new Date(),
+                }
             })
         }
 
