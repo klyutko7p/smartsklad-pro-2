@@ -36,27 +36,6 @@ function updateDeliveryRow(row: IOurRansom | IClientRansom, flag: string) {
       </h1>
     </div>
     <div class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
-      <h1>Доставлено на ПВЗ:</h1>
-      <Icon
-        @click="updateDeliveryRow(row, 'PVZ')"
-        v-if="
-          !row.deliveredPVZ &&
-          user.dataOurRansom === 'WRITE' &&
-          user.deliveredPVZ === 'WRITE'
-        "
-        class="text-green-500 mx-auto cursor-pointer hover:text-green-300 duration-200"
-        name="mdi:checkbox-multiple-marked-circle"
-        size="32"
-      />
-      <h1 class="font-bold text-green-500">
-        {{ row.deliveredPVZ ? storeUsers.getNormalizedDate(row.deliveredPVZ) : "" }}
-      </h1>
-    </div>
-    <div class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
-      <h1>Ячейка:</h1>
-      <h1>{{ row.cell }}</h1>
-    </div>
-    <div class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
       <h1>Доставлено на СЦ:</h1>
       <Icon
         @click="updateDeliveryRow(row, 'SC')"
@@ -71,6 +50,28 @@ function updateDeliveryRow(row: IOurRansom | IClientRansom, flag: string) {
       />
       <h1 class="font-bold text-green-500">
         {{ row.deliveredSC ? storeUsers.getNormalizedDate(row.deliveredSC) : "" }}
+      </h1>
+    </div>
+   
+    <div class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
+      <h1>Ячейка:</h1>
+      <h1>{{ row.cell }}</h1>
+    </div>
+    <div class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
+      <h1>Доставлено на ПВЗ:</h1>
+      <Icon
+        @click="updateDeliveryRow(row, 'PVZ')"
+        v-if="
+          !row.deliveredPVZ &&
+          user.dataOurRansom === 'WRITE' &&
+          user.deliveredPVZ === 'WRITE'
+        "
+        class="text-green-500 mx-auto cursor-pointer hover:text-green-300 duration-200"
+        name="mdi:checkbox-multiple-marked-circle"
+        size="32"
+      />
+      <h1 class="font-bold text-green-500">
+        {{ row.deliveredPVZ ? storeUsers.getNormalizedDate(row.deliveredPVZ) : "" }}
       </h1>
     </div>
     <div class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
