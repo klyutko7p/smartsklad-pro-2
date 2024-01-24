@@ -7,7 +7,7 @@ import { read, utils, writeFile } from "xlsx";
 const storeUsers = useUsersStore();
 
 defineProps({
-  rows: { type: Array as PropType<IOurRansom[] | IClientRansom[]> },
+  rows: { type: Array as PropType<IOurRansom[] | IClientRansom[] | IDelivery[]>, required: true},
 });
 
 function exportToExcel() {
@@ -28,7 +28,7 @@ function exportToExcel() {
       @click="exportToExcel"
     />
   </div>
-  <div class="relative max-h-[760px] overflow-x-auto mt-5">
+  <div class="relative max-h-[760px] overflow-x-auto mt-5" v-if="rows">
     <table
       id="theTable"
       class="w-full border-x-2 border-gray-50 text-sm text-left rtl:text-right text-gray-500"
@@ -40,6 +40,7 @@ function exportToExcel() {
           <th
             scope="col"
             class="px-6 py-3"
+            v-if="rows[0].cell || rows[0].cell === null"
           >
             ячейка
           </th>
@@ -52,12 +53,21 @@ function exportToExcel() {
           <th
             scope="col"
             class="px-6 py-3"
+            v-if="rows[0].nameOfAction || rows[0].nameOfAction === null"
+          >
+            название
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-3"
+            v-if="rows[0].productLink || rows[0].productLink === null"
           >
             товар (ссылка)
           </th>
           <th
             scope="col"
             class="px-6 py-3"
+            v-if="rows[0].productName || rows[0].productName === null"
           >
             название товара
           </th>
@@ -70,24 +80,42 @@ function exportToExcel() {
           <th
           scope="col"
           class="px-6 py-3"
+          v-if="rows[0].prepayment || rows[0].prepayment === null"
         >
           предоплата
         </th>
           <th
             scope="col"
             class="px-6 py-3"
+            v-if="rows[0].deliveredSC || rows[0].deliveredSC === null"
           >
             доставлено на сц
           </th>
           <th
             scope="col"
             class="px-6 py-3"
+            v-if="rows[0].sorted || rows[0].sorted === null"
+          >
+            отсортировано
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-3"
+            v-if="rows[0].paid || rows[0].paid === null"
+          >
+            оплачено
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-3"
+            v-if="rows[0].deliveredPVZ || rows[0].deliveredPVZ === null"
           >
             доставлено на пвз
           </th>
           <th
             scope="col"
             class="px-6 py-3"
+            v-if="rows[0].issued || rows[0].issued === null"
           >
             выдан клиенту
           </th>
@@ -102,7 +130,7 @@ function exportToExcel() {
       </thead>
       <tbody>
         <tr class="bg-white border-b text-center text-sm" v-for="row in rows">
-          <td class="px-6 py-4 border-2">
+          <td class="px-6 py-4 border-2" v-if="row.cell || row.cell === null">
             {{ row.cell }}
           </td>
           <td
@@ -111,6 +139,13 @@ function exportToExcel() {
             {{ row.fromName }}
           </td>
           <td
+            class="px-6 py-4 border-2"
+            v-if="row.nameOfAction || row.nameOfAction === null"
+          >
+            {{ row.nameOfAction }}
+          </td>
+          <td
+          v-if="row.productLink || row.productLink === null"
             class="underline border-2 text-secondary-color whitespace-nowrap overflow-hidden max-w-[200px]"
           >
             <a
@@ -120,28 +155,43 @@ function exportToExcel() {
               >{{ row.productLink }}</a
             >
           </td>
-          <td
+          <td v-if="row.productName || row.productName === null"
             class="py-4 px-6 border-2 whitespace-nowrap"
           >
             {{ row.productName }}
           </td>
-          <td v-if="row.amountFromClient1"
+          <td v-if="row.amountFromClient1 || row.amountFromClient1 === null"
             class="px-6 py-4 border-2"
           >
             {{ Math.round(row.amountFromClient1 / 10) * 10 }}
           </td>
-          <td v-if="row.amountFromClient2"
+          <td v-if="row.amountFromClient2 || row.amountFromClient2 === null"
             class="px-6 py-4 border-2"
           >
             {{ Math.round(row.amountFromClient2 / 10) * 10 }}
           </td>
+          <td v-if="row.amountFromClient3 || row.amountFromClient3 === null"
+            class="px-6 py-4 border-2"
+          >
+            {{ row.amountFromClient3 }}
+          </td>
           <td
+          v-if="row.prepayment || row.prepayment === 0"
             class="px-6 py-4 border-2"
           >
             {{ row.prepayment }}
           </td>
           <td
             class="px-3 py-4 border-2"
+            v-if="row.sorted || row.sorted === null"
+          >
+            <h1 class="font-bold text-green-500">
+              {{ row.sorted ? storeUsers.getNormalizedDate(row.sorted) : "" }}
+            </h1>
+          </td>
+          <td
+            class="px-3 py-4 border-2"
+            v-if="row.deliveredSC || row.deliveredSC === null"
           >
             <h1 class="font-bold text-green-500">
               {{ row.deliveredSC ? storeUsers.getNormalizedDate(row.deliveredSC) : "" }}
@@ -149,12 +199,21 @@ function exportToExcel() {
           </td>
           <td
             class="px-3 py-4 border-2"
+            v-if="row.paid || row.paid === null"
+          >
+            <h1 class="font-bold text-green-500">
+              {{ row.paid ? storeUsers.getNormalizedDate(row.paid) : "" }}
+            </h1>
+          </td>
+          <td
+            class="px-3 py-4 border-2"
+            v-if="row.deliveredPVZ || row.deliveredPVZ === null"
           >
             <h1 class="font-bold text-green-500">
               {{ row.deliveredPVZ ? storeUsers.getNormalizedDate(row.deliveredPVZ) : "" }}
             </h1>
           </td>
-          <td class="px-3 py-4 border-2" >
+          <td class="px-3 py-4 border-2" v-if="row.issued || row.issued === null" >
             <h1 class="font-bold text-green-500">
               {{ row.issued ? storeUsers.getNormalizedDate(row.issued) : "" }}
             </h1>

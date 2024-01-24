@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
         }
       });
       if (row) {
-        const rowDataCreate = await prisma.ourRansom.create({
+        const rowData = await prisma.ourRansom.create({
           data: {
             clientLink1: row.clientLink1,
             cell: row.cell,
@@ -74,6 +74,36 @@ export default defineEventHandler(async (event) => {
             issued: row.issued,
             additionally: row.additionally,
             profit2: +row.profit2,
+            deleted: row.deleted,
+            created_at: row.created_at,
+            updated_at: row.updated_at,
+            createdUser: row.createdUser,
+            updatedUser: row.updatedUser,
+          },
+        });
+      }
+    } else if (flag === 'Delivery') {
+      const row = await prisma.delivery.findFirst({
+        where: {
+          id: id,
+        }
+      });
+      if (row) {
+        const rowData = await prisma.delivery.create({
+          data: {
+            clientLink3: row.clientLink3,
+            name: row.name,
+            fromName: row.fromName,
+            nameOfAction: row.nameOfAction,
+            purchaseOfGoods: +row.purchaseOfGoods,
+            percentClient: +row.percentClient,
+            amountFromClient3: +row.amountFromClient3,
+            dispatchPVZ: row.dispatchPVZ,
+            sorted: row.sorted,
+            paid: row.paid,
+            orderPVZ: row.orderPVZ,
+            additionally: row.additionally,
+            profit3: +row.profit3,
             deleted: row.deleted,
             created_at: row.created_at,
             updated_at: row.updated_at,

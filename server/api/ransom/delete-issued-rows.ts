@@ -34,6 +34,17 @@ export default defineEventHandler(async (event) => {
                     deleted: new Date(),
                 }
             })
+        } else if (flag === 'Delivery') {
+            const deleteRows = await prisma.delivery.updateMany({
+                where: {
+                    paid: {
+                        not: null,
+                    }
+                },
+                data: {
+                    deleted: new Date(),
+                }
+            })
         }
 
 

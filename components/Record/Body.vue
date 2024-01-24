@@ -2,7 +2,7 @@
 const router = useRouter();
 const storeUsers = useUsersStore();
 defineProps({
-  row: { type: Object as PropType<IOurRansom | IClientRansom>, required: true },
+  row: { type: Object as PropType<IOurRansom | IClientRansom | IDelivery>, required: true },
   user: { type: Object as PropType<User>, required: true },
 });
 
@@ -34,7 +34,15 @@ function updateDeliveryRow(row: IOurRansom | IClientRansom, flag: string) {
       >
         {{ row.fromName }}
       </h1>
+      <h1
+        v-if="row.clientLink3"
+        class="cursor-pointer underline text-secondary-color duration-200 hover:opacity-50"
+        @click="router.push(`/spreadsheets/order/${row.clientLink3}`)"
+      >
+        {{ row.fromName }}
+      </h1>
     </div>
+    
     <div v-if="row.clientLink1" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
       <h1>Доставлено на СЦ:</h1>
       <Icon
@@ -70,11 +78,30 @@ function updateDeliveryRow(row: IOurRansom | IClientRansom, flag: string) {
         {{ row.deliveredSC ? storeUsers.getNormalizedDate(row.deliveredSC) : "" }}
       </h1>
     </div>
+
+    <div v-if="row.clientLink3" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
+      <h1>Отсортировано:</h1>
+      <Icon
+        @click="updateDeliveryRow(row, 'sorted')"
+        v-if="
+          !row.sorted &&
+          user.dataDelivery === 'WRITE' &&
+          user.sorted === 'WRITE'
+        "
+        class="text-green-500 mx-auto cursor-pointer hover:text-green-300 duration-200"
+        name="mdi:checkbox-multiple-marked-circle"
+        size="32"
+      />
+      <h1 class="font-bold text-green-500">
+        {{ row.sorted ? storeUsers.getNormalizedDate(row.sorted) : "" }}
+      </h1>
+    </div>
    
-    <div class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
+    <div v-if="row.cell" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
       <h1>Ячейка:</h1>
       <h1>{{ row.cell }}</h1>
     </div>
+
     <div v-if="row.clientLink1" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
       <h1>Доставлено на ПВЗ:</h1>
       <Icon
@@ -92,6 +119,7 @@ function updateDeliveryRow(row: IOurRansom | IClientRansom, flag: string) {
         {{ row.deliveredPVZ ? storeUsers.getNormalizedDate(row.deliveredPVZ) : "" }}
       </h1>
     </div>
+
     <div v-if="row.clientLink2" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
       <h1>Доставлено на ПВЗ:</h1>
       <Icon
@@ -109,10 +137,37 @@ function updateDeliveryRow(row: IOurRansom | IClientRansom, flag: string) {
         {{ row.deliveredPVZ ? storeUsers.getNormalizedDate(row.deliveredPVZ) : "" }}
       </h1>
     </div>
-    <div class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
+
+    <div v-if="row.nameOfAction" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
+      <h1>Название:</h1>
+      <h1>{{ row.nameOfAction }}</h1>
+    </div>
+
+    <div v-if="row.clientLink3" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
+      <h1>Оплачено:</h1>
+      <Icon
+        @click="updateDeliveryRow(row, 'paid')"
+        v-if="
+          !row.paid &&
+          user.dataDelivery === 'WRITE' &&
+          user.paid === 'WRITE'
+        "
+        class="text-green-500 mx-auto cursor-pointer hover:text-green-300 duration-200"
+        name="mdi:checkbox-multiple-marked-circle"
+        size="32"
+      />
+      <h1 class="font-bold text-green-500">
+        {{ row.paid ? storeUsers.getNormalizedDate(row.paid) : "" }}
+      </h1>
+    </div>
+    
+
+    <div v-if="row.productName" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
       <h1>Название товара:</h1>
       <h1>{{ row.productName }}</h1>
     </div>
+    
+
     <div v-if="row.clientLink1" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
       <h1>Выдан клиенту:</h1>
       <Icon

@@ -25,6 +25,12 @@ export default defineEventHandler(async (event) => {
             case 'issued':
                 updateField = 'issued';
                 break;
+            case 'sorted':
+                updateField = 'sorted';
+                break;
+            case 'paid':
+                updateField = 'paid';
+                break;
             default:
                 throw new Error(`Unsupported flag: ${flag}`);
         }
@@ -51,9 +57,20 @@ export default defineEventHandler(async (event) => {
                     [updateField]: new Date(),
                 },
             });
+        } else if (flagRansom === 'Delivery') {
+            const updateRow = await prisma.delivery.updateMany({
+                where: {
+                    id: {
+                        in: idArray,
+                    },
+                },
+                data: {
+                    [updateField]: new Date(),
+                },
+            });
         }
 
-        
+
 
     } catch (error) {
         if (error instanceof Error) {

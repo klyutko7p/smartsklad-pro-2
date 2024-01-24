@@ -30,6 +30,15 @@ export default defineEventHandler(async (event) => {
                     deleted: new Date(),
                 }
             })
+        } else if (flag === 'Delivery') {
+            const deleteRow = await prisma.delivery.update({
+                where: {
+                    id: id,
+                },
+                data: {
+                    deleted: new Date(),
+                }
+            })
         }
 
        

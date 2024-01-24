@@ -3,7 +3,7 @@ import type { PropType } from "vue";
 
 defineProps({
   value: { type: String },
-  row: { type: Object as PropType<IOurRansom | IClientRansom>, required: true },
+  row: { type: Object as PropType<IOurRansom | IClientRansom | IDelivery>, required: true },
 });
 
 function printPage() {
@@ -14,7 +14,7 @@ function printPage() {
 <template>
   <h1 class="mt-10 text-2xl">Распечатка Штрих кода</h1>
   <div class="flex items-center gap-10 print-content cursor-pointer" @click="printPage">
-    <h1 class="text-[160px]">{{ row.cell }}</h1>
+    <h1 class="text-[160px]" v-if="row.cell">{{ row.cell }}</h1>
     <div>
       <CodeQR :value="value" />
       <h1 class="text-lg text-center max-w-[100px] break-words">{{ row.orderPVZ }}</h1>

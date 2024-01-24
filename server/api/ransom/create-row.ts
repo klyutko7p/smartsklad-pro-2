@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 interface IRequestBody {
-  row: IOurRansom | IClientRansom;
+  row: IOurRansom | IClientRansom | IDelivery;
 }
 
 export default defineEventHandler(async (event) => {
@@ -69,6 +69,30 @@ export default defineEventHandler(async (event) => {
           updatedUser: row.updatedUser,
         },
       });
+    } else if ('purchaseOfGoods' in row) {
+      const rowData = await prisma.delivery.create({
+        data: {
+          id: row.id,
+          clientLink3: row.clientLink3,
+          name: row.name,
+          fromName: row.fromName,
+          nameOfAction: row.nameOfAction,
+          purchaseOfGoods: +row.purchaseOfGoods,
+          percentClient: +row.percentClient,
+          amountFromClient3: +row.amountFromClient3,
+          dispatchPVZ: row.dispatchPVZ,
+          sorted: row.sorted,
+          paid: row.paid,
+          orderPVZ: row.orderPVZ,
+          additionally: row.additionally,
+          profit3: +row.profit3,
+          deleted: row.deleted,
+          created_at: row.created_at,
+          updated_at: row.updated_at,
+          createdUser: row.createdUser,
+          updatedUser: row.updatedUser,
+        }
+      })
     }
   } catch (error) {
     if (error instanceof Error) {

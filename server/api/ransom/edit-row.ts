@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 interface IRequestBody {
-    row: IOurRansom | IClientRansom;
+    row: IOurRansom | IClientRansom | IDelivery;
     flag: string;
 }
 
@@ -71,6 +71,33 @@ export default defineEventHandler(async (event) => {
                     issued: row.issued ? new Date(row.issued).toISOString() : null,
                     additionally: row.additionally,
                     profit2: row.profit2,
+                    deleted: row.deleted,
+                    created_at: row.created_at,
+                    updated_at: row.updated_at,
+                    createdUser: row.createdUser,
+                    updatedUser: row.updatedUser,
+                },
+            })
+        } else if ('purchaseOfGoods' in row) {
+            const updateRow = await prisma.delivery.update({
+                where: {
+                    id: row.id,
+                },
+                data: {
+                    id: row.id,
+                    clientLink3: row.clientLink3,
+                    name: row.name,
+                    fromName: row.fromName,
+                    nameOfAction: row.nameOfAction,
+                    purchaseOfGoods: +row.purchaseOfGoods,
+                    percentClient: +row.percentClient,
+                    amountFromClient3: +row.amountFromClient3,
+                    dispatchPVZ: row.dispatchPVZ,
+                    sorted: row.sorted ? new Date(row.sorted).toISOString() : null,
+                    paid: row.paid ? new Date(row.paid).toISOString() : null,
+                    orderPVZ: row.orderPVZ,
+                    additionally: row.additionally,
+                    profit3: +row.profit3,
                     deleted: row.deleted,
                     created_at: row.created_at,
                     updated_at: row.updated_at,

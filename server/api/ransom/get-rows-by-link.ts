@@ -21,10 +21,20 @@ export default defineEventHandler(async (event) => {
                 }
             });
             return rows;
-        } else {
+        } else if (flag === 'ClientRansom') {
             const rows = await prisma.clientRansom.findMany({
                 where: {
                     clientLink2: link,
+                },
+                orderBy: {
+                    id: 'asc'
+                }
+            });
+            return rows;
+        } else if (flag === 'Delivery') {
+            const rows = await prisma.delivery.findMany({
+                where: {
+                    clientLink3: link,
                 },
                 orderBy: {
                     id: 'asc'

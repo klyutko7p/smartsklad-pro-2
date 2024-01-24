@@ -13,8 +13,10 @@ function generateLink(phoneNumber: string, flag: string) {
 
     if (flag === 'OurRansom') {
         link = `1-${hash}`;
-    } else {
+    } else if (flag === 'ClientRansom') {
         link = `2-${hash}`;
+    } else if (flag === 'Delivery') {
+        link = `3-${hash}`;
     }
 
     return link;
@@ -46,7 +48,7 @@ export const useRansomStore = defineStore("ransom", () => {
         }
     }
 
-    async function createRansomRow(row: IOurRansom | IClientRansom, username: string, flag: string) {
+    async function createRansomRow(row: IOurRansom | IClientRansom | IDelivery, username: string, flag: string) {
 
         try {
             if (flag === 'OurRansom') {
@@ -87,6 +89,22 @@ export const useRansomStore = defineStore("ransom", () => {
 
                 row.amountFromClient2 = row.priceProgram * row.percentClient / 100 - row.prepayment;
                 row.profit2 = row.amountFromClient2 + row.prepayment;
+            } else if (flag === 'Delivery') {
+                if (row.percentClient === undefined) row.percentClient = 2;
+                if (row.purchaseOfGoods === undefined) row.purchaseOfGoods = 0;
+                if (row.nameOfAction === undefined) row.nameOfAction = '';
+
+                row.createdUser = username;
+                row.updatedUser = username;
+
+                if (row.fromName) {
+                    row.clientLink3 = generateLink(row.fromName, 'Delivery');
+                } else {
+                    row.clientLink3 = ''
+                }
+
+                row.amountFromClient3 = row.purchaseOfGoods * row.percentClient / 100;
+                row.profit3 = row.amountFromClient3;
             }
 
 
@@ -145,7 +163,7 @@ export const useRansomStore = defineStore("ransom", () => {
         }
     }
 
-    async function updateRansomRow(row: IOurRansom | IClientRansom, username: string, flag: string) {
+    async function updateRansomRow(row: IOurRansom | IClientRansom | IDelivery, username: string, flag: string) {
         try {
             if (flag === 'OurRansom') {
                 if (row.percentClient === undefined || row.percentClient === 0) row.percentClient = 10;
@@ -185,6 +203,22 @@ export const useRansomStore = defineStore("ransom", () => {
 
                 row.amountFromClient2 = row.priceProgram * row.percentClient / 100 - row.prepayment;
                 row.profit2 = row.amountFromClient2 + row.prepayment;
+            } else if (flag === 'Delivery') {
+                if (row.percentClient === undefined) row.percentClient = 2;
+                if (row.purchaseOfGoods === undefined) row.purchaseOfGoods = 0;
+                if (row.nameOfAction === undefined) row.nameOfAction = '';
+
+                row.createdUser = username;
+                row.updatedUser = username;
+
+                if (row.fromName) {
+                    row.clientLink3 = generateLink(row.fromName, 'Delivery');
+                } else {
+                    row.clientLink3 = ''
+                }
+
+                row.amountFromClient3 = row.purchaseOfGoods * row.percentClient / 100;
+                row.profit3 = row.amountFromClient3;
             }
 
             let data = await useFetch('/api/ransom/edit-row', {
@@ -204,7 +238,7 @@ export const useRansomStore = defineStore("ransom", () => {
         }
     }
 
-    async function updateDeliveryStatus(row: IOurRansom, flag: string, flagRansom: string) {
+    async function updateDeliveryStatus(row: IOurRansom | IClientRansom | IDelivery, flag: string, flagRansom: string) {
         try {
             let data = await useFetch('/api/ransom/update-delivery', {
                 method: 'POST',
@@ -306,7 +340,7 @@ export const useRansomStore = defineStore("ransom", () => {
         }
     }
 
-    const getUniqueNonEmptyValues = (rows: IOurRansom[] | IClientRansom[], fieldName: keyof IOurRansom | IClientRansom): string[] => {
+    const getUniqueNonEmptyValues = (rows: IOurRansom[] | IClientRansom[] | IDelivery[], fieldName: keyof IOurRansom | IClientRansom | IDelivery): string[] => {
         const uniqueNonEmptyValues = new Set<string>();
         rows.forEach((row) => {
             const value = row[fieldName];

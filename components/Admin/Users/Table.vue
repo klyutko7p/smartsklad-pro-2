@@ -49,6 +49,9 @@ defineProps({
             {{ userData.additionally2 }}
           </td>
           <td class="px-6 py-4 border-2">
+            {{ userData.additionally3 }}
+          </td>
+          <td class="px-6 py-4 border-2">
             {{ userData.deliveredSC1 }}
           </td>
           <td class="px-6 py-4 border-2">
@@ -73,16 +76,34 @@ defineProps({
             {{ userData.dispatchPVZ2 }}
           </td>
           <td class="px-6 py-4 border-2">
+            {{ userData.dispatchPVZ3 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.nameOfAction }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.sorted }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.paid }}
+          </td>
+          <td class="px-6 py-4 border-2">
             {{ userData.name1 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.name2 }}
           </td>
           <td class="px-6 py-4 border-2">
+            {{ userData.name3 }}
+          </td>
+          <td class="px-6 py-4 border-2">
             {{ userData.fromName1 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.fromName2 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.fromName3 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.issued1 }}
@@ -100,10 +121,16 @@ defineProps({
             {{ userData.orderPVZ2 }}
           </td>
           <td class="px-6 py-4 border-2">
+            {{ userData.orderPVZ3 }}
+          </td>
+          <td class="px-6 py-4 border-2">
             {{ userData.percentClient1 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.percentClient2 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.percentClient3 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.notation1 }}
@@ -113,6 +140,9 @@ defineProps({
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.priceProgram }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.purchaseOfGoods }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.priceSite }}
@@ -142,10 +172,16 @@ defineProps({
             {{ userData.dataClientRansom }}
           </td>
           <td class="px-6 py-4 border-2">
+            {{ userData.dataDelivery }}
+          </td>
+          <td class="px-6 py-4 border-2">
             {{ userData.amountFromClient1 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.amountFromClient2 }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.amountFromClient3 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.clientLink1 }}
@@ -154,26 +190,25 @@ defineProps({
             {{ userData.clientLink2 }}
           </td>
           <td class="px-6 py-4 border-2">
+            {{ userData.clientLink3 }}
+          </td>
+          <td class="px-6 py-4 border-2">
             {{ userData.profit1 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.profit2 }}
           </td>
           <td class="px-6 py-4 border-2">
-            <Icon
-              @click="openModal(userData)"
-              class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
-              name="material-symbols:person-edit-outline"
-              size="32"
-            />
+            {{ userData.profit3 }}
           </td>
           <td class="px-6 py-4 border-2">
-            <Icon
-              @click="deleteUser(userData.username)"
+            <Icon @click="openModal(userData)" class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
+              name="material-symbols:person-edit-outline" size="32" />
+          </td>
+          <td class="px-6 py-4 border-2">
+            <Icon @click="deleteUser(userData.username)"
               class="text-red-600 cursor-pointer hover:text-red-300 duration-200"
-              name="material-symbols:person-remove-outline"
-              size="32"
-            />
+              name="material-symbols:person-remove-outline" size="32" />
           </td>
         </tr>
       </tbody>
