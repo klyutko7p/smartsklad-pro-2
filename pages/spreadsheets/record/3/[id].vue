@@ -52,7 +52,7 @@ const token = Cookies.get("token");
           <RecordQR
             class="mt-10"
             :row="row"
-            :value="`https://scintillating-donut-6d93ed.netlify.app/spreadsheets/order/${row.clientLink3}`"
+            :value="`https://soft-praline-633324.netlify.app/spreadsheets/order/${row.clientLink3}`"
           />
         </div>
         <div v-else>
@@ -67,7 +67,7 @@ const token = Cookies.get("token");
           <RecordQR
             class="mt-10"
             :row="row"
-            :value="`https://scintillating-donut-6d93ed.netlify.app/spreadsheets/order/${row.clientLink3}`"
+            :value="`https://soft-praline-633324.netlify.app/spreadsheets/order/${row.clientLink3}`"
           />
         </div>
         <div v-else>
