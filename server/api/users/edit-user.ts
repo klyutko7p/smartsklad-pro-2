@@ -18,6 +18,8 @@ export default defineEventHandler(async (event) => {
             data: {
                 username: user.username,
                 role: user.role,
+                visibleSC: user.visibleSC,
+                visiblePVZ: user.visiblePVZ,
                 cell1: user.cell1,
                 cell2: user.cell2,
                 additionally1: user.additionally2,

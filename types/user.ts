@@ -4,6 +4,8 @@ interface User {
     password: string,
     role: string | Role,
     created_at: Date | number,
+    visibleSC: string;
+    visiblePVZ: string;
     cell1: string,
     cell2: string,
     additionally1: string,

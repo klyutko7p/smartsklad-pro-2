@@ -116,8 +116,16 @@ async function deleteIssuedRows() {
 
 const filteredRows = ref<Array<IOurRansom>>();
 
-function handleFilteredRows(filteredRowsData: IOurRansom[]) {
-  filteredRows.value = filteredRowsData
+  function handleFilteredRows(filteredRowsData: IOurRansom[]) {
+  if (user.value.visiblePVZ === 'ВСЕ' && user.value.visibleSC === 'ВСЕ') {
+    filteredRows.value = filteredRowsData;
+  } else if (user.value.visiblePVZ === 'ВСЕ' && user.value.visibleSC !== 'ВСЕ') {
+    filteredRows.value = filteredRowsData.filter((row) => row.orderPVZ === user.value.visibleSC);
+  } else if (user.value.visiblePVZ !== 'ВСЕ' && user.value.visibleSC === 'ВСЕ') {
+    filteredRows.value = filteredRowsData.filter((row) => row.dispatchPVZ === user.value.visiblePVZ);
+  } else if (user.value.visiblePVZ !== 'ВСЕ' && user.value.visibleSC !== 'ВСЕ') {
+    filteredRows.value = filteredRowsData.filter((row) => row.dispatchPVZ === user.value.visiblePVZ && row.orderPVZ === user.value.visibleSC);
+  }
 }
 
 onMounted(async () => {
@@ -157,7 +165,7 @@ const token = Cookies.get("token");
           <div>
             <SpreadsheetsOurRansomFilters v-if="rows" @filtered-rows="handleFilteredRows" :rows="rows" />
             <div class="mt-5 flex items-center gap-3" v-if="user.dataOurRansom === 'WRITE'">
-              <UIMainButton @click="deleteIssuedRows" v-if="user.role === 'ADMIN'">Удалить выданное</UIMainButton>
+              <UIMainButton @click="deleteIssuedRows" v-if="user.role === 'ADMIN' || user.username === 'admin1'">Удалить выданное</UIMainButton>
               <UIMainButton @click="openModal">Создать новую запись</UIMainButton>
             </div>
           </div>

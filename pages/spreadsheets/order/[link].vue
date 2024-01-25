@@ -103,7 +103,7 @@ const token = Cookies.get("token");
         <UIMainButton v-if="!showReceivedItems && !link.startsWith('3')" class="mt-5" @click="enableReceivedItems">
           Показать полученные товары</UIMainButton>
       </div>
-      <SpreadsheetsOrderTable :rows="copyRows" :user="user" />
+      <SpreadsheetsOrderTable :link="link" :rows="copyRows" :user="user" />
     </div>
   </div>
   <div v-else>

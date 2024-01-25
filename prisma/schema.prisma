@@ -17,6 +17,8 @@ model User {
   password          String
   created_at        DateTime @default(now())
   // Права доступа
+  visibleSC         String   @default("ВСЕ")
+  visiblePVZ        String   @default("ВСЕ")
   cell1             String   @default("NONE")
   cell2             String   @default("NONE")
   additionally1     String   @default("NONE")

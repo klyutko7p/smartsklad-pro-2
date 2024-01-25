@@ -37,6 +37,12 @@ defineProps({
             {{ storeUsers.getNormalizedDate(userData.created_at) }}
           </td>
           <td class="px-6 py-4 border-2">
+            {{ userData.visibleSC }}
+          </td>
+          <td class="px-6 py-4 border-2">
+            {{ userData.visiblePVZ }}
+          </td>
+          <td class="px-6 py-4 border-2">
             {{ userData.cell1 }}
           </td>
           <td class="px-6 py-4 border-2">

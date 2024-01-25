@@ -115,7 +115,15 @@ async function deleteIssuedRows() {
 const filteredRows = ref<Array<IClientRansom>>();
 
 function handleFilteredRows(filteredRowsData: IClientRansom[]) {
-  filteredRows.value = filteredRowsData;
+  if (user.value.visiblePVZ === 'ВСЕ' && user.value.visibleSC === 'ВСЕ') {
+    filteredRows.value = filteredRowsData;
+  } else if (user.value.visiblePVZ === 'ВСЕ' && user.value.visibleSC !== 'ВСЕ') {
+    filteredRows.value = filteredRowsData.filter((row) => row.orderPVZ === user.value.visibleSC);
+  } else if (user.value.visiblePVZ !== 'ВСЕ' && user.value.visibleSC === 'ВСЕ') {
+    filteredRows.value = filteredRowsData.filter((row) => row.dispatchPVZ === user.value.visiblePVZ);
+  } else if (user.value.visiblePVZ !== 'ВСЕ' && user.value.visibleSC !== 'ВСЕ') {
+    filteredRows.value = filteredRowsData.filter((row) => row.dispatchPVZ === user.value.visiblePVZ && row.orderPVZ === user.value.visibleSC);
+  }
 }
 
 onMounted(async () => {
@@ -161,7 +169,7 @@ const token = Cookies.get("token");
               class="mt-5 flex items-center gap-3"
               v-if="user.dataOurRansom === 'WRITE'"
             >
-              <UIMainButton @click="deleteIssuedRows" v-if="user.role === 'ADMIN'">Удалить выданное</UIMainButton>
+              <UIMainButton @click="deleteIssuedRows" v-if="user.role === 'ADMIN' || user.username === 'admin1'">Удалить выданное</UIMainButton>
               <UIMainButton @click="openModal">Создать новую запись</UIMainButton>
             </div>
           </div>
@@ -180,8 +188,8 @@ const token = Cookies.get("token");
 
           <div v-else class="flex items-center flex-col justify-center mt-10 text-2xl">
             <Icon name="ion:ios-close-empty" size="100" class="text-red-500" />
-            <h1>Извините, записи по данным фильтрам не были найдены!</h1>
-            <h1>Попробуйте поставить другие фильтры или очистить их</h1>
+            <h1>Извините, записи не были найдены!</h1>
+            <h1>Попробуйте обратиться к администратору</h1>
           </div>
 
           <UIModal v-show="isOpen" @close-modal="closeModal">
@@ -446,8 +454,8 @@ const token = Cookies.get("token");
 
           <div v-else class="flex items-center flex-col justify-center mt-10 text-2xl">
             <Icon name="ion:ios-close-empty" size="100" class="text-red-500" />
-            <h1>Извините, записи по данным фильтрам не были найдены!</h1>
-            <h1>Попробуйте поставить другие фильтры или очистить их</h1>
+            <h1>Извините, записи не были найдены!</h1>
+            <h1>Попробуйте обратиться к администратору</h1>
           </div>
 
           <UIModal v-show="isOpen" @close-modal="closeModal">

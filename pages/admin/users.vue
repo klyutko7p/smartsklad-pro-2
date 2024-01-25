@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import Cookies from "js-cookie";
 const storeUsers = useUsersStore();
+const storePVZ = usePVZStore();
+const storeSC = useSortingCentersStore();
 const router = useRouter();
 
 const isOpen = ref(false);
@@ -9,6 +11,8 @@ const fields = [
   "имя пользователя",
   "роль",
   "дата создания",
+  "сортировочный центр",
+  "ПВЗ",
   "ячейка (наш выкуп)",
   "ячейка (выкуп клиента)",
   "дополнительно (наш выкуп)",
@@ -105,6 +109,9 @@ async function deleteUser(usernameData: string) {
 
 let user = ref({} as User);
 let users = ref<Array<User>>();
+let pvz = ref<Array<PVZ>>();
+let sortingCenters = ref<Array<SortingCenter>>();
+
 const token = Cookies.get("token");
 let isLoading = ref(false);
 
@@ -112,6 +119,8 @@ onBeforeMount(async () => {
   isLoading.value = true;
   user.value = await storeUsers.getUser();
   users.value = await storeUsers.getUsers();
+  pvz.value = await storePVZ.getPVZ();
+  sortingCenters.value = await storeSC.getSortingCenters();
   isLoading.value = false;
 });
 
@@ -157,6 +166,22 @@ definePageMeta({
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.role">
                 <option value="ADMIN">ADMIN</option>
                 <option value="USER">USER</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Сортировочный центр</label>
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.visibleSC">
+                <option value="ВСЕ">ВСЕ</option>
+                <option v-for="sortingCenter in sortingCenters" :value="sortingCenter.name">{{ sortingCenter.name }}</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">ПВЗ</label>
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.visiblePVZ">
+                <option value="ВСЕ">ВСЕ</option>
+                <option v-for="valueData in pvz" :value="valueData.name">{{ valueData.name }}</option>
               </select>
             </div>
 
@@ -644,7 +669,7 @@ definePageMeta({
 
             <div class="grid grid-cols-2 mb-5">
               <label for="cell">Прибыль (доход) <br> (Выкуп клиента)</label>
-              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model=" userData.profit2 ">
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.profit2">
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
                 <option value="WRITE">WRITE</option>
@@ -653,7 +678,7 @@ definePageMeta({
 
             <div class="grid grid-cols-2 mb-5">
               <label for="cell">Прибыль (доход) <br> (Доставка)</label>
-              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model=" userData.profit3 ">
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.profit3">
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
                 <option value="WRITE">WRITE</option>
@@ -674,7 +699,7 @@ definePageMeta({
     </NuxtLayout>
   </div>
 
-  <div v-else-if=" user.role === 'USER' ">
+  <div v-else-if="user.role === 'USER'">
     <NuxtLayout name="user">
       <h1>
         У вас недостаточно прав на просмотр этой информации. Обратитесь к администратору

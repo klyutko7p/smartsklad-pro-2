@@ -4,6 +4,7 @@ const storeUsers = useUsersStore();
 defineProps({
   row: { type: Object as PropType<IOurRansom | IClientRansom | IDelivery>, required: true },
   user: { type: Object as PropType<User>, required: true },
+  link: { type: String}
 });
 
 const emit = defineEmits(["updateDeliveryRow"]);
@@ -21,21 +22,21 @@ function updateDeliveryRow(row: IOurRansom | IClientRansom, flag: string) {
     <div class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
       <h1>Телефон:</h1>
       <h1
-        v-if="row.clientLink1"
+        v-if="link?.includes(1) && row.fromName"
         class="cursor-pointer underline text-secondary-color duration-200 hover:opacity-50"
         @click="router.push(`/spreadsheets/order/${row.clientLink1}`)"
       >
         {{ row.fromName }}
       </h1>
       <h1
-        v-if="row.clientLink2"
+        v-if="link?.includes(2) && row.fromName"
         class="cursor-pointer underline text-secondary-color duration-200 hover:opacity-50"
         @click="router.push(`/spreadsheets/order/${row.clientLink2}`)"
       >
         {{ row.fromName }}
       </h1>
       <h1
-        v-if="row.clientLink3"
+        v-if="link?.includes(3) && row.fromName"
         class="cursor-pointer underline text-secondary-color duration-200 hover:opacity-50"
         @click="router.push(`/spreadsheets/order/${row.clientLink3}`)"
       >
@@ -43,7 +44,7 @@ function updateDeliveryRow(row: IOurRansom | IClientRansom, flag: string) {
       </h1>
     </div>
     
-    <div v-if="row.clientLink1" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
+    <div v-if="link?.includes(1)" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
       <h1>Доставлено на СЦ:</h1>
       <Icon
         @click="updateDeliveryRow(row, 'SC')"
@@ -61,7 +62,7 @@ function updateDeliveryRow(row: IOurRansom | IClientRansom, flag: string) {
       </h1>
     </div>
 
-    <div v-if="row.clientLink2" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
+    <div v-if="link?.includes(2)" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
       <h1>Доставлено на СЦ:</h1>
       <Icon
         @click="updateDeliveryRow(row, 'SC')"
@@ -79,7 +80,7 @@ function updateDeliveryRow(row: IOurRansom | IClientRansom, flag: string) {
       </h1>
     </div>
 
-    <div v-if="row.clientLink3" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
+    <div v-if="link?.includes(3)" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
       <h1>Отсортировано:</h1>
       <Icon
         @click="updateDeliveryRow(row, 'sorted')"
@@ -102,7 +103,7 @@ function updateDeliveryRow(row: IOurRansom | IClientRansom, flag: string) {
       <h1>{{ row.cell }}</h1>
     </div>
 
-    <div v-if="row.clientLink1" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
+    <div v-if="link?.includes(1)" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
       <h1>Доставлено на ПВЗ:</h1>
       <Icon
         @click="updateDeliveryRow(row, 'PVZ')"
@@ -120,7 +121,7 @@ function updateDeliveryRow(row: IOurRansom | IClientRansom, flag: string) {
       </h1>
     </div>
 
-    <div v-if="row.clientLink2" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
+    <div v-if="link?.includes(2)" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
       <h1>Доставлено на ПВЗ:</h1>
       <Icon
         @click="updateDeliveryRow(row, 'PVZ')"
@@ -143,7 +144,7 @@ function updateDeliveryRow(row: IOurRansom | IClientRansom, flag: string) {
       <h1>{{ row.nameOfAction }}</h1>
     </div>
 
-    <div v-if="row.clientLink3" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
+    <div v-if="link?.includes(3)" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
       <h1>Оплачено:</h1>
       <Icon
         @click="updateDeliveryRow(row, 'paid')"
@@ -168,7 +169,7 @@ function updateDeliveryRow(row: IOurRansom | IClientRansom, flag: string) {
     </div>
     
 
-    <div v-if="row.clientLink1" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
+    <div v-if="link?.includes(1)" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
       <h1>Выдан клиенту:</h1>
       <Icon
         @click="updateDeliveryRow(row, 'issued')"
@@ -181,7 +182,7 @@ function updateDeliveryRow(row: IOurRansom | IClientRansom, flag: string) {
         {{ row.issued ? storeUsers.getNormalizedDate(row.issued) : "" }}
       </h1>
     </div>
-    <div v-if="row.clientLink2" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
+    <div v-if="link?.includes(2)" class="grid grid-cols-2 border-2 border-black p-3 border-dashed text-center">
       <h1>Выдан клиенту:</h1>
       <Icon
         @click="updateDeliveryRow(row, 'issued')"
