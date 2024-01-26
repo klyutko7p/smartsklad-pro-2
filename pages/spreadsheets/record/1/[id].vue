@@ -35,6 +35,7 @@ onMounted(() => {
   if (!token) {
     router.push("/auth/login");
   }
+  console.log(route.params);
 });
 
 const token = Cookies.get("token");
@@ -49,11 +50,8 @@ const token = Cookies.get("token");
       <NuxtLayout name="admin">
         <div class="mt-5" v-if="!isLoading">
           <RecordBody :link="link" :user="user" :row="row" @update-delivery-row="updateDeliveryRow" />
-          <RecordQR
-            class="mt-10"
-            :row="row"
-            :value="`https://soft-praline-633324.netlify.app/spreadsheets/order/${row.clientLink1}`"
-          />
+          <RecordQR class="mt-10" :row="row"
+            :value="`https://soft-praline-633324.netlify.app/spreadsheets/record/1/${row.id}`" />
         </div>
         <div v-else>
           <UISpinner />
@@ -64,11 +62,8 @@ const token = Cookies.get("token");
       <NuxtLayout name="user">
         <div class="mt-5" v-if="!isLoading">
           <RecordBody :link="link" :user="user" :row="row" @update-delivery-row="updateDeliveryRow" />
-          <RecordQR
-            class="mt-10"
-            :row="row"
-            :value="`https://soft-praline-633324.netlify.app/spreadsheets/order/${row.clientLink1}`"
-          />
+          <RecordQR class="mt-10" :row="row"
+            :value="`https://soft-praline-633324.netlify.app/spreadsheets/record/1/${row.id}`" />
         </div>
         <div v-else>
           <UISpinner />

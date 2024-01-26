@@ -32,8 +32,7 @@ export default defineEventHandler(async (event) => {
         },
       })
       return row;
-    }
-
+    } 
 
   } catch (error) {
     if (error instanceof Error) {

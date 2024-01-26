@@ -1,5 +1,6 @@
 interface IOurRansom {
     id: number;
+    old_id: number;
     clientLink1: string;
     cell: string;
     name: string;
