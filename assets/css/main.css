@@ -22,7 +22,7 @@ input[type="checkbox"] {
 
 :root {
   --primary-color: #0d0d0d;
-  --secondary-color: #f09819;
+  --secondary-color: #ff7d00;
   --muted-color: #4a4a4a;
   --hover-color: #f33f3f;
   --gray-color: #1f1f1f;
@@ -32,6 +32,19 @@ body {
   font-family: "Exo 2", sans-serif;
   background-color: white;
   color: black;
+}
+
+.main-page {
+  background-color: #000C1C;
+  color: white;
+  height: 100vh;
+}
+
+.bg-main-page {
+  background-image: url('../images/ellipse.png');
+  background-position: top;
+  background-repeat: no-repeat;
+  background-color: #000C1C;
 }
 
 input {

@@ -126,9 +126,9 @@ watch(
       />
     </div>
     <div v-if="showFilters" class="border-2 border-gray-300 p-3 mt-3 border-dashed">
-      <div class="grid grid-cols-4 max-xl:grid-cols-2 max-md:grid-cols-1">
-        <div class="grid grid-cols-2 m-3">
-          <h1>Ячейка</h1>
+      <div class="grid grid-cols-2 max-xl:grid-cols-2 max-md:grid-cols-1">
+        <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
+          <h1>Ячейка:</h1>
           <select
             v-model="selectedCell"
             class="max-w-[150px] max-md:w-full max-md:max-w-none py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
@@ -136,8 +136,8 @@ watch(
             <option v-for="value in uniqueCells" :value="value">{{ value }}</option>
           </select>
         </div>
-        <div class="grid grid-cols-2 m-3">
-          <h1>Имя</h1>
+        <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
+          <h1>Имя:</h1>
           <select
             v-model="selectedName"
             class="max-w-[150px] max-md:w-full max-md:max-w-none py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
@@ -147,8 +147,8 @@ watch(
             </option>
           </select>
         </div>
-        <div class="grid grid-cols-2 m-3">
-          <h1>Телефон</h1>
+        <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
+          <h1>Телефон:</h1>
           <select
             v-model="selectedFromName"
             class="max-w-[150px] max-md:w-full max-md:max-w-none py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
@@ -158,8 +158,8 @@ watch(
             </option>
           </select>
         </div>
-        <div class="grid grid-cols-2 m-3">
-          <h1>Название товара</h1>
+        <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
+          <h1>Название товара:</h1>
           <select
             v-model="selectedProductName"
             class="max-w-[150px] max-md:w-full max-md:max-w-none py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
@@ -169,8 +169,8 @@ watch(
             </option>
           </select>
         </div>
-        <div class="grid grid-cols-2 m-3">
-          <h1>ПВЗ</h1>
+        <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
+          <h1>ПВЗ:</h1>
           <select
             v-model="selectedDispatchPVZ"
             class="max-w-[150px] max-md:w-full max-md:max-w-none py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
@@ -180,8 +180,8 @@ watch(
             </option>
           </select>
         </div>
-        <div class="grid grid-cols-2 m-3">
-          <h1>СЦ</h1>
+        <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
+          <h1>СЦ:</h1>
           <select
             v-model="selectedOrderPVZ"
             class="max-w-[150px] max-md:w-full max-md:max-w-none py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
@@ -191,8 +191,8 @@ watch(
             </option>
           </select>
         </div>
-        <div class="grid grid-cols-2 m-3">
-          <h1>Аккаунт Заказа</h1>
+        <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
+          <h1>Аккаунт Заказа:</h1>
           <select
             v-model="selectedOrderAccount"
             class="max-w-[150px] max-md:w-full max-md:max-w-none py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
@@ -202,8 +202,8 @@ watch(
             </option>
           </select>
         </div>
-        <div class="grid grid-cols-2 m-3">
-          <h1>Дополнительно</h1>
+        <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
+          <h1>Дополнительно:</h1>
           <select
             v-model="selectedAdditionally"
             class="max-w-[150px] max-md:w-full max-md:max-w-none py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
@@ -216,7 +216,7 @@ watch(
       </div>
       <div class="mt-10 grid grid-cols-1">
         <div class="grid grid-cols-2 m-3">
-          <h1>Начальная дата (Выдача клиенту)</h1>
+          <h1>Начальная дата (Выдача клиенту):</h1>
           <input
             class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
             type="date"
@@ -224,7 +224,7 @@ watch(
           />
         </div>
         <div class="grid grid-cols-2 m-3">
-          <h1>Конечная дата (Выдача клиенту)</h1>
+          <h1>Конечная дата (Выдача клиенту):</h1>
           <input
             class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
             type="date"

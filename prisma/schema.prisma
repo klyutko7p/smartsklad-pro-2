@@ -78,12 +78,12 @@ model User {
 
 model OurRansom {
   id                Int       @id @default(autoincrement())
-  clientLink1       String
-  cell              String    @default("0")
+  clientLink1       String?
+  cell              String?   @default("0")
   name              String?
   fromName          String?
   productLink       String?
-  productName       String
+  productName       String?
   notation          String?   @default("")
   priceSite         Int       @default(0)
   prepayment        Int       @default(0)

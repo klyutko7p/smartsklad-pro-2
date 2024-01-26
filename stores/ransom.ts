@@ -69,7 +69,7 @@ export const useRansomStore = defineStore("ransom", () => {
                 }
 
                 row.amountFromClient1 = Math.round(row.priceSite + (row.priceSite * row.percentClient / 100) + row.deliveredKGT - row.prepayment);
-                row.profit1 = row.amountFromClient1 - row.priceSite + row.prepayment;
+                row.profit1 = ((row.priceSite + row.prepayment) * 10) / 100;
 
             } else if (flag === 'ClientRansom') {
                 if (row.percentClient === undefined) row.percentClient = 10;
@@ -182,7 +182,7 @@ export const useRansomStore = defineStore("ransom", () => {
                 }
 
                 row.amountFromClient1 = Math.round(row.priceSite + (row.priceSite * row.percentClient / 100) + row.deliveredKGT - row.prepayment);
-                row.profit1 = row.amountFromClient1 - row.priceSite + row.prepayment;
+                row.profit1 = ((row.priceSite + row.prepayment) * 10) / 100;
 
 
             } else if (flag === 'ClientRansom') {

@@ -17,7 +17,7 @@ function printPage() {
     <h1 class="text-[160px]" v-if="row.cell">{{ row.cell }}</h1>
     <div>
       <CodeQR :value="value" />
-      <h1 class="text-lg text-center max-w-[100px] break-words">{{ row.orderPVZ }}</h1>
+      <h1 class="text-lg text-center max-w-[100px] break-words">{{ row.dispatchPVZ }}</h1>
     </div>
   </div>
 </template>

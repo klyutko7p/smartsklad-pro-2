@@ -42,7 +42,7 @@ onBeforeMount(async () => {
   >
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
       <div class="flex items-center gap-4 justify-center">
-        <h1 class="text-center text-yellow-400 text-4xl font-bold">DAROM.PRO</h1>
+        <h1 class="text-center text-secondary-color text-4xl font-bold">DAROM.PRO</h1>
         <Icon size="40" name="material-symbols:account-circle" />
       </div>
       <h2
