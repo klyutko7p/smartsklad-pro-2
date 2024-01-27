@@ -104,17 +104,9 @@ watch(
     <div class="flex items-center gap-3">
       <h1 class="text-xl font-bold">Фильтры</h1>
       <Icon
-        v-if="!showFilters"
         @click="showFilters = !showFilters"
         class="cursor-pointer duration-200 hover:text-secondary-color"
-        name="material-symbols:keyboard-double-arrow-down-rounded"
-        size="24"
-      />
-      <Icon
-        v-if="showFilters"
-        @click="showFilters = !showFilters"
-        class="cursor-pointer duration-200 hover:text-secondary-color"
-        name="material-symbols:keyboard-double-arrow-up-rounded"
+        name="solar:filters-line-duotone"
         size="24"
       />
     </div>

@@ -66,65 +66,99 @@ const handleCheckboxChange = (rowId: number): void => {
 
 const showDeletedRows = ref(false);
 
-const filteredRows = computed(() => {
+const perPage = ref(20)
+const currentPage = ref(1)
+const totalPages = computed(() => Math.ceil((props.rows?.length || 0) / perPage.value));
+const totalRows = computed(() => Math.ceil(props.rows?.length || 0));
+let returnRows = ref<Array<IDelivery[]>>([])
+
+function updateCurrentPageData() {
+  const startIndex = (currentPage.value - 1) * perPage.value
+  const endIndex = startIndex + perPage.value
+
   if (showDeletedRows.value) {
-    return props.rows;
+    returnRows.value = props.rows?.slice(startIndex, endIndex);
   } else {
-    return props.rows?.filter((row) => !row.deleted);
+    returnRows.value = props.rows?.filter((row) => !row.deleted).slice(startIndex, endIndex);
   }
-});
+}
+
+watch([currentPage, totalRows], updateCurrentPageData)
+
+const prevPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--
+  }
+}
+
+const nextPage = () => {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++
+  }
+}
 
 const toggleShowDeletedRows = () => {
   showDeletedRows.value = !showDeletedRows.value;
+  updateCurrentPageData();
 };
+
+onMounted(() => {
+  updateCurrentPageData()
+})
+
 </script>
 <template>
-  <div class="flex items-center justify-between mt-10">
+  <div class="flex items-center justify-between max-lg:block mt-10">
     <div>
+      <h1 class="text-2xl">Всего записей: <span class="text-secondary-color font-bold">{{ totalRows }}</span> </h1>
+      <div class="mb-5 flex items-center gap-5">
+        <h1>Сколько записей отображается в таблице: </h1>
+        <input class="bg-white max-w-[100px]" min="1" :max="totalRows" type="number" v-model="perPage">
+        <UIActionButton @click="updateCurrentPageData">Применить</UIActionButton>
+      </div>
       <div class="flex items-center gap-5">
         <UIMainButton @click="toggleShowDeletedRows">Показать удаленное</UIMainButton>
         <div>
           <a href="#up">
-            <Icon
-              name="material-symbols:arrow-circle-up-rounded"
-              class="text-secondary-color hover:opacity-50 duration-200"
-              size="40"
-            />
+            <Icon name="material-symbols:arrow-circle-up-rounded"
+              class="text-secondary-color hover:opacity-50 duration-200" size="40" />
           </a>
           <a href="#down">
-            <Icon
-              name="material-symbols:arrow-circle-down"
-              class="text-secondary-color hover:opacity-50 duration-200"
-              size="40"
-            />
+            <Icon name="material-symbols:arrow-circle-down" class="text-secondary-color hover:opacity-50 duration-200"
+              size="40" />
           </a>
           <a href="#left">
-            <Icon
-              name="material-symbols:arrow-circle-left-rounded"
-              class="text-secondary-color hover:opacity-50 duration-200"
-              size="40"
-            />
+            <Icon name="material-symbols:arrow-circle-left-rounded"
+              class="text-secondary-color hover:opacity-50 duration-200" size="40" />
           </a>
           <a href="#right">
-            <Icon
-              name="material-symbols:arrow-circle-right-rounded"
-              class="text-secondary-color hover:opacity-50 duration-200"
-              size="40"
-            />
+            <Icon name="material-symbols:arrow-circle-right-rounded"
+              class="text-secondary-color hover:opacity-50 duration-200" size="40" />
           </a>
         </div>
       </div>
     </div>
-    <Icon
-      v-if="user.role === 'ADMIN'"
-      class="duration-200 hover:text-secondary-color cursor-pointer"
-      size="40"
-      name="material-symbols:sheets-add-on"
-      @click="exportToExcel"
-    />
+    <div class="flex items-end max-lg:mt-5 max-lg:justify-between gap-20">
+      <div class="flex flex-col text-center">
+        <h1 class="text-base">Страница:</h1>
+        <h1 class="text-base mb-2"> {{ currentPage }} из {{ totalPages }} </h1>
+        <div class="flex items-center justify-center gap-2">
+          <button @click="prevPage(), updateCurrentPageData()" :disabled="currentPage === 1"
+            class="disabled:opacity-40 disabled:cursor-not-allowed duration-150 bg-secondary-color flex items-center justify-center rounded-sm p-3">
+            <Icon name="material-symbols:arrow-back-ios-new-rounded" class="text-white" />
+          </button>
+          <button @click="nextPage(), updateCurrentPageData()" :disabled="currentPage === totalPages"
+            class="disabled:opacity-40 disabled:cursor-not-allowed duration-150 bg-secondary-color flex items-center justify-center rounded-sm p-3">
+            <Icon name="material-symbols:arrow-forward-ios-rounded" class="text-white" />
+          </button>
+        </div>
+      </div>
+      <Icon v-if="user.role === 'ADMIN'" class="duration-200 hover:text-secondary-color cursor-pointer" size="40"
+        name="material-symbols:sheets-add-on" @click="exportToExcel" />
+    </div>
   </div>
-  <div
-    class="fixed z-40 flex flex-col gap-3 top-28 left-1/2 translate-x-[-50%] translate-y-[-50%]"
+
+  <div class="fixed z-40 flex flex-col gap-3 top-28 left-1/2 translate-x-[-50%] translate-y-[-50%]"
     v-if="user.dataDelivery === 'WRITE' && checkedRows.length > 0"
   >
     <UIActionButton
@@ -146,7 +180,8 @@ const toggleShowDeletedRows = () => {
       >Оплачено</UIActionButton
     >
   </div>
-  <div class="relative max-h-[760px] overflow-x-auto mt-5 mb-10">
+
+  <div class="relative max-h-[610px] overflow-x-auto mt-5 mb-10" v-if="totalRows > 0">
     <div id="up"></div>
     <table
       id="theTable"
@@ -277,7 +312,7 @@ const toggleShowDeletedRows = () => {
         <tr
           :class="{ 'bg-orange-100': isChecked(row.id) }"
           class="border-b text-center text-sm"
-          v-for="row in filteredRows"
+          v-for="row in returnRows"
         >
           <td
             v-if="user.dataDelivery === 'WRITE'"
@@ -444,6 +479,12 @@ const toggleShowDeletedRows = () => {
       </tbody>
     </table>
     <div id="down"></div>
+  </div>
+
+  <div v-else class="flex items-center flex-col justify-center m-10 text-2xl">
+    <Icon name="ion:ios-close-empty" size="100" class="text-red-500" />
+    <h1>Извините, записи по данным фильтрам не были найдены!</h1>
+    <h1>Попробуйте поставить другие фильтры или очистить их</h1>
   </div>
 </template>
 

@@ -168,13 +168,7 @@ const token = Cookies.get("token");
 
           <SpreadsheetsDeliveryTable @update-delivery-row="updateDeliveryRow" :rows="filteredRows" :user="user"
             @delete-row="deleteRow" @open-modal="openModal" @delete-selected-rows="deleteSelectedRows"
-            @update-delivery-rows="updateDeliveryRows" @create-copy-row="createCopyRow" v-if="filteredRows" />
-
-          <div v-else class="flex items-center flex-col justify-center mt-10 text-2xl">
-            <Icon name="ion:ios-close-empty" size="100" class="text-red-500" />
-            <h1>Извините, записи по данным фильтрам не были найдены!</h1>
-            <h1>Попробуйте поставить другие фильтры или очистить их</h1>
-          </div>
+            @update-delivery-rows="updateDeliveryRows" @create-copy-row="createCopyRow" />
 
           <UIModal v-show="isOpen" @close-modal="closeModal">
             <template v-slot:header>
@@ -293,13 +287,7 @@ const token = Cookies.get("token");
 
           <SpreadsheetsDeliveryTable @update-delivery-row="updateDeliveryRow" :rows="filteredRows" :user="user"
             @delete-row="deleteRow" @open-modal="openModal" @delete-selected-rows="deleteSelectedRows"
-            @update-delivery-rows="updateDeliveryRows" @create-copy-row="createCopyRow" v-if="filteredRows" />
-
-          <div v-else class="flex items-center flex-col justify-center mt-10 text-2xl">
-            <Icon name="ion:ios-close-empty" size="100" class="text-red-500" />
-            <h1>Извините, записи по данным фильтрам не были найдены!</h1>
-            <h1>Попробуйте поставить другие фильтры или очистить их</h1>
-          </div>
+            @update-delivery-rows="updateDeliveryRows" @create-copy-row="createCopyRow" />
 
           <UIModal v-show="isOpen" @close-modal="closeModal">
             <template v-slot:header>
