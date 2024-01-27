@@ -103,6 +103,9 @@ definePageMeta({
               <option class="text-black" :value="[47.945142, 37.960908]">
                 г. Донецк, ул. Нартова, 1. Возле магазина "Добрый"
               </option>
+              <option class="text-black" :value="[47.955462, 37.964951]">
+                г. Донецк, ул. Палладина, 20.
+              </option>
             </select>
             <ClientOnly>
               <YandexMap
