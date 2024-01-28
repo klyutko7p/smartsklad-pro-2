@@ -23,16 +23,21 @@ let isOpen = ref(false);
 
 function openModal(row: IClientRansom) {
   isOpen.value = true;
-  rowData.value = JSON.parse(JSON.stringify(row));
-  rowData.value.deliveredSC = rowData.value.deliveredSC
-    ? storeUsers.getISODateTime(rowData.value.deliveredSC)
-    : null;
-  rowData.value.deliveredPVZ = rowData.value.deliveredPVZ
-    ? storeUsers.getISODateTime(rowData.value.deliveredPVZ)
-    : null;
-  rowData.value.issued = rowData.value.issued
-    ? storeUsers.getISODateTime(rowData.value.issued)
-    : null;
+  if (row.id) {
+    rowData.value = JSON.parse(JSON.stringify(row));
+    rowData.value.deliveredSC = rowData.value.deliveredSC
+      ? storeUsers.getISODateTime(rowData.value.deliveredSC)
+      : null;
+    rowData.value.deliveredPVZ = rowData.value.deliveredPVZ
+      ? storeUsers.getISODateTime(rowData.value.deliveredPVZ)
+      : null;
+    rowData.value.issued = rowData.value.issued
+      ? storeUsers.getISODateTime(rowData.value.issued)
+      : null;
+  } else {
+    rowData.value = {} as IClientRansom;
+    rowData.value.fromName = ''
+  }
 }
 
 function closeModal() {
@@ -325,11 +330,13 @@ const token = Cookies.get("token");
             </div>
 
             <div class="flex items-center justify-center gap-3 mt-10" v-if="rowData.id">
-              <UIMainButton @click="updateRow">Сохранить</UIMainButton>
+              <UIMainButton :disabled="rowData.fromName === '' || rowData.fromName === null" @click="updateRow">Сохранить
+              </UIMainButton>
               <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>
             <div class="flex items-center justify-center gap-3 mt-10" v-else>
-              <UIMainButton @click="createRow">Создать</UIMainButton>
+              <UIMainButton :disabled="rowData.fromName === '' || rowData.fromName === null" @click="createRow">Создать
+              </UIMainButton>
               <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>
           </UIModal>
@@ -478,11 +485,13 @@ const token = Cookies.get("token");
             </div>
 
             <div class="flex items-center justify-center gap-3 mt-10" v-if="rowData.id">
-              <UIMainButton @click="updateRow">Сохранить</UIMainButton>
+              <UIMainButton :disabled="rowData.fromName === '' || rowData.fromName === null" @click="updateRow">Сохранить
+              </UIMainButton>
               <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>
             <div class="flex items-center justify-center gap-3 mt-10" v-else>
-              <UIMainButton @click="createRow">Создать</UIMainButton>
+              <UIMainButton :disabled="rowData.fromName === '' || rowData.fromName === null" @click="createRow">Создать
+              </UIMainButton>
               <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>
           </UIModal>

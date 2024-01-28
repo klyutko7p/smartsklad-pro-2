@@ -1,5 +1,14 @@
+<script lang="ts" setup>
+
+defineProps({
+  disabled: {type: Boolean}
+})
+
+</script>
+
+
 <template>
-  <button class="button-87" role="button">
+  <button :disabled="disabled" class="button-87 disabled:opacity-50 disabled:cursor-not-allowed" role="button">
     <slot/>
   </button>
 </template>

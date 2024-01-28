@@ -25,16 +25,21 @@ let isOpen = ref(false);
 
 function openModal(row: IOurRansom) {
   isOpen.value = true;
-  rowData.value = JSON.parse(JSON.stringify(row));
-  rowData.value.deliveredSC = rowData.value.deliveredSC
-    ? storeUsers.getISODateTime(rowData.value.deliveredSC)
-    : null;
-  rowData.value.deliveredPVZ = rowData.value.deliveredPVZ
-    ? storeUsers.getISODateTime(rowData.value.deliveredPVZ)
-    : null;
-  rowData.value.issued = rowData.value.issued
-    ? storeUsers.getISODateTime(rowData.value.issued)
-    : null;
+  if (row.id) {
+    rowData.value = JSON.parse(JSON.stringify(row));
+    rowData.value.deliveredSC = rowData.value.deliveredSC
+      ? storeUsers.getISODateTime(rowData.value.deliveredSC)
+      : null;
+    rowData.value.deliveredPVZ = rowData.value.deliveredPVZ
+      ? storeUsers.getISODateTime(rowData.value.deliveredPVZ)
+      : null;
+    rowData.value.issued = rowData.value.issued
+      ? storeUsers.getISODateTime(rowData.value.issued)
+      : null;
+  } else {
+    rowData.value = {} as IOurRansom;
+    rowData.value.fromName = ''
+  }
 }
 
 function closeModal() {
@@ -59,7 +64,6 @@ async function updateDeliveryRows(obj: any) {
   rows.value = await storeRansom.getRansomRows('OurRansom');
   isLoading.value = false;
 }
-
 
 async function deleteRow(id: number) {
   isLoading.value = true;
@@ -137,7 +141,7 @@ async function deleteIssuedRowsTimer() {
 
 function timeUntilSunday2359() {
   const now = new Date();
-  const dayOfWeek = now.getDay(); 
+  const dayOfWeek = now.getDay();
   const daysUntilSunday = (dayOfWeek === 0) ? 0 : (7 - dayOfWeek);
 
   const nextSunday1337 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilSunday, 23, 59, 0, 0);
@@ -147,7 +151,7 @@ function timeUntilSunday2359() {
 
 function scheduleDeleteIssuedRows() {
   const timeUntilSunday2359Data = timeUntilSunday2359();
-  
+
   setTimeout(async () => {
     await deleteIssuedRowsTimer();
   }, timeUntilSunday2359Data);
@@ -226,7 +230,7 @@ const token = Cookies.get("token");
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'">
-                <label for="fromName">Телефон</label>
+                <label for="fromName">Телефон <sup>*</sup></label>
                 <input :disabled="user.fromName1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.fromName" type="text" />
@@ -345,11 +349,13 @@ const token = Cookies.get("token");
             </div>
 
             <div class="flex items-center justify-center gap-3 mt-10" v-if="rowData.id">
-              <UIMainButton @click="updateRow">Сохранить</UIMainButton>
+              <UIMainButton :disabled="rowData.fromName === '' || rowData.fromName === null" @click="updateRow">Сохранить
+              </UIMainButton>
               <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>
             <div class="flex items-center justify-center gap-3 mt-10" v-else>
-              <UIMainButton @click="createRow">Создать</UIMainButton>
+              <UIMainButton :disabled="rowData.fromName === '' || rowData.fromName === null" @click="createRow">Создать
+              </UIMainButton>
               <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>
           </UIModal>
@@ -396,7 +402,7 @@ const token = Cookies.get("token");
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'">
-                <label for="fromName">Телефон</label>
+                <label for="fromName">Телефон <sup>*</sup></label>
                 <input :disabled="user.fromName1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.fromName" type="text" />
@@ -515,11 +521,13 @@ const token = Cookies.get("token");
             </div>
 
             <div class="flex items-center justify-center gap-3 mt-10" v-if="rowData.id">
-              <UIMainButton @click="updateRow">Сохранить</UIMainButton>
+              <UIMainButton :disabled="rowData.fromName === '' || rowData.fromName === null" @click="updateRow">Сохранить
+              </UIMainButton>
               <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>
             <div class="flex items-center justify-center gap-3 mt-10" v-else>
-              <UIMainButton @click="createRow">Создать</UIMainButton>
+              <UIMainButton :disabled="rowData.fromName === '' || rowData.fromName === null" @click="createRow">Создать
+              </UIMainButton>
               <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>
           </UIModal>
@@ -529,5 +537,4 @@ const token = Cookies.get("token");
         </div>
       </NuxtLayout>
     </div>
-  </div>
-</template>
+</div></template>

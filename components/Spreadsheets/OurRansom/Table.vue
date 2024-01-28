@@ -69,7 +69,7 @@ const perPage = ref(100)
 const currentPage = ref(1)
 const totalPages = computed(() => Math.ceil((props.rows?.length || 0) / perPage.value));
 const totalRows = computed(() => Math.ceil(props.rows?.length || 0));
-let returnRows = ref<Array<IOurRansom[]>>([])
+let returnRows = ref<Array<IOurRansom>>()
 
 function updateCurrentPageData() {
   const startIndex = (currentPage.value - 1) * perPage.value
@@ -103,6 +103,9 @@ const nextPage = () => {
 const toggleShowDeletedRows = () => {
   showDeletedRows.value = !showDeletedRows.value;
   updateCurrentPageData();
+  if (!isPrimaryView.value) {
+    updateRowsByFromName();
+  }
 };
 
 onMounted(() => {
@@ -115,6 +118,16 @@ let searchQuery = ref('')
 function toggleShowPrimaryView() {
   isPrimaryView.value = !isPrimaryView.value;
   updateCurrentPageData();
+  if (!isPrimaryView.value) {
+    updateRowsByFromName();
+  }
+}
+
+function updateRowsByFromName() {
+  updateCurrentPageData();
+  returnRows.value = returnRows.value?.filter((element, index) => {
+    return returnRows.value?.findIndex(i => i.cell === element.cell && i.fromName === element.fromName) === index;
+  })
 }
 
 function getRowsByFromName(fromNameData: string) {
@@ -139,7 +152,7 @@ function getRowsByFromName(fromNameData: string) {
       </div>
       <div class="flex items-center gap-5">
         <UIActionButton @click="toggleShowDeletedRows">
-          {{ showDeletedRows ? 'Показать удаленное' : 'Скрыть удаленное' }}
+          {{ showDeletedRows ? 'Скрыть удаленное' : 'Показать удаленное' }}
         </UIActionButton>
         <div v-if="isPrimaryView">
           <a href="#up">
@@ -413,7 +426,7 @@ function getRowsByFromName(fromNameData: string) {
 
   <div v-else class="mt-10">
     <h1 class="text-2xl mb-5">Режим выдачи товаров</h1>
-    <input @input="updateCurrentPageData" type="text" v-model="searchQuery"
+    <input @input="updateRowsByFromName" type="text" v-model="searchQuery"
       class="block w-full bg-transparent mb-5 border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 rounded-2xl focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"
       placeholder="Введите телефон..." />
     <div v-for="row in returnRows" 
@@ -429,8 +442,7 @@ function getRowsByFromName(fromNameData: string) {
     </div>
     <div v-else class="flex items-center flex-col justify-center mt-10 text-2xl">
       <Icon name="ion:ios-close-empty" size="100" class="text-red-500" />
-      <h1>Извините, записи по данному телефону не были найдены!</h1>
-      <h1>Попробуйте вписать другой телефон или очистить его</h1>
+      <h1>Извините, записи не были найдены!</h1>
     </div>
   </div>
 </template>

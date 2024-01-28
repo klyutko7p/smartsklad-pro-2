@@ -24,13 +24,18 @@ let isOpen = ref(false);
 
 function openModal(row: IDelivery) {
   isOpen.value = true;
-  rowData.value = JSON.parse(JSON.stringify(row));
+  if (row.id) {
+    rowData.value = JSON.parse(JSON.stringify(row));
   rowData.value.sorted = rowData.value.sorted
     ? storeUsers.getISODateTime(rowData.value.sorted)
     : null;
   rowData.value.paid = rowData.value.paid
     ? storeUsers.getISODateTime(rowData.value.paid)
     : null;
+  } else {
+    rowData.value = {} as IDelivery;
+    rowData.value.fromName = ''
+  }
 }
 
 function closeModal() {
@@ -290,11 +295,13 @@ const token = Cookies.get("token");
             </div>
 
             <div class="flex items-center justify-center gap-3 mt-10" v-if="rowData.id">
-              <UIMainButton @click="updateRow">Сохранить</UIMainButton>
+              <UIMainButton :disabled="rowData.fromName === '' || rowData.fromName === null" @click="updateRow">Сохранить
+              </UIMainButton>
               <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>
             <div class="flex items-center justify-center gap-3 mt-10" v-else>
-              <UIMainButton @click="createRow">Создать</UIMainButton>
+              <UIMainButton :disabled="rowData.fromName === '' || rowData.fromName === null" @click="createRow">Создать
+              </UIMainButton>
               <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>
           </UIModal>
@@ -409,11 +416,13 @@ const token = Cookies.get("token");
             </div>
 
             <div class="flex items-center justify-center gap-3 mt-10" v-if="rowData.id">
-              <UIMainButton @click="updateRow">Сохранить</UIMainButton>
+              <UIMainButton :disabled="rowData.fromName === '' || rowData.fromName === null" @click="updateRow">Сохранить
+              </UIMainButton>
               <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>
             <div class="flex items-center justify-center gap-3 mt-10" v-else>
-              <UIMainButton @click="createRow">Создать</UIMainButton>
+              <UIMainButton :disabled="rowData.fromName === '' || rowData.fromName === null" @click="createRow">Создать
+              </UIMainButton>
               <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>
           </UIModal>
