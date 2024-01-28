@@ -110,6 +110,35 @@ async function deleteIssuedRows() {
   isLoading.value = false;
 }
 
+async function deleteIssuedRowsTimer() {
+  isLoading.value = true;
+  await storeRansom.deleteIssuedRows("Delivery");
+  filteredRows.value = await storeRansom.getRansomRows("Delivery");
+  rows.value = await storeRansom.getRansomRows("Delivery");
+  isLoading.value = false;
+}
+
+function timeUntilSunday2359() {
+  const now = new Date();
+  const dayOfWeek = now.getDay(); 
+  const daysUntilSunday = (dayOfWeek === 0) ? 0 : (7 - dayOfWeek);
+
+  const nextSunday1337 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilSunday, 23, 59, 0, 0);
+
+  return nextSunday1337.getTime() - now.getTime();
+}
+
+function scheduleDeleteIssuedRows() {
+  const timeUntilSunday2359Data = timeUntilSunday2359();
+  
+  setTimeout(async () => {
+    await deleteIssuedRowsTimer();
+  }, timeUntilSunday2359Data);
+}
+
+scheduleDeleteIssuedRows();
+
+
 const filteredRows = ref<Array<IDelivery>>();
 
 function handleFilteredRows(filteredRowsData: IDelivery[]) {
