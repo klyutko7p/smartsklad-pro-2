@@ -322,7 +322,7 @@ function getRowsByFromName(fromNameData: string) {
             <a :href="row.productLink" target="_blank" class="hover:text-orange-200 duration-200">{{ row.productLink
             }}</a>
           </td>
-          <td class="py-4 px-6 border-2 whitespace-nowrap"
+          <td class="py-4 px-6 border-2"
             v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'">
             {{ row.productName }}
           </td>
