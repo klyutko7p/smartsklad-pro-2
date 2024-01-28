@@ -23,6 +23,7 @@ async function updateDeliveryRow(obj: any) {
 onMounted(async () => {
   isLoading.value = true;
   user.value = await storeUsers.getUser();
+  console.log(await storeRansom.getOldRansomRow(old_id, "OurRansom"));
   row.value = await storeRansom.getOldRansomRow(old_id, "OurRansom");
   isLoading.value = false;
 });
@@ -35,7 +36,6 @@ onMounted(() => {
   if (!token) {
     router.push("/auth/login");
   }
-  console.log(route.params);
 });
 
 const token = Cookies.get("token");
