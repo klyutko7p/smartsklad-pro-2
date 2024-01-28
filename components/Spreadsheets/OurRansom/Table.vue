@@ -65,7 +65,7 @@ const handleCheckboxChange = (rowId: number): void => {
 
 const showDeletedRows = ref(false);
 
-const perPage = ref(20)
+const perPage = ref(100)
 const currentPage = ref(1)
 const totalPages = computed(() => Math.ceil((props.rows?.length || 0) / perPage.value));
 const totalRows = computed(() => Math.ceil(props.rows?.length || 0));
@@ -79,6 +79,10 @@ function updateCurrentPageData() {
     returnRows.value = props.rows?.slice(startIndex, endIndex);
   } else {
     returnRows.value = props.rows?.filter((row) => !row.deleted).slice(startIndex, endIndex);
+  }
+
+  if (searchQuery.value !== '') {
+    returnRows.value = props.rows?.filter((row) => row.fromName ? row.fromName.includes(searchQuery.value) : row.fromName);
   }
 }
 
@@ -105,19 +109,39 @@ onMounted(() => {
   updateCurrentPageData()
 })
 
+let isPrimaryView = ref(true)
+let searchQuery = ref('')
+
+function toggleShowPrimaryView() {
+  isPrimaryView.value = !isPrimaryView.value;
+  updateCurrentPageData();
+}
+
+function getRowsByFromName(fromNameData: string) {
+  isPrimaryView.value = true;
+  returnRows.value = props.rows?.filter((row) => row.fromName === fromNameData);
+}
+
 </script>
 <template>
   <div class="flex items-center justify-between max-lg:block mt-10">
     <div>
-      <h1 class="text-2xl">Всего записей: <span class="text-secondary-color font-bold">{{ totalRows }}</span> </h1>
-      <div class="mb-5 flex items-center gap-5">
+      <div class="flex items-center max-sm:flex-col max-sm:items-start gap-5 mb-5">
+        <h1 class="text-2xl">Всего записей: <span class="text-secondary-color font-bold">{{ totalRows }}</span> </h1>
+        <UIActionButton @click="toggleShowPrimaryView">
+          {{ isPrimaryView ? 'Режим выдачи' : 'Режим заполнения' }}
+        </UIActionButton>
+      </div>
+      <div class="mb-5 flex items-center max-sm:flex-col max-sm:items-start gap-5" v-if="isPrimaryView">
         <h1>Сколько записей отображается в таблице: </h1>
-        <input class="bg-white max-w-[100px]" min="1" :max="totalRows" type="number" v-model="perPage">
-        <UIActionButton @click="updateCurrentPageData">Применить</UIActionButton>
+        <input class="max-w-[100px] bg-transparent border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 rounded-2xl focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6" min="1" :max="totalRows" type="number" v-model="perPage">
+        <UIMainButton @click="updateCurrentPageData">Применить</UIMainButton>
       </div>
       <div class="flex items-center gap-5">
-        <UIMainButton @click="toggleShowDeletedRows">Показать удаленное</UIMainButton>
-        <div>
+        <UIActionButton @click="toggleShowDeletedRows">
+          {{ showDeletedRows ? 'Показать удаленное' : 'Скрыть удаленное' }}
+        </UIActionButton>
+        <div v-if="isPrimaryView">
           <a href="#up">
             <Icon name="material-symbols:arrow-circle-up-rounded"
               class="text-secondary-color hover:opacity-50 duration-200" size="40" />
@@ -137,7 +161,7 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <div class="flex items-end max-lg:mt-5 max-lg:justify-between gap-20">
+    <div class="flex items-end max-lg:mt-5 max-lg:justify-between gap-20" v-if="isPrimaryView">
       <div class="flex flex-col text-center">
         <h1 class="text-base">Страница:</h1>
         <h1 class="text-base mb-2"> {{ currentPage }} из {{ totalPages }} </h1>
@@ -156,7 +180,7 @@ onMounted(() => {
         name="material-symbols:sheets-add-on" @click="exportToExcel" />
     </div>
   </div>
-  
+
   <div class="fixed z-40 flex flex-col gap-3 top-28 left-1/2 translate-x-[-50%] translate-y-[-50%]"
     v-if="user.dataOurRansom === 'WRITE' && checkedRows.length > 0">
     <UIActionButton v-if="user.dataOurRansom === 'WRITE' && checkedRows.length === 1" @click="createCopyRow">Скопировать
@@ -170,9 +194,10 @@ onMounted(() => {
     <UIActionButton v-if="user.issued1 === 'WRITE'" @click="updateDeliveryRows('issued')">Выдать клиенту</UIActionButton>
   </div>
 
-  <div class="relative max-h-[610px] overflow-x-auto mt-5 mb-10" v-if="totalRows > 0">
+  <div class="relative max-h-[610px] overflow-x-auto mt-5 mb-10" v-if="isPrimaryView">
     <div id="up"></div>
-    <table id="theTable" class="w-full border-x-2 border-gray-50 text-sm text-left rtl:text-right text-gray-500">
+    <table v-if="totalRows > 0" id="theTable"
+      class="w-full border-x-2 border-gray-50 text-sm text-left rtl:text-right text-gray-500">
       <thead class="text-xs sticky top-0 z-30 text-gray-700 uppercase text-center bg-gray-50">
         <tr>
           <th scope="col" class="px-6 py-3" v-if="user.dataOurRansom === 'WRITE'">
@@ -378,13 +403,35 @@ onMounted(() => {
         </tr>
       </tbody>
     </table>
+    <div v-else class="flex items-center flex-col justify-center mt-10 text-2xl">
+      <Icon name="ion:ios-close-empty" size="100" class="text-red-500" />
+      <h1>Извините, записи по данным фильтрам не были найдены!</h1>
+      <h1>Попробуйте поставить другие фильтры или очистить их</h1>
+    </div>
     <div id="down"></div>
   </div>
 
-  <div v-else class="flex items-center flex-col justify-center mt-10 text-2xl">
-    <Icon name="ion:ios-close-empty" size="100" class="text-red-500" />
-    <h1>Извините, записи по данным фильтрам не были найдены!</h1>
-    <h1>Попробуйте поставить другие фильтры или очистить их</h1>
+  <div v-else class="mt-10">
+    <h1 class="text-2xl mb-5">Режим выдачи товаров</h1>
+    <input @input="updateCurrentPageData" type="text" v-model="searchQuery"
+      class="block w-full bg-transparent mb-5 border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 rounded-2xl focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"
+      placeholder="Введите телефон..." />
+    <div v-for="row in returnRows" 
+      v-if="returnRows.length > 0">
+      <div @click="getRowsByFromName(row.fromName)" class="cursor-pointer hover:bg-hover-color duration-300 flex items-center  justify-between p-10 mb-3 border-2">
+        <div class="rounded-full border-2 p-3 min-w-[50px] text-center border-secondary-color">
+          <h1>{{ row.cell }}</h1>
+        </div>
+        <div>
+          <h1>Телефон: {{ row.fromName }}</h1>
+        </div>
+      </div>
+    </div>
+    <div v-else class="flex items-center flex-col justify-center mt-10 text-2xl">
+      <Icon name="ion:ios-close-empty" size="100" class="text-red-500" />
+      <h1>Извините, записи по данному телефону не были найдены!</h1>
+      <h1>Попробуйте вписать другой телефон или очистить его</h1>
+    </div>
   </div>
 </template>
 
