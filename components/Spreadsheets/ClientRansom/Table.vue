@@ -213,7 +213,7 @@ function getRowsByFromName(fromNameData: string) {
       v-if="totalRows > 0">
       <thead class="text-xs sticky top-0 z-30 text-gray-700 uppercase text-center bg-gray-50">
         <tr>
-          <th scope="col" class="px-6 py-3" v-if="user.dataClientRansom === 'WRITE'">
+          <th scope="col" class="px-1 py-3" v-if="user.dataClientRansom === 'WRITE'">
             Выделение
           </th>
           <th scope="col" class="px-6 py-3">id</th>
@@ -257,7 +257,6 @@ function getRowsByFromName(fromNameData: string) {
           <th scope="col" class="px-6 py-3" v-if="user.orderPVZ1 === 'READ' || user.orderPVZ1 === 'WRITE'">
             заказано на сц
           </th>
-
           <th scope="col" class="px-6 py-3" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
             доставлено на сц
           </th>
@@ -278,7 +277,7 @@ function getRowsByFromName(fromNameData: string) {
           <th scope="col" class="px-6 py-3">удален (время)</th>
           <th scope="col" class="px-6 py-3">создан</th>
           <th scope="col" class="px-6 py-3">изменен</th>
-          <th scope="col" class="exclude-row px-6 py-3" v-if="user.dataClientRansom === 'WRITE'">
+          <th scope="col" class="exclude-row px-6 py-3" v-if="user.dataClientRansom === 'WRITE' && user.role === 'ADMIN'">
             изменение
           </th>
           <th scope="col" class="exclude-row px-6 py-3" v-if="user.dataClientRansom === 'WRITE' && user.role === 'ADMIN'">
@@ -302,7 +301,7 @@ function getRowsByFromName(fromNameData: string) {
             </NuxtLink>
           </th>
           <td
-            class="px-3 py-4 underline border-2 text-secondary-color whitespace-nowrap uppercase overflow-hidden max-w-[200px]"
+            class="px-3 py-4 underline border-2 text-secondary-color whitespace-nowrap uppercase overflow-hidden max-w-[100px]"
             v-if="user.clientLink2 === 'READ' || user.clientLink2 === 'WRITE'">
             <NuxtLink target="_blank" class="cursor-pointer hover:text-orange-200 duration-200"
               :to="`/spreadsheets/order/${row.clientLink2}`">
@@ -318,7 +317,7 @@ function getRowsByFromName(fromNameData: string) {
           <td v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'" class="px-6 py-4 border-2">
             {{ row.fromName }}
           </td>
-          <td class="underline border-2 text-secondary-color whitespace-nowrap overflow-hidden max-w-[200px]"
+          <td class="underline border-2 text-secondary-color whitespace-nowrap overflow-hidden max-w-[100px]"
             v-if="user.productLink1 === 'READ' || user.productLink1 === 'WRITE'">
             <a :href="row.productLink" target="_blank" class="hover:text-orange-200 duration-200">{{ row.productLink
             }}</a>
@@ -393,7 +392,7 @@ function getRowsByFromName(fromNameData: string) {
           <td class="px-6 py-4 border-2">
             {{ row.updatedUser }}
           </td>
-          <td class="px-6 py-4 border-2" v-if="user.dataClientRansom === 'WRITE'">
+          <td class="px-6 py-4 border-2" v-if="user.dataClientRansom === 'WRITE' && user.role === 'ADMIN'">
             <Icon @click="openModal(row)" class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
               name="material-symbols:edit" size="32" />
           </td>

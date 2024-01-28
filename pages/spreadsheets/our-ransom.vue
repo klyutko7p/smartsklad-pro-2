@@ -198,7 +198,7 @@ const token = Cookies.get("token");
             <div class="mt-5 flex items-center gap-3" v-if="user.dataOurRansom === 'WRITE'">
               <UIMainButton @click="deleteIssuedRows" v-if="user.role === 'ADMIN' || user.username === 'admin1'">Удалить
                 выданное</UIMainButton>
-              <UIMainButton @click="openModal">Создать новую запись</UIMainButton>
+              <UIMainButton v-if="user.role === 'ADMIN'" @click="openModal">Создать новую запись</UIMainButton>
             </div>
           </div>
 
@@ -370,9 +370,6 @@ const token = Cookies.get("token");
         <div v-if="!isLoading" class="mt-3">
           <div>
             <SpreadsheetsOurRansomFilters v-if="rows" @filtered-rows="handleFilteredRows" :rows="rows" />
-            <div class="mt-5" v-if="user.dataOurRansom === 'WRITE'">
-              <UIMainButton @click="openModal">Создать новую запись</UIMainButton>
-            </div>
           </div>
 
           <SpreadsheetsOurRansomTable @update-delivery-row="updateDeliveryRow" :rows="filteredRows" :user="user"

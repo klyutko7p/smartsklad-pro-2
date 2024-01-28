@@ -227,7 +227,7 @@ function getRowsByFromName(fromNameData: string) {
         class="text-xs sticky top-0 z-30 text-gray-700 uppercase text-center bg-gray-50"
       >
         <tr>
-          <th scope="col" class="px-6 py-3" v-if="user.dataDelivery === 'WRITE'">
+          <th scope="col" class="px-1 py-3" v-if="user.dataDelivery === 'WRITE'">
             Выделение
           </th>
           <th scope="col" class="px-6 py-3">id</th>
@@ -330,7 +330,7 @@ function getRowsByFromName(fromNameData: string) {
           <th
             scope="col"
             class="exclude-row px-6 py-3"
-            v-if="user.dataDelivery === 'WRITE'"
+            v-if="user.dataDelivery === 'WRITE' && user.role === 'ADMIN'"
           >
             изменение
           </th>
@@ -375,7 +375,7 @@ function getRowsByFromName(fromNameData: string) {
             </NuxtLink>
           </th>
           <td
-            class="px-3 py-4 border-2 underline text-secondary-color whitespace-nowrap uppercase overflow-hidden max-w-[200px]"
+            class="px-3 py-4 border-2 underline text-secondary-color whitespace-nowrap uppercase overflow-hidden max-w-[100px]"
             v-if="user.clientLink3 === 'READ' || user.clientLink3 === 'WRITE'"
           >
             <NuxtLink
@@ -491,7 +491,7 @@ function getRowsByFromName(fromNameData: string) {
           <td class="px-6 py-4 border-2">
             {{ row.updatedUser }}
           </td>
-          <td class="px-6 py-4 border-2" v-if="user.dataDelivery === 'WRITE'">
+          <td class="px-6 py-4 border-2" v-if="user.dataDelivery === 'WRITE' && user.role === 'ADMIN'">
             <Icon
               @click="openModal(row)"
               class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
