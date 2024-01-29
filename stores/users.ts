@@ -140,15 +140,18 @@ export const useUsersStore = defineStore("users", () => {
 
     function getNormalizedDate(date: number | Date | string | null) {
         if (date) {
-            return new Date(date).toLocaleDateString('ru-RU', {
+            const options: Intl.DateTimeFormatOptions = {
                 year: 'numeric',
                 day: 'numeric',
                 month: '2-digit',
                 hour: 'numeric',
                 minute: '2-digit',
-            })
+                timeZone: 'Europe/Moscow', // Устанавливаем временную зону Москвы
+            };
+            return new Date(date).toLocaleString('ru-RU', options);
         }
     }
+    
 
     function getISODateTime(dateData: Date | string | number) {
         const date = new Date(dateData);

@@ -129,11 +129,11 @@ function handleFilteredRows(filteredRowsData: IOurRansom[]) {
   if (user.value.visiblePVZ === 'ВСЕ' && user.value.visibleSC === 'ВСЕ') {
     filteredRows.value = filteredRowsData;
   } else if (user.value.visiblePVZ === 'ВСЕ' && user.value.visibleSC !== 'ВСЕ') {
-    filteredRows.value = filteredRowsData.filter((row) => row.orderPVZ === user.value.visibleSC);
+    filteredRows.value = filteredRowsData.filter((row) => row.orderPVZ === user.value.visibleSC && row.deliveredSC !== null);
   } else if (user.value.visiblePVZ !== 'ВСЕ' && user.value.visibleSC === 'ВСЕ') {
-    filteredRows.value = filteredRowsData.filter((row) => row.dispatchPVZ === user.value.visiblePVZ);
+    filteredRows.value = filteredRowsData.filter((row) => row.dispatchPVZ === user.value.visiblePVZ && row.deliveredSC !== null);
   } else if (user.value.visiblePVZ !== 'ВСЕ' && user.value.visibleSC !== 'ВСЕ') {
-    filteredRows.value = filteredRowsData.filter((row) => row.dispatchPVZ === user.value.visiblePVZ && row.orderPVZ === user.value.visibleSC);
+    filteredRows.value = filteredRowsData.filter((row) => row.dispatchPVZ === user.value.visiblePVZ && row.orderPVZ === user.value.visibleSC && row.deliveredSC !== null);
   }
 }
 
