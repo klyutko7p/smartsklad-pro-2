@@ -25,10 +25,13 @@ function exportToExcel() {
     <Icon class="duration-200 hover:text-secondary-color cursor-pointer" size="40" name="material-symbols:sheets-add-on"
       @click="exportToExcel" />
   </div>
-  <div class="relative max-h-[760px] overflow-x-auto mt-5" v-if="rows">
+  <div class="relative max-h-[760px] mt-5" v-if="rows">
     <table id="theTable" class="w-full border-x-2 border-gray-50 text-sm text-left rtl:text-right text-gray-500">
       <thead class="text-xs sticky top-0 z-30 text-gray-700 uppercase text-center bg-gray-50">
         <tr>
+          <th scope="col" class="px-6 py-3" v-if="link?.startsWith('1') || link?.startsWith('2')">
+            номер
+          </th>
           <th scope="col" class="px-6 py-3" v-if="link?.startsWith('1') || link?.startsWith('2')">
             ячейка
           </th>
@@ -78,7 +81,10 @@ function exportToExcel() {
         </tr>
       </thead>
       <tbody>
-        <tr class="bg-white border-b text-center text-sm" v-for="row in rows">
+        <tr class="bg-white border-b text-center text-sm" v-for="(row, index) in rows" :key="index">
+          <td class="py-4 border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
+            {{ index + 1 }}
+          </td>
           <td class="py-4 border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             {{ row.cell }}
           </td>

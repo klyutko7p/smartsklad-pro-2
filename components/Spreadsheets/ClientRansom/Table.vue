@@ -215,7 +215,7 @@ function showLastPage() {
     <UIActionButton v-if="user.issued1 === 'WRITE'" @click="updateDeliveryRows('issued')">Выдать клиенту</UIActionButton>
   </div>
 
-  <div class="relative max-h-[760px] overflow-x-auto mt-5 mb-10" v-if="isPrimaryView">
+  <div class="relative max-h-[760px] mt-5 mb-10" v-if="isPrimaryView">
     <div id="up"></div>
     <table id="theTable" class="w-full border-x-2 border-gray-50 text-sm text-left rtl:text-right text-gray-500"
       v-if="totalRows > 0">
