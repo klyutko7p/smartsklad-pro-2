@@ -31,71 +31,71 @@ onMounted(() => {
   </div>
   <div class="relative max-h-[760px] mt-5" v-if="rows">
     <table id="theTable" class="w-full border-x-2 border-gray-50 text-sm text-left rtl:text-right text-gray-500">
-      <thead class="text-xs sticky top-0 z-30 text-gray-700 uppercase text-center bg-gray-50">
+      <thead class="text-xs sticky top-0 z-30 text-gray-700 uppercase text-center">
         <tr>
-          <th scope="col" class="px-6 py-3" v-if="link?.startsWith('1') || link?.startsWith('2')">
+          <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             номер
           </th>
-          <th scope="col" class="px-6 py-3" v-if="link?.startsWith('1') || link?.startsWith('2')">
+          <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             ячейка
           </th>
-          <th scope="col" class="px-6 py-3">
+          <th scope="col" class="border-2">
             телефон
           </th>
-          <th scope="col" class="px-6 py-3" v-if="link?.startsWith('3')">
+          <th scope="col" class="border-2" v-if="link?.startsWith('3')">
             название
           </th>
-          <th scope="col" class="px-6 py-3" v-if="link?.startsWith('1') || link?.startsWith('2')">
+          <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             товар (ссылка)
           </th>
-          <th scope="col" class="px-6 py-3" v-if="link?.startsWith('1') || link?.startsWith('2')">
+          <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             название товара
           </th>
-          <th scope="col" class="px-6 py-3" v-if="link?.startsWith('3')">
+          <th scope="col" class="border-2" v-if="link?.startsWith('3')">
             сумма выкупа товара
           </th>
-          <th scope="col" class="px-6 py-3" v-if="link?.startsWith('3')">
+          <th scope="col" class="border-2" v-if="link?.startsWith('3')">
             процент с клиента (%)
           </th>
-          <th scope="col" class="px-6 py-3">
+          <th scope="col" class="border-2">
             сумма с клиента
           </th>
-          <th scope="col" class="px-6 py-3" v-if="link?.startsWith('1') || link?.startsWith('2')">
+          <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             предоплата
           </th>
-          <th scope="col" class="px-6 py-3" v-if="link?.startsWith('1') || link?.startsWith('2')">
+          <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             доставлено на сц
           </th>
-          <th scope="col" class="px-6 py-3" v-if="link?.startsWith('3')">
+          <th scope="col" class="border-2" v-if="link?.startsWith('3')">
             отсортировано
           </th>
-          <th scope="col" class="px-6 py-3" v-if="link?.startsWith('3')">
+          <th scope="col" class="border-2" v-if="link?.startsWith('3')">
             оплачено
           </th>
-          <th scope="col" class="px-6 py-3" v-if="link?.startsWith('1') || link?.startsWith('2')">
+          <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             доставлено на пвз
           </th>
-          <th scope="col" class="px-6 py-3" v-if="link?.startsWith('1') || link?.startsWith('2')">
+          <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             выдан клиенту
           </th>
-          <th scope="col" class="px-6 py-3">
+          <th scope="col" class="border-2">
             дополнительно
           </th>
-          <th scope="col" class="px-6 py-3">создан (время)</th>
+          <th scope="col" class="border-2">создан (время)</th>
         </tr>
       </thead>
       <tbody>
         <tr class="bg-white border-b text-center text-sm" v-for="(row, index) in rows" :key="index">
-          <td class="py-4 border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
+          <td class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             {{ index + 1 }}
           </td>
-          <td class="py-4 border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
+          <td class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             {{ row.cell }}
           </td>
-          <td class="px-6 py-4 border-2">
+          <td class="px-2 border-2">
             {{ row.fromName }}
           </td>
-          <td class="px-6 py-4 border-2" v-if="link?.startsWith('3')">
+          <td class="px-2 border-2" v-if="link?.startsWith('3')">
             {{ row.nameOfAction }}
           </td>
           <td v-if="link?.startsWith('1') || link?.startsWith('2')"
@@ -104,53 +104,53 @@ onMounted(() => {
               {{ row.productLink}}
             </a>
           </td>
-          <td v-if="link?.startsWith('1') || link?.startsWith('2')" class="py-4 px-6 border-2">
+          <td v-if="link?.startsWith('1') || link?.startsWith('2')" class="border-2">
             {{ row.productName }}
           </td>
-          <td v-if="row.amountFromClient1 || row.amountFromClient1 === null || row.amountFromClient1 === 0" class="px-6 py-4 border-2">
+          <td v-if="row.amountFromClient1 || row.amountFromClient1 === null || row.amountFromClient1 === 0" class="border-2">
             {{ Math.round(row.amountFromClient1 / 10) * 10 }}
           </td>
-          <td v-if="row.amountFromClient2 || row.amountFromClient2 === null || row.amountFromClient2 === 0" class="px-6 py-4 border-2">
+          <td v-if="row.amountFromClient2 || row.amountFromClient2 === null || row.amountFromClient2 === 0" class="border-2">
             {{ Math.round(row.amountFromClient2 / 10) * 10 }}
           </td>
-          <td v-if="link?.startsWith('3')" class="px-6 py-4 border-2">
+          <td v-if="link?.startsWith('3')" class="border-2">
             {{ row.purchaseOfGoods }}
           </td>
-          <td v-if="link?.startsWith('3')" class="px-6 py-4 border-2">
+          <td v-if="link?.startsWith('3')" class="border-2">
             {{ row.percentClient }}
           </td>
-          <td v-if="row.amountFromClient3 || row.amountFromClient3 === null || row.amountFromClient3 === 0" class="px-6 py-4 border-2">
+          <td v-if="row.amountFromClient3 || row.amountFromClient3 === null || row.amountFromClient3 === 0" class="border-2">
             {{ row.amountFromClient3 }}
           </td>
-          <td v-if="link?.startsWith('1') || link?.startsWith('2')" class="px-6 py-4 border-2">
+          <td v-if="link?.startsWith('1') || link?.startsWith('2')" class="border-2">
             {{ row.prepayment }}
           </td>
-          <td class="px-3 py-4 border-2" v-if="link?.startsWith('3')">
+          <td class="border-2" v-if="link?.startsWith('3')">
             <h1 class="font-bold text-green-500">
               {{ row.sorted ? storeUsers.getNormalizedDate(row.sorted) : "" }}
             </h1>
           </td>
-          <td class="px-3 py-4 border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
+          <td class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             <h1 class="font-bold text-green-500">
               {{ row.deliveredSC ? storeUsers.getNormalizedDate(row.deliveredSC) : "" }}
             </h1>
           </td>
-          <td class="px-3 py-4 border-2" v-if="link?.startsWith('3')">
+          <td class="border-2" v-if="link?.startsWith('3')">
             <h1 class="font-bold text-green-500">
               {{ row.paid ? storeUsers.getNormalizedDate(row.paid) : "" }}
             </h1>
           </td>
-          <td class="px-3 py-4 border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
+          <td class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             <h1 class="font-bold text-green-500">
               {{ row.deliveredPVZ ? storeUsers.getNormalizedDate(row.deliveredPVZ) : "" }}
             </h1>
           </td>
-          <td class="px-3 py-4 border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
+          <td class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             <h1 class="font-bold text-green-500">
               {{ row.issued ? storeUsers.getNormalizedDate(row.issued) : "" }}
             </h1>
           </td>
-          <td class="px-6 py-4 border-2">
+          <td class="border-2">
             {{ row.additionally ? row.additionally : "Пусто" }}
           </td>
           <td class="px-6 py-4 border-2">

@@ -227,82 +227,82 @@ function showLastPage() {
     <div id="up"></div>
     <table v-if="totalRows > 0" id="theTable"
       class="w-full border-x-2 border-gray-50 text-sm text-left rtl:text-right text-gray-500">
-      <thead class="text-xs sticky top-0 z-30 text-gray-700 uppercase text-center bg-gray-50">
+      <thead class="text-xs sticky top-0 z-30 text-gray-700 uppercase text-center">
         <tr>
-          <th scope="col" class="pr-2" v-if="user.dataOurRansom === 'WRITE'">
+          <th scope="col" class="border-2" v-if="user.dataOurRansom === 'WRITE'">
             Выделение
           </th>
-          <th scope="col" class="exclude-row" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
+          <th scope="col" class="exclude-row border-2" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
             изменение
           </th>
-          <th scope="col">id</th>
-          <th scope="col" class="" v-if="user.clientLink1 === 'READ' || user.clientLink1 === 'WRITE'">
+          <th scope="col" class="border-2">id</th>
+          <th scope="col" class=" border-2" v-if="user.clientLink1 === 'READ' || user.clientLink1 === 'WRITE'">
             ссылка для клиента
           </th>
-          <th scope="col" class="" v-if="user.cell1 === 'READ' || user.cell1 === 'WRITE'">
+          <th scope="col" class=" border-2" v-if="user.cell1 === 'READ' || user.cell1 === 'WRITE'">
             ячейка
           </th>
-          <th scope="col" class="px-6 py-3" v-if="user.name1 === 'READ' || user.name1 === 'WRITE'">
+          <th scope="col" class="border-2" v-if="user.name1 === 'READ' || user.name1 === 'WRITE'">
             имя
           </th>
-          <th scope="col" class="px-6 py-3" v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'">
+          <th scope="col" class="border-2" v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'">
             телефон
           </th>
-          <th scope="col" class="px-6 py-3" v-if="user.productLink1 === 'READ' || user.productLink1 === 'WRITE'">
+          <th scope="col" class="border-2" v-if="user.productLink1 === 'READ' || user.productLink1 === 'WRITE'">
             товар (ссылка)
           </th>
-          <th scope="col" class="px-6 py-3" v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'">
+          <th scope="col" class="border-2" v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'">
             название товара
           </th>
-          <th scope="col" class="px-6 py-3" v-if="user.notation1 === 'READ' || user.notation1 === 'WRITE'">
+          <th scope="col" class="border-2" v-if="user.notation1 === 'READ' || user.notation1 === 'WRITE'">
             примечание
           </th>
-          <th scope="col" class="" v-if="user.priceSite === 'READ' || user.priceSite === 'WRITE'">
+          <th scope="col" class=" border-2" v-if="user.priceSite === 'READ' || user.priceSite === 'WRITE'">
             стоимость сайт
           </th>
-          <th scope="col" class="pl-2" v-if="user.prepayment1 === 'READ' || user.prepayment1 === 'WRITE'">
+          <th scope="col" class="border-2" v-if="user.prepayment1 === 'READ' || user.prepayment1 === 'WRITE'">
             предоплата
           </th>
-          <th scope="col" class="px-3" v-if="user.percentClient1 === 'READ' || user.percentClient1 === 'WRITE'">
+          <th scope="col" class="border-2" v-if="user.percentClient1 === 'READ' || user.percentClient1 === 'WRITE'">
             процент с клиента (%)
           </th>
-          <th scope="col" class="px-6 py-3" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
+          <th scope="col" class="border-2" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
             доставка кгт
           </th>
-          <th scope="col" class="px-2 py-3"
+          <th scope="col" class="border-2"
             v-if="user.amountFromClient1 === 'READ' || user.amountFromClient1 === 'WRITE'">
             сумма с клиента
           </th>
-          <th scope="col" class="px-2 py-3" v-if="user.dispatchPVZ1 === 'READ' || user.dispatchPVZ1 === 'WRITE'">
+          <th scope="col" class="border-2" v-if="user.dispatchPVZ1 === 'READ' || user.dispatchPVZ1 === 'WRITE'">
             отправка в пвз
           </th>
-          <th scope="col" class="px-2 py-3" v-if="user.orderPVZ1 === 'READ' || user.orderPVZ1 === 'WRITE'">
+          <th scope="col" class="border-2" v-if="user.orderPVZ1 === 'READ' || user.orderPVZ1 === 'WRITE'">
             заказано на сц
           </th>
-          <th scope="col" class="px-2 py-3" v-if="user.orderAccount === 'READ' || user.orderAccount === 'WRITE'">
+          <th scope="col" class="border-2" v-if="user.orderAccount === 'READ' || user.orderAccount === 'WRITE'">
             аккаунт заказа
           </th>
-          <th scope="col" class="px-2 py-3" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
+          <th scope="col" class="border-2" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
             доставлено на сц
           </th>
-          <th scope="col" class="px-2 py-3" v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'">
+          <th scope="col" class="border-2" v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'">
             доставлено на пвз
           </th>
-          <th scope="col" class="px-3 py-3" v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'">
+          <th scope="col" class="border-2" v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'">
             выдан клиенту
           </th>
-          <th scope="col" class="px-6 py-3" v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'">
+          <th scope="col" class="border-2" v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'">
             дополнительно
           </th>
-          <th scope="col" class="px-2 py-3" v-if="user.profit1 === 'READ' || user.profit1 === 'WRITE'">
+          <th scope="col" class="border-2" v-if="user.profit1 === 'READ' || user.profit1 === 'WRITE'">
             прибыль (доход)
           </th>
-          <th scope="col" class="px-6 py-3">создан (время)</th>
-          <th scope="col" class="px-6 py-3">изменен (время)</th>
-          <th scope="col" class="px-6 py-3">удален (время)</th>
-          <th scope="col" class="px-6 py-3">создан</th>
-          <th scope="col" class="px-6 py-3">изменен</th>
-          <th scope="col" class="exclude-row px-6 py-3" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
+          <th scope="col" class="border-2">создан (время)</th>
+          <th scope="col" class="border-2">изменен (время)</th>
+          <th scope="col" class="border-2">удален (время)</th>
+          <th scope="col" class="border-2">создан</th>
+          <th scope="col" class="border-2">изменен</th>
+          <th scope="col" class="exclude-row px-6 py-3 border-2" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
             удаление
           </th>
         </tr>
@@ -361,7 +361,7 @@ function showLastPage() {
           <td class="border-2" v-if="user.percentClient1 === 'READ' || user.percentClient1 === 'WRITE'">
             {{ row.percentClient }}
           </td>
-          <td class="px-6 py-4 border-2" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
+          <td class="px-2 py-4 border-2" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
             {{ row.deliveredKGT }}
           </td>
           <td class="px-6 py-4 border-2" v-if="user.amountFromClient1 === 'READ' || user.amountFromClient1 === 'WRITE'">
