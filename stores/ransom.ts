@@ -177,11 +177,11 @@ export const useRansomStore = defineStore("ransom", () => {
                 row.updatedUser = username;
                 row.updated_at = new Date().toISOString();
 
-                // if (row.fromName) {
-                //     row.clientLink1 = generateLink(row.fromName, 'OurRansom');
-                // } else {
-                //     row.clientLink1 = ''
-                // }
+                if (row.fromName) {
+                    row.clientLink1 = generateLink(row.fromName, 'OurRansom');
+                } else {
+                    row.clientLink1 = ''
+                }
 
                 row.amountFromClient1 = Math.round(row.priceSite + (row.priceSite * row.percentClient / 100) + row.deliveredKGT - row.prepayment);
                 row.profit1 = ((row.priceSite + row.prepayment) * 10) / 100;
@@ -197,11 +197,11 @@ export const useRansomStore = defineStore("ransom", () => {
                 row.updatedUser = username;
                 row.updated_at = new Date().toISOString();
 
-                // if (row.fromName) {
-                //     row.clientLink2 = generateLink(row.fromName, 'ClientRansom');
-                // } else {
-                //     row.clientLink2 = ''
-                // }
+                if (row.fromName) {
+                    row.clientLink2 = generateLink(row.fromName, 'ClientRansom');
+                } else {
+                    row.clientLink2 = ''
+                }
 
                 row.amountFromClient2 = row.priceProgram * row.percentClient / 100 - row.prepayment;
                 row.profit2 = row.amountFromClient2 + row.prepayment;
@@ -213,11 +213,11 @@ export const useRansomStore = defineStore("ransom", () => {
                 row.createdUser = username;
                 row.updatedUser = username;
 
-                // if (row.fromName) {
-                //     row.clientLink3 = generateLink(row.fromName, 'Delivery');
-                // } else {
-                //     row.clientLink3 = ''
-                // }
+                if (row.fromName) {
+                    row.clientLink3 = generateLink(row.fromName, 'Delivery');
+                } else {
+                    row.clientLink3 = ''
+                }
 
                 row.amountFromClient3 = row.purchaseOfGoods * row.percentClient / 100;
                 row.profit3 = row.amountFromClient3;

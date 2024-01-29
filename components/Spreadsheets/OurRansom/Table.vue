@@ -12,6 +12,7 @@ const emit = defineEmits([
   "deleteSelectedRows",
   "updateDeliveryRows",
   "createCopyRow",
+  "showLastPage",
 ]);
 
 function updateDeliveryRow(row: IOurRansom, flag: string) {
@@ -28,7 +29,6 @@ function openModal(row: IOurRansom) {
 
 function createCopyRow() {
   emit("createCopyRow", checkedRows.value[0]);
-  showLastPage();
 }
 
 function deleteRow(id: number) {
@@ -38,6 +38,7 @@ function deleteRow(id: number) {
 function deleteSelectedRows() {
   emit("deleteSelectedRows", checkedRows.value);
 }
+
 
 const props = defineProps({
   user: { type: Object as PropType<User>, required: true },
@@ -136,6 +137,7 @@ function getRowsByFromName(fromNameData: string) {
   returnRows.value = props.rows?.filter((row) => row.fromName === fromNameData);
 }
 
+
 function showLastPage() {
   currentPage.value = totalPages.value;
 }
@@ -152,7 +154,9 @@ function showLastPage() {
       </div>
       <div class="mb-5 flex items-center max-sm:flex-col max-sm:items-start gap-5" v-if="isPrimaryView">
         <h1>Сколько записей отображается в таблице: </h1>
-        <input class="max-w-[100px] bg-transparent border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 rounded-2xl focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6" min="1" :max="totalRows" type="number" v-model="perPage">
+        <input
+          class="max-w-[100px] bg-transparent border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 rounded-2xl focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"
+          min="1" :max="totalRows" type="number" v-model="perPage">
         <UIMainButton @click="updateCurrentPageData">Применить</UIMainButton>
       </div>
       <div class="flex items-center gap-5">
@@ -177,8 +181,7 @@ function showLastPage() {
               class="text-secondary-color hover:opacity-50 duration-200" size="40" />
           </a>
           <a href="#down" @click="showLastPage">
-            <Icon name="ic:round-last-page"
-              class="text-secondary-color hover:opacity-50 duration-200" size="40" />
+            <Icon name="ic:round-last-page" class="text-secondary-color hover:opacity-50 duration-200" size="40" />
           </a>
         </div>
       </div>
@@ -198,8 +201,8 @@ function showLastPage() {
           </button>
         </div>
       </div>
-      <Icon class="duration-200 hover:text-secondary-color cursor-pointer" size="40"
-        name="material-symbols:sheets-add-on" @click="exportToExcel" />
+      <Icon class="duration-200 hover:text-secondary-color cursor-pointer" size="40" name="material-symbols:sheets-add-on"
+        @click="exportToExcel" />
     </div>
   </div>
 
@@ -304,9 +307,8 @@ function showLastPage() {
         <div id="left"></div>
         <tr :class="{ 'bg-orange-100': isChecked(row.id) }" class="border-b text-center text-sm"
           v-for="row in returnRows">
-          <td v-if="user.dataOurRansom === 'WRITE'"
-            class="border-2 text-secondary-color">
-            <input  type="checkbox" :value="row.id" :checked="isChecked(row.id)" @change="handleCheckboxChange(row.id)" />
+          <td v-if="user.dataOurRansom === 'WRITE'" class="border-2 text-secondary-color">
+            <input type="checkbox" :value="row.id" :checked="isChecked(row.id)" @change="handleCheckboxChange(row.id)" />
           </td>
           <td class="px-6 py-4 border-2" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
             <Icon @click="openModal(row)" class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
@@ -340,8 +342,7 @@ function showLastPage() {
             <a :href="row.productLink" target="_blank" class="hover:text-orange-200 duration-200">{{ row.productLink
             }}</a>
           </td>
-          <td class="py-4 px-6 border-2"
-            v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'">
+          <td class="py-4 px-6 border-2" v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'">
             {{ row.productName }}
           </td>
           <td class="px-6 py-4 border-2" v-if="user.notation1 === 'READ' || user.notation1 === 'WRITE'">
@@ -416,7 +417,7 @@ function showLastPage() {
           <td class="px-6 py-4 border-2">
             {{ row.updatedUser }}
           </td>
-          
+
           <td class="px-6 py-4 border-2" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
             <Icon @click="deleteRow(row.id)" class="text-red-600 cursor-pointer hover:text-red-300 duration-200"
               name="material-symbols:playlist-remove-rounded" size="32" />
@@ -438,9 +439,9 @@ function showLastPage() {
     <input @input="updateRowsByFromName" type="text" v-model="searchQuery"
       class="block w-full bg-transparent mb-5 border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 rounded-2xl focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"
       placeholder="Введите телефон..." />
-    <div v-for="row in returnRows" 
-      v-if="returnRows.length > 0">
-      <div @click="getRowsByFromName(row.fromName)" class="cursor-pointer hover:bg-hover-color duration-300 flex items-center  justify-between p-10 mb-3 border-2">
+    <div v-for="row in returnRows" v-if="returnRows.length > 0">
+      <div @click="getRowsByFromName(row.fromName)"
+        class="cursor-pointer hover:bg-hover-color duration-300 flex items-center  justify-between p-10 mb-3 border-2">
         <div class="rounded-full border-2 p-3 min-w-[50px] text-center border-secondary-color">
           <h1>{{ row.cell }}</h1>
         </div>

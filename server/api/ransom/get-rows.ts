@@ -13,21 +13,21 @@ export default defineEventHandler(async (event) => {
         if (flag === 'OurRansom') {
             const rows = await prisma.ourRansom.findMany({
                 orderBy: {
-                    id: 'asc'
+                    created_at: 'desc',   
                 }
             });
             return rows;
         } else if (flag === 'ClientRansom') {
             const rows = await prisma.clientRansom.findMany({
                 orderBy: {
-                    id: 'asc'
+                    created_at: 'desc',   
                 }
             });
             return rows;
         } else if (flag === 'Delivery') {
             const rows = await prisma.delivery.findMany({
                 orderBy: {
-                    id: 'asc'
+                    created_at: 'desc',   
                 }
             });
             return rows;

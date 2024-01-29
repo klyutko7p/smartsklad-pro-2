@@ -155,6 +155,7 @@ function scheduleDeleteIssuedRows() {
   }, timeUntilSunday2359Data);
 }
 
+
 scheduleDeleteIssuedRows();
 
 onMounted(async () => {
@@ -181,6 +182,7 @@ definePageMeta({
 });
 
 const token = Cookies.get("token");
+
 </script>
 
 <template>
@@ -532,4 +534,5 @@ const token = Cookies.get("token");
         </div>
       </NuxtLayout>
     </div>
-</div></template>
+  </div>
+</template>
