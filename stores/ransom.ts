@@ -18,7 +18,6 @@ function generateLink(phoneNumber: string, flag: string) {
     } else if (flag === 'Delivery') {
         link = `3-${hash}`;
     }
-
     return link;
 }
 

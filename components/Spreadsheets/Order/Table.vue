@@ -6,7 +6,7 @@ import { read, utils, writeFile } from "xlsx";
 
 const storeUsers = useUsersStore();
 
-defineProps({
+const props = defineProps({
   rows: { type: Array as PropType<IOurRansom[] | IClientRansom[] | IDelivery[]>, required: true },
   link: { type: String }
 });
@@ -18,6 +18,10 @@ function exportToExcel() {
 
   writeFile(wb, "информация_о_заказе.xlsx");
 }
+
+onMounted(() => {
+  console.log(props.rows);
+})
 </script>
 
 <template>
@@ -103,10 +107,10 @@ function exportToExcel() {
           <td v-if="link?.startsWith('1') || link?.startsWith('2')" class="py-4 px-6 border-2">
             {{ row.productName }}
           </td>
-          <td v-if="row.amountFromClient1 || row.amountFromClient1 === null" class="px-6 py-4 border-2">
+          <td v-if="row.amountFromClient1 || row.amountFromClient1 === null || row.amountFromClient1 === 0" class="px-6 py-4 border-2">
             {{ Math.round(row.amountFromClient1 / 10) * 10 }}
           </td>
-          <td v-if="row.amountFromClient2 || row.amountFromClient2 === null" class="px-6 py-4 border-2">
+          <td v-if="row.amountFromClient2 || row.amountFromClient2 === null || row.amountFromClient2 === 0" class="px-6 py-4 border-2">
             {{ Math.round(row.amountFromClient2 / 10) * 10 }}
           </td>
           <td v-if="link?.startsWith('3')" class="px-6 py-4 border-2">
@@ -115,7 +119,7 @@ function exportToExcel() {
           <td v-if="link?.startsWith('3')" class="px-6 py-4 border-2">
             {{ row.percentClient }}
           </td>
-          <td v-if="row.amountFromClient3 || row.amountFromClient3 === null" class="px-6 py-4 border-2">
+          <td v-if="row.amountFromClient3 || row.amountFromClient3 === null || row.amountFromClient3 === 0" class="px-6 py-4 border-2">
             {{ row.amountFromClient3 }}
           </td>
           <td v-if="link?.startsWith('1') || link?.startsWith('2')" class="px-6 py-4 border-2">
