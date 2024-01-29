@@ -74,6 +74,7 @@ async function deleteSelectedRows(idArray: number[]) {
   isLoading.value = true;
   let answer = confirm("Вы точно хотите удалить данные строки?");
   if (answer) await storeRansom.deleteRansomSelectedRows(idArray, "ClientRansom");
+  filteredRows.value = await storeRansom.getRansomRows("OurRansom");
   rows.value = await storeRansom.getRansomRows("ClientRansom");
   isLoading.value = false;
 }

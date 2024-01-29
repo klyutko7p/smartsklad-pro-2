@@ -67,6 +67,7 @@ async function deleteRow(id: number) {
   isLoading.value = true;
   let answer = confirm("Вы точно хотите удалить данную строку?");
   if (answer) await storeRansom.deleteRansomRow(id, 'OurRansom');
+  filteredRows.value = await storeRansom.getRansomRows("OurRansom");
   rows.value = await storeRansom.getRansomRows('OurRansom');
   isLoading.value = false;
 }
@@ -75,6 +76,7 @@ async function deleteSelectedRows(idArray: number[]) {
   isLoading.value = true;
   let answer = confirm("Вы точно хотите удалить данные строки?");
   if (answer) await storeRansom.deleteRansomSelectedRows(idArray, 'OurRansom');
+  filteredRows.value = await storeRansom.getRansomRows("OurRansom");
   rows.value = await storeRansom.getRansomRows('OurRansom');
   isLoading.value = false;
 }
@@ -108,6 +110,7 @@ async function deleteIssuedRows() {
   isLoading.value = true;
   let answer = confirm("Вы точно хотите удалить выданные товары?");
   if (answer) await storeRansom.deleteIssuedRows('OurRansom');
+  filteredRows.value = await storeRansom.getRansomRows("OurRansom");
   rows.value = await storeRansom.getRansomRows('OurRansom');
   isLoading.value = false;
 }
@@ -115,10 +118,11 @@ async function deleteIssuedRows() {
 async function deleteIssuedRowsTimer() {
   isLoading.value = true;
   await storeRansom.deleteIssuedRows("OurRansom");
+  filteredRows.value = await storeRansom.getRansomRows("OurRansom");
   rows.value = await storeRansom.getRansomRows("OurRansom");
   isLoading.value = false;
 }
-  
+
 
 const filteredRows = ref<Array<IOurRansom>>();
 function handleFilteredRows(filteredRowsData: IOurRansom[]) {

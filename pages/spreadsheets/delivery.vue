@@ -63,6 +63,7 @@ async function deleteRow(id: number) {
   isLoading.value = true;
   let answer = confirm("Вы точно хотите удалить данную строку?");
   if (answer) await storeRansom.deleteRansomRow(id, 'Delivery');
+  filteredRows.value = await storeRansom.getRansomRows("OurRansom");
   rows.value = await storeRansom.getRansomRows('Delivery');
   isLoading.value = false;
 }
@@ -71,6 +72,7 @@ async function deleteSelectedRows(idArray: number[]) {
   isLoading.value = true;
   let answer = confirm("Вы точно хотите удалить данные строки?");
   if (answer) await storeRansom.deleteRansomSelectedRows(idArray, 'Delivery');
+  filteredRows.value = await storeRansom.getRansomRows("OurRansom");
   rows.value = await storeRansom.getRansomRows('Delivery');
   isLoading.value = false;
 }
