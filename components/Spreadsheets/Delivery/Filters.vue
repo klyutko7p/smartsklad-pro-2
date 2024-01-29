@@ -168,7 +168,8 @@ watch(
             type="date" v-model="endDate" />
         </div>
       </div>
-      <div class="flex justify-end mt-3">
+      <div class="flex justify-end gap-3 mt-3">
+        <UIMainButton @click="showFilters = false">Принять</UIMainButton>
         <UIMainButton @click="clearFields()">Очистить фильтры</UIMainButton>
       </div>
     </div>

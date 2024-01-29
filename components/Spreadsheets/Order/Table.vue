@@ -79,7 +79,7 @@ function exportToExcel() {
       </thead>
       <tbody>
         <tr class="bg-white border-b text-center text-sm" v-for="row in rows">
-          <td class="px-6 py-4 border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
+          <td class="py-4 border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             {{ row.cell }}
           </td>
           <td class="px-6 py-4 border-2">
@@ -89,12 +89,12 @@ function exportToExcel() {
             {{ row.nameOfAction }}
           </td>
           <td v-if="link?.startsWith('1') || link?.startsWith('2')"
-            class="underline border-2 text-secondary-color whitespace-nowrap overflow-hidden max-w-[200px]">
+            class="underline border-2 text-secondary-color whitespace-nowrap overflow-hidden max-w-[100px]">
             <a :href="row.productLink" target="_blank" class="hover:text-orange-200 duration-200">
               {{ row.productLink}}
             </a>
           </td>
-          <td v-if="link?.startsWith('1') || link?.startsWith('2')" class="py-4 px-6 border-2 whitespace-nowrap">
+          <td v-if="link?.startsWith('1') || link?.startsWith('2')" class="py-4 px-6 border-2">
             {{ row.productName }}
           </td>
           <td v-if="row.amountFromClient1 || row.amountFromClient1 === null" class="px-6 py-4 border-2">

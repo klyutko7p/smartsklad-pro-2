@@ -38,6 +38,7 @@ function deleteSelectedRows() {
 
 function createCopyRow() {
   emit("createCopyRow", checkedRows.value[0]);
+  showLastPage();
 }
 
 const props = defineProps({

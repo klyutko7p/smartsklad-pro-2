@@ -28,6 +28,7 @@ function openModal(row: IOurRansom) {
 
 function createCopyRow() {
   emit("createCopyRow", checkedRows.value[0]);
+  showLastPage();
 }
 
 function deleteRow(id: number) {
