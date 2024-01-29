@@ -229,17 +229,17 @@ function showLastPage() {
       class="w-full border-x-2 border-gray-50 text-sm text-left rtl:text-right text-gray-500">
       <thead class="text-xs sticky top-0 z-30 text-gray-700 uppercase text-center bg-gray-50">
         <tr>
-          <th scope="col" class="px-1 py-3" v-if="user.dataOurRansom === 'WRITE'">
+          <th scope="col" class="pr-2" v-if="user.dataOurRansom === 'WRITE'">
             Выделение
           </th>
-          <th scope="col" class="exclude-row px-6 py-3" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
+          <th scope="col" class="exclude-row" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
             изменение
           </th>
-          <th scope="col" class="px-6 py-3">id</th>
-          <th scope="col" class="px-6 py-3" v-if="user.clientLink1 === 'READ' || user.clientLink1 === 'WRITE'">
+          <th scope="col">id</th>
+          <th scope="col" class="" v-if="user.clientLink1 === 'READ' || user.clientLink1 === 'WRITE'">
             ссылка для клиента
           </th>
-          <th scope="col" class="px-6 py-3" v-if="user.cell1 === 'READ' || user.cell1 === 'WRITE'">
+          <th scope="col" class="" v-if="user.cell1 === 'READ' || user.cell1 === 'WRITE'">
             ячейка
           </th>
           <th scope="col" class="px-6 py-3" v-if="user.name1 === 'READ' || user.name1 === 'WRITE'">
@@ -257,44 +257,44 @@ function showLastPage() {
           <th scope="col" class="px-6 py-3" v-if="user.notation1 === 'READ' || user.notation1 === 'WRITE'">
             примечание
           </th>
-          <th scope="col" class="px-6 py-3" v-if="user.priceSite === 'READ' || user.priceSite === 'WRITE'">
+          <th scope="col" class="" v-if="user.priceSite === 'READ' || user.priceSite === 'WRITE'">
             стоимость сайт
           </th>
-          <th scope="col" class="px-6 py-3" v-if="user.prepayment1 === 'READ' || user.prepayment1 === 'WRITE'">
+          <th scope="col" class="pl-2" v-if="user.prepayment1 === 'READ' || user.prepayment1 === 'WRITE'">
             предоплата
           </th>
-          <th scope="col" class="px-6 py-3" v-if="user.percentClient1 === 'READ' || user.percentClient1 === 'WRITE'">
+          <th scope="col" class="px-3" v-if="user.percentClient1 === 'READ' || user.percentClient1 === 'WRITE'">
             процент с клиента (%)
           </th>
           <th scope="col" class="px-6 py-3" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
             доставка кгт
           </th>
-          <th scope="col" class="px-6 py-3"
+          <th scope="col" class="px-2 py-3"
             v-if="user.amountFromClient1 === 'READ' || user.amountFromClient1 === 'WRITE'">
             сумма с клиента
           </th>
-          <th scope="col" class="px-6 py-3" v-if="user.dispatchPVZ1 === 'READ' || user.dispatchPVZ1 === 'WRITE'">
+          <th scope="col" class="px-2 py-3" v-if="user.dispatchPVZ1 === 'READ' || user.dispatchPVZ1 === 'WRITE'">
             отправка в пвз
           </th>
-          <th scope="col" class="px-6 py-3" v-if="user.orderPVZ1 === 'READ' || user.orderPVZ1 === 'WRITE'">
+          <th scope="col" class="px-2 py-3" v-if="user.orderPVZ1 === 'READ' || user.orderPVZ1 === 'WRITE'">
             заказано на сц
           </th>
-          <th scope="col" class="px-6 py-3" v-if="user.orderAccount === 'READ' || user.orderAccount === 'WRITE'">
+          <th scope="col" class="px-2 py-3" v-if="user.orderAccount === 'READ' || user.orderAccount === 'WRITE'">
             аккаунт заказа
           </th>
-          <th scope="col" class="px-6 py-3" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
+          <th scope="col" class="px-2 py-3" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
             доставлено на сц
           </th>
-          <th scope="col" class="px-6 py-3" v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'">
+          <th scope="col" class="px-2 py-3" v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'">
             доставлено на пвз
           </th>
-          <th scope="col" class="px-6 py-3" v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'">
+          <th scope="col" class="px-3 py-3" v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'">
             выдан клиенту
           </th>
           <th scope="col" class="px-6 py-3" v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'">
             дополнительно
           </th>
-          <th scope="col" class="px-6 py-3" v-if="user.profit1 === 'READ' || user.profit1 === 'WRITE'">
+          <th scope="col" class="px-2 py-3" v-if="user.profit1 === 'READ' || user.profit1 === 'WRITE'">
             прибыль (доход)
           </th>
           <th scope="col" class="px-6 py-3">создан (время)</th>
@@ -314,25 +314,25 @@ function showLastPage() {
           <td v-if="user.dataOurRansom === 'WRITE'" class="border-2 text-secondary-color">
             <input type="checkbox" :value="row.id" :checked="isChecked(row.id)" @change="handleCheckboxChange(row.id)" />
           </td>
-          <td class="px-6 py-4 border-2" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
+          <td class="border-2" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
             <Icon @click="openModal(row)" class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
               name="material-symbols:edit" size="32" />
           </td>
-          <th scope="row" class="px-6 py-4 border-2 font-medium underline text-secondary-color whitespace-nowrap">
+          <th scope="row" class="px-3 py-4 border-2 font-medium underline text-secondary-color whitespace-nowrap">
             <NuxtLink target="_blank" class="cursor-pointer hover:text-orange-200 duration-200"
               :to="`/spreadsheets/record/1/${row.id}`">
               {{ row.id }}
             </NuxtLink>
           </th>
           <td
-            class="px-3 py-4 border-2 underline text-secondary-color whitespace-nowrap uppercase overflow-hidden max-w-[100px]"
+            class="px-3 py-4 border-2 underline text-secondary-color whitespace-nowrap uppercase overflow-hidden max-w-[50px]"
             v-if="user.clientLink1 === 'READ' || user.clientLink1 === 'WRITE'">
             <NuxtLink target="_blank" class="cursor-pointer hover:text-orange-200 duration-200"
               :to="`/spreadsheets/order/${row.clientLink1}`">
               {{ row.clientLink1 }}
             </NuxtLink>
           </td>
-          <td v-if="user.cell1 === 'READ' || user.cell1 === 'WRITE'" class="px-6 py-4 border-2">
+          <td v-if="user.cell1 === 'READ' || user.cell1 === 'WRITE'" class="border-2">
             {{ row.cell }}
           </td>
           <td v-if="user.name1 === 'READ' || user.name1 === 'WRITE'" class="px-6 py-4 border-2 whitespace-nowrap">
@@ -352,13 +352,13 @@ function showLastPage() {
           <td class="px-6 py-4 border-2" v-if="user.notation1 === 'READ' || user.notation1 === 'WRITE'">
             {{ row.notation ? row.notation : "Пусто" }}
           </td>
-          <td class="px-6 py-4 border-2" v-if="user.priceSite === 'READ' || user.priceSite === 'WRITE'">
+          <td class="border-2" v-if="user.priceSite === 'READ' || user.priceSite === 'WRITE'">
             {{ row.priceSite }}
           </td>
-          <td class="px-6 py-4 border-2" v-if="user.prepayment1 === 'READ' || user.prepayment1 === 'WRITE'">
+          <td class="border-2" v-if="user.prepayment1 === 'READ' || user.prepayment1 === 'WRITE'">
             {{ row.prepayment }}
           </td>
-          <td class="px-6 py-4 border-2" v-if="user.percentClient1 === 'READ' || user.percentClient1 === 'WRITE'">
+          <td class="border-2" v-if="user.percentClient1 === 'READ' || user.percentClient1 === 'WRITE'">
             {{ row.percentClient }}
           </td>
           <td class="px-6 py-4 border-2" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
@@ -367,13 +367,13 @@ function showLastPage() {
           <td class="px-6 py-4 border-2" v-if="user.amountFromClient1 === 'READ' || user.amountFromClient1 === 'WRITE'">
             {{ Math.round(row.amountFromClient1 / 10) * 10 }}
           </td>
-          <td class="px-6 py-4 border-2" v-if="user.dispatchPVZ1 === 'READ' || user.dispatchPVZ1 === 'WRITE'">
+          <td class="px-2 py-4 border-2" v-if="user.dispatchPVZ1 === 'READ' || user.dispatchPVZ1 === 'WRITE'">
             {{ row.dispatchPVZ }}
           </td>
-          <td class="px-6 py-4 border-2" v-if="user.orderPVZ1 === 'READ' || user.orderPVZ1 === 'WRITE'">
+          <td class="px-2 py-4 border-2" v-if="user.orderPVZ1 === 'READ' || user.orderPVZ1 === 'WRITE'">
             {{ row.orderPVZ }}
           </td>
-          <td class="px-6 py-4 border-2" v-if="user.orderAccount === 'READ' || user.orderAccount === 'WRITE'">
+          <td class="px-2 py-4 border-2" v-if="user.orderAccount === 'READ' || user.orderAccount === 'WRITE'">
             {{ row.orderAccount }}
           </td>
           <td class="px-3 py-4 border-2" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
@@ -403,7 +403,7 @@ function showLastPage() {
           <td class="px-6 py-4 border-2" v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'">
             {{ row.additionally ? row.additionally : "Пусто" }}
           </td>
-          <td class="px-6 py-4 border-2" v-if="user.profit1 === 'READ' || user.profit1 === 'WRITE'">
+          <td class="px-1 py-4 border-2" v-if="user.profit1 === 'READ' || user.profit1 === 'WRITE'">
             {{ row.profit1 }}
           </td>
           <td class="px-6 py-4 border-2">
