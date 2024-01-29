@@ -330,7 +330,7 @@ const token = Cookies.get("token");
             </div>
 
             <div class="flex items-center justify-center gap-3 mt-10" v-if="rowData.id">
-              <UIMainButton :disabled="rowData.fromName === '' || rowData.fromName === null" @click="updateRow">Сохранить
+              <UIMainButton @click="updateRow">Сохранить
               </UIMainButton>
               <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>
@@ -481,7 +481,7 @@ const token = Cookies.get("token");
             </div>
 
             <div class="flex items-center justify-center gap-3 mt-10" v-if="rowData.id">
-              <UIMainButton :disabled="rowData.fromName === '' || rowData.fromName === null" @click="updateRow">Сохранить
+              <UIMainButton @click="updateRow">Сохранить
               </UIMainButton>
               <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>
