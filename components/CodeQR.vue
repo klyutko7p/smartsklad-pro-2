@@ -7,6 +7,6 @@ defineProps({
 </script>
 
 <template>
-  <qrcode-vue :value="value" />
+  <qrcode-vue :size="130" :value="value" />
 </template>
 

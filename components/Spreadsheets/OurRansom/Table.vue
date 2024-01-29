@@ -225,6 +225,9 @@ function showLastPage() {
           <th scope="col" class="px-1 py-3" v-if="user.dataOurRansom === 'WRITE'">
             Выделение
           </th>
+          <th scope="col" class="exclude-row px-6 py-3" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
+            изменение
+          </th>
           <th scope="col" class="px-6 py-3">id</th>
           <th scope="col" class="px-6 py-3" v-if="user.clientLink1 === 'READ' || user.clientLink1 === 'WRITE'">
             ссылка для клиента
@@ -293,9 +296,6 @@ function showLastPage() {
           <th scope="col" class="px-6 py-3">создан</th>
           <th scope="col" class="px-6 py-3">изменен</th>
           <th scope="col" class="exclude-row px-6 py-3" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
-            изменение
-          </th>
-          <th scope="col" class="exclude-row px-6 py-3" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
             удаление
           </th>
         </tr>
@@ -308,7 +308,10 @@ function showLastPage() {
             class="border-2 text-secondary-color">
             <input  type="checkbox" :value="row.id" :checked="isChecked(row.id)" @change="handleCheckboxChange(row.id)" />
           </td>
-
+          <td class="px-6 py-4 border-2" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
+            <Icon @click="openModal(row)" class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
+              name="material-symbols:edit" size="32" />
+          </td>
           <th scope="row" class="px-6 py-4 border-2 font-medium underline text-secondary-color whitespace-nowrap">
             <NuxtLink target="_blank" class="cursor-pointer hover:text-orange-200 duration-200"
               :to="`/spreadsheets/record/1/${row.id}`">
@@ -413,10 +416,7 @@ function showLastPage() {
           <td class="px-6 py-4 border-2">
             {{ row.updatedUser }}
           </td>
-          <td class="px-6 py-4 border-2" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
-            <Icon @click="openModal(row)" class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
-              name="material-symbols:edit" size="32" />
-          </td>
+          
           <td class="px-6 py-4 border-2" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
             <Icon @click="deleteRow(row.id)" class="text-red-600 cursor-pointer hover:text-red-300 duration-200"
               name="material-symbols:playlist-remove-rounded" size="32" />
