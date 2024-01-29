@@ -84,7 +84,11 @@ function updateCurrentPageData() {
   }
 
   if (searchQuery.value !== '') {
-    returnRows.value = props.rows?.filter((row) => row.fromName ? row.fromName.includes(searchQuery.value) : row.fromName);
+    returnRows.value = props.rows?.filter((row) => {
+      const fromNameMatch = row.fromName && row.fromName.includes(searchQuery.value);
+      const cellMatch = row.cell && row.cell.includes(searchQuery.value);
+      return fromNameMatch || cellMatch;
+    });
   }
 }
 
@@ -438,7 +442,7 @@ function showLastPage() {
     <h1 class="text-2xl mb-5">Режим выдачи товаров</h1>
     <input @input="updateRowsByFromName" type="text" v-model="searchQuery"
       class="block w-full bg-transparent mb-5 border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 rounded-2xl focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"
-      placeholder="Введите телефон..." />
+      placeholder="Введите телефон или ячейку..." />
     <div v-for="row in returnRows" v-if="returnRows.length > 0">
       <div @click="getRowsByFromName(row.fromName)"
         class="cursor-pointer hover:bg-hover-color duration-300 flex items-center  justify-between p-10 mb-3 border-2">

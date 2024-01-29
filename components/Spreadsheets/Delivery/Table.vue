@@ -81,6 +81,14 @@ function updateCurrentPageData() {
   } else {
     returnRows.value = props.rows?.filter((row) => !row.deleted).slice(startIndex, endIndex);
   }
+
+  if (searchQuery.value !== '') {
+    returnRows.value = props.rows?.filter((row) => {
+      const fromNameMatch = row.fromName && row.fromName.includes(searchQuery.value);
+      const cellMatch = row.cell && row.cell.includes(searchQuery.value);
+      return fromNameMatch || cellMatch;
+    });
+  }
 }
 
 watch([currentPage, totalRows], updateCurrentPageData)

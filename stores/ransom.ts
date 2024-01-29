@@ -260,9 +260,11 @@ export const useRansomStore = defineStore("ransom", () => {
                 },
                 body: JSON.stringify({ row: row, flag: flag, flagRansom: flagRansom }),
             })
+            console.log(data);
             toast.success("Доставка успешно обновлена!")
         } catch (error) {
             if (error instanceof Error) {
+                console.error(error.message)
                 toast.error(error.message);
             }
         }

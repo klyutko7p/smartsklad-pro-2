@@ -68,7 +68,7 @@ const handleCheckboxChange = (rowId: number): void => {
 
 const showDeletedRows = ref(false);
 
-const perPage = ref(20)
+const perPage = ref(100)
 const currentPage = ref(1)
 const totalPages = computed(() => Math.ceil((props.rows?.length || 0) / perPage.value));
 const totalRows = computed(() => Math.ceil(props.rows?.length || 0));
@@ -82,6 +82,14 @@ function updateCurrentPageData() {
     returnRows.value = props.rows?.slice(startIndex, endIndex);
   } else {
     returnRows.value = props.rows?.filter((row) => !row.deleted).slice(startIndex, endIndex);
+  }
+
+  if (searchQuery.value !== '') {
+    returnRows.value = props.rows?.filter((row) => {
+      const fromNameMatch = row.fromName && row.fromName.includes(searchQuery.value);
+      const cellMatch = row.cell && row.cell.includes(searchQuery.value);
+      return fromNameMatch || cellMatch;
+    });
   }
 }
 
