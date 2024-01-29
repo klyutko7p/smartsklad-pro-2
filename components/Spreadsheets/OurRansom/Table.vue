@@ -135,6 +135,10 @@ function getRowsByFromName(fromNameData: string) {
   returnRows.value = props.rows?.filter((row) => row.fromName === fromNameData);
 }
 
+function showLastPage() {
+  currentPage.value = totalPages.value;
+}
+
 </script>
 <template>
   <div class="flex items-center justify-between max-lg:block mt-10">
@@ -171,6 +175,10 @@ function getRowsByFromName(fromNameData: string) {
             <Icon name="material-symbols:arrow-circle-right-rounded"
               class="text-secondary-color hover:opacity-50 duration-200" size="40" />
           </a>
+          <a href="#down" @click="showLastPage">
+            <Icon name="ic:round-last-page"
+              class="text-secondary-color hover:opacity-50 duration-200" size="40" />
+          </a>
         </div>
       </div>
     </div>
@@ -189,12 +197,12 @@ function getRowsByFromName(fromNameData: string) {
           </button>
         </div>
       </div>
-      <Icon v-if="user.role === 'ADMIN'" class="duration-200 hover:text-secondary-color cursor-pointer" size="40"
+      <Icon class="duration-200 hover:text-secondary-color cursor-pointer" size="40"
         name="material-symbols:sheets-add-on" @click="exportToExcel" />
     </div>
   </div>
 
-  <div class="fixed z-40 flex flex-col gap-3 top-28 left-1/2 translate-x-[-50%] translate-y-[-50%]"
+  <div class="fixed z-40 flex flex-col gap-3 top-36 left-1/2 translate-x-[-50%] translate-y-[-50%]"
     v-if="user.dataOurRansom === 'WRITE' && checkedRows.length > 0">
     <UIActionButton v-if="user.dataOurRansom === 'WRITE' && checkedRows.length === 1" @click="createCopyRow">Скопировать
       запись</UIActionButton>

@@ -26,7 +26,7 @@ definePageMeta({
   </Head>
   <div v-if="token">
     <div class="py-5">
-      <h1 class="text-xl">Приветствуем, {{ user.username }}!</h1>
+      <h1 class="text-xl mt-10">Приветствуем, {{ user.username }}!</h1>
     </div>
   </div>
 </template>
