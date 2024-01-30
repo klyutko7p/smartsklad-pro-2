@@ -67,8 +67,8 @@ export const useRansomStore = defineStore("ransom", () => {
                     row.clientLink1 = ''
                 }
 
-                row.amountFromClient1 = Math.round(row.priceSite + (row.priceSite * row.percentClient / 100) + row.deliveredKGT - row.prepayment);
-                row.profit1 = ((row.priceSite + row.prepayment) * 10) / 100;
+                row.amountFromClient1 = Math.round(row.priceSite + (row.priceSite * row.percentClient / 100) - row.prepayment);
+                row.profit1 = row.amountFromClient1 - row.priceSite + row.deliveredKGT;
 
             } else if (flag === 'ClientRansom') {
                 if (row.percentClient === undefined) row.percentClient = 10;
@@ -167,7 +167,7 @@ export const useRansomStore = defineStore("ransom", () => {
     async function updateRansomRow(row: IOurRansom | IClientRansom | IDelivery, username: string, flag: string) {
         try {
             if (flag === 'OurRansom') {
-                if (row.percentClient === undefined || row.percentClient === 0) row.percentClient = 10;
+                if (row.percentClient === undefined) row.percentClient = 10;
                 if (row.priceSite === undefined || row.priceSite === 0) row.priceSite = 0;
                 if (row.deliveredKGT === undefined || row.deliveredKGT === 0) row.deliveredKGT = 0;
                 if (row.productName === undefined || row.productName === '') row.productName = '';
@@ -182,12 +182,12 @@ export const useRansomStore = defineStore("ransom", () => {
                     row.clientLink1 = ''
                 }
 
-                row.amountFromClient1 = Math.round(row.priceSite + (row.priceSite * row.percentClient / 100) + row.deliveredKGT - row.prepayment);
-                row.profit1 = ((row.priceSite + row.prepayment) * 10) / 100;
+                row.amountFromClient1 = Math.round(row.priceSite + (row.priceSite * row.percentClient / 100) - row.prepayment);
+                row.profit1 = row.amountFromClient1 - row.priceSite + row.deliveredKGT;
 
 
             } else if (flag === 'ClientRansom') {
-                if (row.percentClient === undefined || row.percentClient === 0) row.percentClient = 10;
+                if (row.percentClient === undefined) row.percentClient = 10;
                 if (row.priceProgram === undefined || row.priceProgram === 0) row.priceProgram = 0;
                 if (row.deliveredKGT === undefined || row.deliveredKGT === 0) row.deliveredKGT = 0;
                 if (row.productName === undefined || row.productName === '') row.productName = '';
@@ -202,7 +202,7 @@ export const useRansomStore = defineStore("ransom", () => {
                     row.clientLink2 = ''
                 }
 
-                row.amountFromClient2 = row.priceProgram * row.percentClient / 100 - row.prepayment;
+                row.amountFromClient2 = row.priceProgram * row.percentClient / 100;
                 row.profit2 = row.amountFromClient2 + row.prepayment;
             } else if (flag === 'Delivery') {
                 if (row.percentClient === undefined) row.percentClient = 2;

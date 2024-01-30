@@ -279,7 +279,7 @@ const token = Cookies.get("token");
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
-                <label for="deliveredKGT1">Доставка КГТ</label>
+                <label for="deliveredKGT1">Разница цен</label>
                 <input :disabled="user.deliveredKGT1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.deliveredKGT" placeholder="По умолчанию: 0" type="number" />
@@ -448,7 +448,7 @@ const token = Cookies.get("token");
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
-                <label for="deliveredKGT1">Доставка КГТ</label>
+                <label for="deliveredKGT1">Разница цен</label>
                 <input :disabled="user.deliveredKGT1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.deliveredKGT" placeholder="По умолчанию: 0" type="number" />

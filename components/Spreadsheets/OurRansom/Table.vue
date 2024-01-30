@@ -267,7 +267,7 @@ function showLastPage() {
             процент с клиента (%)
           </th>
           <th scope="col" class="border-2" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
-            доставка кгт
+            разница цен
           </th>
           <th scope="col" class="border-2"
             v-if="user.amountFromClient1 === 'READ' || user.amountFromClient1 === 'WRITE'">
