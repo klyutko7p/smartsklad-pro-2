@@ -67,7 +67,7 @@ const handleCheckboxChange = (rowId: number): void => {
 
 const showDeletedRows = ref(false);
 
-const perPage = ref(100)
+const perPage = ref(20)
 const currentPage = ref(1)
 const totalPages = computed(() => Math.ceil((props.rows?.length || 0) / perPage.value));
 const totalRows = computed(() => Math.ceil(props.rows?.length || 0));
@@ -92,7 +92,7 @@ function updateCurrentPageData() {
   }
 }
 
-watch([currentPage, totalRows], updateCurrentPageData)
+watch([currentPage, totalRows, props.rows], updateCurrentPageData)
 
 const prevPage = () => {
   if (currentPage.value > 1) {
@@ -168,22 +168,6 @@ function showLastPage() {
           {{ showDeletedRows ? 'Скрыть удаленное' : 'Показать удаленное' }}
         </UIActionButton>
         <div v-if="isPrimaryView">
-          <a href="#up">
-            <Icon name="material-symbols:arrow-circle-up-rounded"
-              class="text-secondary-color hover:opacity-50 duration-200" size="40" />
-          </a>
-          <a href="#down">
-            <Icon name="material-symbols:arrow-circle-down" class="text-secondary-color hover:opacity-50 duration-200"
-              size="40" />
-          </a>
-          <a href="#left">
-            <Icon name="material-symbols:arrow-circle-left-rounded"
-              class="text-secondary-color hover:opacity-50 duration-200" size="40" />
-          </a>
-          <a href="#right">
-            <Icon name="material-symbols:arrow-circle-right-rounded"
-              class="text-secondary-color hover:opacity-50 duration-200" size="40" />
-          </a>
           <a href="#down" @click="showLastPage">
             <Icon name="ic:round-last-page" class="text-secondary-color hover:opacity-50 duration-200" size="40" />
           </a>
@@ -227,7 +211,7 @@ function showLastPage() {
     <div id="up"></div>
     <table v-if="totalRows > 0" id="theTable"
       class="w-full border-x-2 border-gray-50 text-sm text-left rtl:text-right text-gray-500">
-      <thead class="text-xs sticky top-0 z-30 text-gray-700 uppercase text-center">
+      <thead class="text-xs sticky top-0 z-30 text-gray-700 uppercase text-center bg-gray-50">
         <tr>
           <th scope="col" class="border-2" v-if="user.dataOurRansom === 'WRITE'">
             Выделение
