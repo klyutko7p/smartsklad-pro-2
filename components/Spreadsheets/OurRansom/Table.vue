@@ -114,12 +114,18 @@ const toggleShowDeletedRows = () => {
   }
 };
 
+let isPrimaryView = ref(false)
+
+
 onMounted(() => {
   updateCurrentPageData()
   updateRowsByFromName();
+
+  if (props.user.username === 'Светлана') {
+    isPrimaryView.value = true;
+  }
 })
 
-let isPrimaryView = ref(false)
 let searchQuery = ref('')
 
 function toggleShowPrimaryView() {
@@ -147,13 +153,9 @@ function showLastPage() {
   currentPage.value = totalPages.value;
 }
 
-// TABLE
-
-
-
-
 </script>
 <template>
+
   <div class="flex items-center justify-between max-lg:block mt-10">
     <div>
       <div class="flex items-center max-sm:flex-col max-sm:items-start gap-5 mb-5">
@@ -211,7 +213,8 @@ function showLastPage() {
     <UIActionButton v-if="user.deliveredPVZ1 === 'WRITE'" @click="updateDeliveryRows('PVZ')">Доставить на пвз
     </UIActionButton>
     <UIActionButton v-if="user.issued1 === 'WRITE'" @click="updateDeliveryRows('issued')">Выдать клиенту</UIActionButton>
-    <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally')">Оплачено онлайн</UIActionButton>
+    <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally')">Оплачено онлайн
+    </UIActionButton>
   </div>
 
   <div class="relative max-h-[610px] mt-5 mb-10 mr-5" v-if="isPrimaryView">
@@ -260,8 +263,7 @@ function showLastPage() {
           <th scope="col" class="border-2" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
             разница цен
           </th>
-          <th scope="col" class="border-2"
-            v-if="user.amountFromClient1 === 'READ' || user.amountFromClient1 === 'WRITE'">
+          <th scope="col" class="border-2" v-if="user.amountFromClient1 === 'READ' || user.amountFromClient1 === 'WRITE'">
             сумма с клиента
           </th>
           <th scope="col" class="border-2" v-if="user.dispatchPVZ1 === 'READ' || user.dispatchPVZ1 === 'WRITE'">
@@ -293,7 +295,8 @@ function showLastPage() {
           <th scope="col" class="border-2">удален (время)</th>
           <th scope="col" class="border-2">создан</th>
           <th scope="col" class="border-2">изменен</th>
-          <th scope="col" class="exclude-row px-6 py-3 border-2" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
+          <th scope="col" class="exclude-row px-6 py-3 border-2"
+            v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
             удаление
           </th>
         </tr>

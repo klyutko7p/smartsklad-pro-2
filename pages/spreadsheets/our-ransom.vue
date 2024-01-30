@@ -158,7 +158,6 @@ function scheduleDeleteIssuedRows() {
   }, timeUntilSunday2359Data);
 }
 
-
 scheduleDeleteIssuedRows();
 
 onMounted(async () => {

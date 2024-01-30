@@ -19,21 +19,21 @@ function getAmountToBePaid(flag: string) {
     if (rows.value && flag === "NONE") {
       amountToPaid = rows.value
         .filter((value) => !value.issued)
-        .reduce((acc, value) => acc + value.amountFromClient1, 0);
+        .reduce((acc, value) => acc + Math.ceil(value.amountFromClient1 / 10) * 10, 0);
     } else if (rows.value && flag === "PVZ") {
       amountToPaid = rows.value
         .filter((value) => value.deliveredPVZ && !value.issued)
-        .reduce((acc, value) => acc + value.amountFromClient1, 0);
+        .reduce((acc, value) => acc + Math.ceil(value.amountFromClient1 / 10) * 10, 0);
     }
   } else if (link.startsWith('2')) {
     if (rows.value && flag === "NONE") {
       amountToPaid = rows.value
         .filter((value) => !value.issued)
-        .reduce((acc, value) => acc + value.amountFromClient2, 0);
+        .reduce((acc, value) => acc + Math.ceil(value.amountFromClient2 / 10) * 10, 0);
     } else if (rows.value && flag === "PVZ") {
       amountToPaid = rows.value
         .filter((value) => value.deliveredPVZ && !value.issued)
-        .reduce((acc, value) => acc + value.amountFromClient2, 0);
+        .reduce((acc, value) => acc + Math.ceil(value.amountFromClient2 / 10) * 10, 0);
     }
   } else if (link.startsWith('3')) {
     if (rows.value && flag === "NONE") {
@@ -90,13 +90,13 @@ const token = Cookies.get("token");
         </h1>
         <h1 class="text-xl mt-5">Заказ на имя – {{ name ? name : "Пусто" }}</h1>
         <h1 class="text-xl" v-if="!link.startsWith('3')">
-          Оставшаяся сумма к оплате: {{ Math.round(getAmountToBePaid("NONE") / 10) * 10 }} руб.
+          Оставшаяся сумма к оплате: {{ Math.ceil(getAmountToBePaid("NONE") / 10) * 10 }} руб.
         </h1>
         <h1 class="text-xl" v-if="link.startsWith('3')">
           Оставшаяся сумма к оплате: {{ getAmountToBePaid("NONE") }} руб.
         </h1>
         <h1 class="text-xl" v-if="!link.startsWith('3')">
-          Сумма к оплате на выдачу: {{ Math.round(getAmountToBePaid("PVZ") / 10) * 10 }} руб.
+          Сумма к оплате на выдачу: {{ Math.ceil(getAmountToBePaid("PVZ") / 10) * 10 }} руб.
         </h1>
         <UIMainButton v-if="showReceivedItems && !link.startsWith('3')" class="mt-5" @click="disableReceivedItems">Скрыть
           полученные товары</UIMainButton>

@@ -112,6 +112,102 @@ watch(
   ],
   filterRows
 );
+
+function saveToLocalStorage(key: string, value: any) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function loadFromLocalStorage(key: string) {
+  const storedValue = localStorage.getItem(key);
+  return storedValue ? JSON.parse(storedValue) : null;
+}
+
+function saveFiltersToLocalStorage() {
+  saveToLocalStorage('selectedCell', selectedCell.value);
+  saveToLocalStorage('selectedName', selectedName.value);
+  saveToLocalStorage('selectedFromName', selectedFromName.value);
+  saveToLocalStorage('selectedProductName', selectedProductName.value);
+  saveToLocalStorage('selectedDispatchPVZ', selectedDispatchPVZ.value);
+  saveToLocalStorage('selectedOrderPVZ', selectedOrderPVZ.value);
+  saveToLocalStorage('selectedOrderAccount', selectedOrderAccount.value);
+  saveToLocalStorage('selectedAdditionally', selectedAdditionally.value);
+  saveToLocalStorage('selectedPriceSite', selectedPriceSite.value);
+  saveToLocalStorage('startingDate', startingDate.value);
+  saveToLocalStorage('endDate', endDate.value);
+  showFilters.value = false;
+}
+
+function clearLocalStorage() {
+  localStorage.clear();
+  selectedCell.value = null;
+  selectedName.value = null;
+  selectedFromName.value = null;
+  selectedProductName.value = null;
+  selectedDispatchPVZ.value = null;
+  selectedOrderPVZ.value = null;
+  selectedOrderAccount.value = null;
+  selectedAdditionally.value = null;
+  selectedPriceSite.value = null;
+  startingDate.value = null;
+  endDate.value = null;
+}
+
+onMounted(() => {
+  const storedSelectedCell = loadFromLocalStorage('selectedCell');
+  if (storedSelectedCell !== null) {
+    selectedCell.value = storedSelectedCell;
+  }
+
+  const storedSelectedName = loadFromLocalStorage('selectedName');
+  if (storedSelectedName !== null) {
+    selectedName.value = storedSelectedName;
+  }
+
+  const storedSelectedFromName = loadFromLocalStorage('selectedFromName');
+  if (storedSelectedFromName !== null) {
+    selectedFromName.value = storedSelectedFromName;
+  }
+
+  const storedSelectedProductName = loadFromLocalStorage('selectedProductName');
+  if (storedSelectedProductName !== null) {
+    selectedProductName.value = storedSelectedProductName;
+  }
+
+  const storedSelectedDispatchPVZ = loadFromLocalStorage('selectedDispatchPVZ');
+  if (storedSelectedDispatchPVZ !== null) {
+    selectedDispatchPVZ.value = storedSelectedDispatchPVZ;
+  }
+
+  const storedSelectedOrderPVZ = loadFromLocalStorage('selectedOrderPVZ');
+  if (storedSelectedOrderPVZ !== null) {
+    selectedOrderPVZ.value = storedSelectedOrderPVZ;
+  }
+
+  const storedSelectedOrderAccount = loadFromLocalStorage('selectedOrderAccount');
+  if (storedSelectedOrderAccount !== null) {
+    selectedOrderAccount.value = storedSelectedOrderAccount;
+  }
+
+  const storedSelectedAdditionally = loadFromLocalStorage('selectedAdditionally');
+  if (storedSelectedAdditionally !== null) {
+    selectedAdditionally.value = storedSelectedAdditionally;
+  }
+
+  const storedSelectedPriceSite = loadFromLocalStorage('selectedPriceSite');
+  if (storedSelectedPriceSite !== null) {
+    selectedPriceSite.value = storedSelectedPriceSite;
+  }
+
+  const storedStartingDate = loadFromLocalStorage('startingDate');
+  if (storedStartingDate !== null) {
+    startingDate.value = storedStartingDate;
+  }
+
+  const storedEndDate = loadFromLocalStorage('endDate');
+  if (storedEndDate !== null) {
+    endDate.value = storedEndDate;
+  }
+})
 </script>
 
 <template>
@@ -220,8 +316,8 @@ watch(
         </div>
       </div>
       <div class="flex justify-end gap-3 mt-3">
-      <UIMainButton @click="showFilters = false">Принять</UIMainButton>
-      <UIMainButton @click="clearFields()">Очистить фильтры</UIMainButton>
+      <UIMainButton @click="saveFiltersToLocalStorage">Принять</UIMainButton>
+      <UIMainButton @click="clearFields(), clearLocalStorage()">Очистить фильтры</UIMainButton>
     </div>
   </div>
 </div></template>
