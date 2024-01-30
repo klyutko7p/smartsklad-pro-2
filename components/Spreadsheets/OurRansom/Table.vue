@@ -216,7 +216,7 @@ function showLastPage() {
           <th scope="col" class="border-2" v-if="user.dataOurRansom === 'WRITE'">
             Выделение
           </th>
-          <th scope="col" class="exclude-row border-2" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
+          <th scope="col" class="exclude-row border-2" v-if="user.dataOurRansom === 'WRITE'">
             изменение
           </th>
           <th scope="col" class="border-2">id</th>
@@ -298,7 +298,7 @@ function showLastPage() {
           <td v-if="user.dataOurRansom === 'WRITE'" class="border-2 text-secondary-color">
             <input type="checkbox" :value="row.id" :checked="isChecked(row.id)" @change="handleCheckboxChange(row.id)" />
           </td>
-          <td class="border-2" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
+          <td class="border-2" v-if="user.dataOurRansom === 'WRITE'">
             <Icon @click="openModal(row)" class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
               name="material-symbols:edit" size="32" />
           </td>

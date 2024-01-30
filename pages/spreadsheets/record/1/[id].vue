@@ -35,7 +35,6 @@ onMounted(() => {
   if (!token) {
     router.push("/auth/login");
   }
-  console.log(route.params);
 });
 
 const token = Cookies.get("token");

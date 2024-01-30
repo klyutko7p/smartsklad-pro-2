@@ -56,7 +56,7 @@ const emit = defineEmits(["filtered-rows"]);
 
 const filterRows = () => {
   filteredRows.value = props.rows.slice();
-  filteredRows.value = props.rows.filter((row) => {
+  filteredRows.value = filteredRows.value.filter((row) => {
     return (
       (!selectedCell.value || row.cell === selectedCell.value) &&
       (!selectedFromName.value || row.fromName === selectedFromName.value) &&
@@ -89,6 +89,7 @@ function clearFields() {
   filterRows();
 }
 
+
 watch(
   [
     selectedCell,
@@ -114,69 +115,76 @@ watch(
         name="solar:filters-line-duotone" size="24" />
     </div>
     <div v-if="showFilters" class="border-2 border-gray-300 p-3 mt-3 border-dashed">
-
       <div class="grid grid-cols-2 max-xl:grid-cols-2 max-md:grid-cols-1">
         <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
           <h1>Ячейка:</h1>
-          <input type="text" class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400" v-model="selectedCell" list="uniqueCells">
-          <datalist id="uniqueCells"
-            class="">
+          <input type="text"
+            class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+            v-model="selectedCell" list="uniqueCells">
+          <datalist id="uniqueCells" class="">
             <option v-for="value in uniqueCells" :value="value">{{ value }}</option>
           </datalist>
         </div>
         <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
           <h1>Имя:</h1>
-          <input type="text" class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400" v-model="selectedName" list="uniqueNames">
-          <datalist id="uniqueNames"
-            class="">
+          <input type="text"
+            class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+            v-model="selectedName" list="uniqueNames">
+          <datalist id="uniqueNames" class="">
             <option v-for="value in uniqueNames" :value="value">{{ value }}</option>
           </datalist>
         </div>
         <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
           <h1>Телефон:</h1>
-          <input type="text" class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400" v-model="selectedFromName" list="uniqueFromNames">
-          <datalist id="uniqueFromNames"
-            class="">
+          <input type="text"
+            class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+            v-model="selectedFromName" list="uniqueFromNames">
+          <datalist id="uniqueFromNames" class="">
             <option v-for="value in uniqueFromNames" :value="value">{{ value }}</option>
           </datalist>
         </div>
         <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
           <h1>Название товара:</h1>
-          <input type="text" class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400" v-model="selectedProductName" list="uniqueProductNames">
-          <datalist id="uniqueProductNames"
-            class="">
+          <input type="text"
+            class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+            v-model="selectedProductName" list="uniqueProductNames">
+          <datalist id="uniqueProductNames" class="">
             <option v-for="value in uniqueProductNames" :value="value">{{ value }}</option>
           </datalist>
         </div>
         <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
           <h1>ПВЗ:</h1>
-          <input type="text" class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400" v-model="selectedDispatchPVZ" list="uniquePVZ">
-          <datalist id="uniquePVZ"
-            class="">
+          <input type="text"
+            class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+            v-model="selectedDispatchPVZ" list="uniquePVZ">
+          <datalist id="uniquePVZ" class="">
             <option v-for="value in uniquePVZ" :value="value">{{ value }}</option>
           </datalist>
         </div>
         <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
           <h1>СЦ:</h1>
-          <input type="text" class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400" v-model="selectedOrderPVZ" list="uniqueOrderPVZ">
-          <datalist id="uniqueOrderPVZ"
-            class="">
+          <input type="text"
+            class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+            v-model="selectedOrderPVZ" list="uniqueOrderPVZ">
+          <datalist id="uniqueOrderPVZ" class="">
             <option v-for="value in uniqueOrderPVZ" :value="value">{{ value }}</option>
           </datalist>
         </div>
         <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
           <h1>Аккаунт Заказа:</h1>
-          <input type="text" class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400" v-model="selectedOrderAccount" list="uniqueOrderAccounts">
-          <datalist id="uniqueOrderAccounts"
-            class="">
+          <input type="text"
+            class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+            v-model="selectedOrderAccount" list="uniqueOrderAccounts">
+          <datalist id="uniqueOrderAccounts" class="">
             <option v-for="value in uniqueOrderAccounts" :value="value">{{ value }}</option>
           </datalist>
         </div>
         <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
           <h1>Дополнительно:</h1>
-          <input type="text" class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400" v-model="selectedAdditionally" list="uniqueAdditionally">
-          <datalist id="uniqueAdditionally"
-            class="">
+          <input type="text"
+            class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+            v-model="selectedAdditionally" list="uniqueAdditionally">
+          <datalist id="uniqueAdditionally" class="">
             <option v-for="value in uniqueAdditionally" :value="value">{{ value }}</option>
           </datalist>
         </div>
@@ -196,9 +204,8 @@ watch(
         </div>
       </div>
       <div class="flex justify-end gap-3 mt-3">
-        <UIMainButton @click="showFilters = false">Принять</UIMainButton>
-        <UIMainButton @click="clearFields()">Очистить фильтры</UIMainButton>
-      </div>
+      <UIMainButton @click="showFilters = false">Принять</UIMainButton>
+      <UIMainButton @click="clearFields()">Очистить фильтры</UIMainButton>
     </div>
   </div>
-</template>
+</div></template>

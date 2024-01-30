@@ -51,6 +51,7 @@ async function updateDeliveryRow(obj: any) {
   isLoading.value = true;
   let answer = confirm("Вы точно хотите изменить статус доставки?");
   if (answer) await storeRansom.updateDeliveryStatus(obj.row, obj.flag, 'OurRansom');
+  filteredRows.value = await storeRansom.getRansomRows("OurRansom");
   rows.value = await storeRansom.getRansomRows('OurRansom');
   isLoading.value = false;
 }
@@ -59,6 +60,7 @@ async function updateDeliveryRows(obj: any) {
   isLoading.value = true;
   let answer = confirm("Вы точно хотите изменить статус доставки?");
   if (answer) await storeRansom.updateDeliveryRowsStatus(obj.idArray, obj.flag, 'OurRansom');
+  filteredRows.value = await storeRansom.getRansomRows("OurRansom");
   rows.value = await storeRansom.getRansomRows('OurRansom');
   isLoading.value = false;
 }
@@ -84,6 +86,7 @@ async function deleteSelectedRows(idArray: number[]) {
 async function updateRow() {
   isLoading.value = true;
   await storeRansom.updateRansomRow(rowData.value, user.value.username, 'OurRansom');
+  filteredRows.value = await storeRansom.getRansomRows("OurRansom");
   rows.value = await storeRansom.getRansomRows('OurRansom');
   closeModal();
   isLoading.value = false;

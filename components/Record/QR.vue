@@ -14,10 +14,10 @@ function printPage() {
 <template>
   <h1 class="mt-10 text-2xl">Распечатка Штрих кода</h1>
   <div class="flex flex-col print-content cursor-pointer" @click="printPage">
-    <div class="gap-3 flex flex-col">
+    <div class="gap-0 flex flex-col">
       <CodeQR :value="value" />
-      <h1 class="text-6xl max-w-[400px] text-center" v-if="row.cell">{{ row.cell }}</h1>
-      <h1 class="text-8xl text-center max-w-[400px] break-words">{{ row.dispatchPVZ }}</h1>
+      <h1 class="text-sm max-w-[113px] text-center" v-if="row.cell">{{ row.cell }}</h1>
+      <h1 class="text-sm text-center max-w-[113px] break-words">{{ row.dispatchPVZ }}</h1>
     </div>
   </div>
 </template>
