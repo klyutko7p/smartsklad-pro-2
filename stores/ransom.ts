@@ -67,7 +67,7 @@ export const useRansomStore = defineStore("ransom", () => {
                     row.clientLink1 = ''
                 }
 
-                row.amountFromClient1 = Math.round(row.priceSite + (row.priceSite * row.percentClient / 100) - row.prepayment);
+                row.amountFromClient1 = Math.ceil(row.priceSite + (row.priceSite * row.percentClient / 100) - row.prepayment);
                 row.profit1 = row.amountFromClient1 - row.priceSite + row.deliveredKGT;
 
             } else if (flag === 'ClientRansom') {
@@ -182,7 +182,7 @@ export const useRansomStore = defineStore("ransom", () => {
                     row.clientLink1 = ''
                 }
 
-                row.amountFromClient1 = Math.round(row.priceSite + (row.priceSite * row.percentClient / 100) - row.prepayment);
+                row.amountFromClient1 = Math.ceil(row.priceSite + (row.priceSite * row.percentClient / 100) - row.prepayment);
                 row.profit1 = row.amountFromClient1 - row.priceSite + row.deliveredKGT;
 
 

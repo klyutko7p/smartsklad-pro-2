@@ -365,7 +365,7 @@ function showLastPage() {
             {{ row.deliveredKGT }}
           </td>
           <td class="px-6 py-4 border-2" v-if="user.amountFromClient1 === 'READ' || user.amountFromClient1 === 'WRITE'">
-            {{ Math.round(row.amountFromClient1 / 10) * 10 }}
+            {{ Math.ceil(row.amountFromClient1 / 10) * 10 }}
           </td>
           <td class="px-2 py-4 border-2" v-if="user.dispatchPVZ1 === 'READ' || user.dispatchPVZ1 === 'WRITE'">
             {{ row.dispatchPVZ }}
