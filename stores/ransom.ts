@@ -56,6 +56,7 @@ export const useRansomStore = defineStore("ransom", () => {
                 if (row.deliveredKGT === undefined) row.deliveredKGT = 0;
                 if (row.productName === undefined) row.productName = '';
                 if (row.prepayment === undefined) row.prepayment = 0;
+                if (row.quantity === undefined) row.quantity = 1;
 
 
                 row.createdUser = username;
@@ -241,7 +242,7 @@ export const useRansomStore = defineStore("ransom", () => {
                 body: JSON.stringify({ row: row, flag: flag }),
             })
             toast.success("Запись успешно обновлена!")
-            
+
 
         } catch (error) {
             if (error instanceof Error) {

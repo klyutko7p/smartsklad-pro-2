@@ -339,6 +339,11 @@ const token = Cookies.get("token");
                   v-model="rowData.issued" type="datetime-local" />
               </div>
 
+              <div class="grid grid-cols-2 mb-5" v-if="!rowData.id">
+                <label for="quantity">Количество строк</label>
+                <input type="number" class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400" min="1" v-model="rowData.quantity">
+              </div>
+
               <div class="grid grid-cols-2 mb-5" v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'">
                 <label for="additionally1">Дополнительно</label>
                 <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
