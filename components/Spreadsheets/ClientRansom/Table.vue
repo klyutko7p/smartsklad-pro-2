@@ -68,7 +68,7 @@ const handleCheckboxChange = (rowId: number): void => {
 
 const showDeletedRows = ref(false);
 
-const perPage = ref(100)
+const perPage = ref(50)
 const currentPage = ref(1)
 const totalPages = computed(() => Math.ceil((props.rows?.length || 0) / perPage.value));
 const totalRows = computed(() => Math.ceil(props.rows?.length || 0));
@@ -119,7 +119,7 @@ onMounted(() => {
   updateCurrentPageData()
 })
 
-let isPrimaryView = ref(true)
+let isPrimaryView = ref(false)
 let searchQuery = ref('')
 
 function toggleShowPrimaryView() {
@@ -432,7 +432,7 @@ function showLastPage() {
     <input @input="updateRowsByFromName" type="text" v-model="searchQuery"
       class="block w-full bg-transparent mb-5 border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 rounded-2xl focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"
       placeholder="Введите телефон..." />
-    <div v-for="row in returnRows" v-if="returnRows.length > 0">
+    <div v-for="row in returnRows">
       <div @click="getRowsByFromName(row.fromName)"
         class="cursor-pointer hover:bg-hover-color duration-300 flex items-center  justify-between p-10 mb-3 border-2">
         <div class="rounded-full border-2 p-3 min-w-[50px] text-center border-secondary-color">
@@ -442,10 +442,6 @@ function showLastPage() {
           <h1>Телефон: {{ row.fromName }}</h1>
         </div>
       </div>
-    </div>
-    <div v-else class="flex items-center flex-col justify-center mt-10 text-2xl">
-      <Icon name="ion:ios-close-empty" size="100" class="text-red-500" />
-      <h1>Извините, записи не были найдены!</h1>
     </div>
   </div>
 </template>

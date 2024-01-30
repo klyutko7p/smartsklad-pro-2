@@ -18,10 +18,6 @@ function exportToExcel() {
 
   writeFile(wb, "информация_о_заказе.xlsx");
 }
-
-onMounted(() => {
-  console.log(props.rows);
-})
 </script>
 
 <template>

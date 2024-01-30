@@ -15,6 +15,7 @@ export default defineEventHandler(async (event) => {
             const rows = await prisma.ourRansom.findMany({
                 where: {
                     clientLink1: link,
+                    deleted: null,
                 },
                 orderBy: {
                     created_at: 'desc',   
@@ -25,6 +26,7 @@ export default defineEventHandler(async (event) => {
             const rows = await prisma.clientRansom.findMany({
                 where: {
                     clientLink2: link,
+                    deleted: null,
                 },
                 orderBy: {
                     created_at: 'desc',   
@@ -35,6 +37,7 @@ export default defineEventHandler(async (event) => {
             const rows = await prisma.delivery.findMany({
                 where: {
                     clientLink3: link,
+                    deleted: null,
                 },
                 orderBy: {
                     created_at: 'desc',   
