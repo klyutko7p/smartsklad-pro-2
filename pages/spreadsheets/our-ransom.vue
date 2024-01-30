@@ -344,6 +344,7 @@ const token = Cookies.get("token");
                 <label for="additionally1">Дополнительно</label>
                 <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
                   v-model="rowData.additionally" :disabled="user.additionally1 === 'READ'">
+                  <option value="">Отменить</option>
                   <option value="Оплачено онлайн">Оплачено онлайн</option>
                   <option value="Отказ клиент">Отказ клиент</option>
                   <option value="Отказ брак">Отказ брак</option>
@@ -513,6 +514,7 @@ const token = Cookies.get("token");
                 <label for="additionally1">Дополнительно</label>
                 <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
                   v-model="rowData.additionally" :disabled="user.additionally1 === 'READ'">
+                  <option value="">Отменить</option>
                   <option value="Оплачено онлайн">Оплачено онлайн</option>
                   <option value="Отказ клиент">Отказ клиент</option>
                   <option value="Отказ брак">Отказ брак</option>
