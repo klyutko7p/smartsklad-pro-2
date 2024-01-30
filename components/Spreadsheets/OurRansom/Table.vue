@@ -194,7 +194,7 @@ function showLastPage() {
     </div>
   </div>
 
-  <div class="fixed z-40 flex flex-col gap-3 top-36 left-1/2 translate-x-[-50%] translate-y-[-50%]"
+  <div class="fixed z-40 flex flex-col gap-3 top-40 left-1/2 translate-x-[-50%] translate-y-[-50%]"
     v-if="user.dataOurRansom === 'WRITE' && checkedRows.length > 0">
     <UIActionButton v-if="user.dataOurRansom === 'WRITE' && checkedRows.length === 1" @click="createCopyRow">Скопировать
       запись</UIActionButton>
@@ -205,6 +205,7 @@ function showLastPage() {
     <UIActionButton v-if="user.deliveredPVZ1 === 'WRITE'" @click="updateDeliveryRows('PVZ')">Доставить на пвз
     </UIActionButton>
     <UIActionButton v-if="user.issued1 === 'WRITE'" @click="updateDeliveryRows('issued')">Выдать клиенту</UIActionButton>
+    <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally')">Оплачено онлайн</UIActionButton>
   </div>
 
   <div class="relative max-h-[610px] mt-5 mb-10 mr-5" v-if="isPrimaryView">

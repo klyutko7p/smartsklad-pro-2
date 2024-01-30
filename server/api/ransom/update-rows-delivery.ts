@@ -30,12 +30,14 @@ export default defineEventHandler(async (event) => {
                 break;
             case 'paid':
                 updateField = 'paid';
+            case 'additionally':
+                updateField = 'additionally'
                 break;
             default:
                 throw new Error(`Unsupported flag: ${flag}`);
         }
 
-        if (flagRansom === 'OurRansom') {
+        if (flagRansom === 'OurRansom' && updateField !== 'additionally') {
             const updateRow = await prisma.ourRansom.updateMany({
                 where: {
                     id: {
@@ -44,6 +46,17 @@ export default defineEventHandler(async (event) => {
                 },
                 data: {
                     [updateField]: new Date(),
+                },
+            });
+        } else if ((flagRansom === 'OurRansom' && updateField === 'additionally')) {
+            const updateRow = await prisma.ourRansom.updateMany({
+                where: {
+                    id: {
+                        in: idArray,
+                    },
+                },
+                data: {
+                    additionally: 'Оплачено онлайн',
                 },
             });
         } else if (flagRansom === 'ClientRansom') {
