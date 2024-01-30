@@ -108,10 +108,10 @@ onMounted(() => {
             {{ row.productName }}
           </td>
           <td v-if="row.amountFromClient1 || row.amountFromClient1 === null || row.amountFromClient1 === 0" class="border-2">
-            {{ Math.round(row.amountFromClient1 / 10) * 10 }}
+            {{ Math.ceil(row.amountFromClient1 / 10) * 10 }}
           </td>
           <td v-if="row.amountFromClient2 || row.amountFromClient2 === null || row.amountFromClient2 === 0" class="border-2">
-            {{ Math.round(row.amountFromClient2 / 10) * 10 }}
+            {{ Math.ceil(row.amountFromClient2 / 10) * 10 }}
           </td>
           <td v-if="link?.startsWith('3')" class="border-2">
             {{ row.purchaseOfGoods }}

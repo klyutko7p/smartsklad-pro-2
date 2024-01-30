@@ -192,7 +192,7 @@ const token = Cookies.get("token");
             <div class="mt-5 flex items-center gap-3" v-if="user.dataDelivery === 'WRITE'">
               <UIMainButton @click="deleteIssuedRows" v-if="user.role === 'ADMIN' || user.username === 'admin1'">Удалить
                 оплаченное</UIMainButton>
-              <UIMainButton v-if="user.role === 'ADMIN'" @click="openModal">Создать новую запись</UIMainButton>
+              <UIMainButton v-if="user.role === 'ADMIN' || user.username === 'ОПТ'" @click="openModal">Создать новую запись</UIMainButton>
             </div>
           </div>
 
@@ -312,6 +312,11 @@ const token = Cookies.get("token");
         <div v-if="!isLoading" class="mt-3">
           <div>
             <SpreadsheetsDeliveryFilters v-if="rows" @filtered-rows="handleFilteredRows" :rows="rows" />
+            <div class="mt-5 flex items-center gap-3" v-if="user.dataDelivery === 'WRITE'">
+              <UIMainButton @click="deleteIssuedRows" v-if="user.role === 'ADMIN' || user.username === 'admin1'">Удалить
+                оплаченное</UIMainButton>
+              <UIMainButton v-if="user.role === 'ADMIN' || user.username === 'ОПТ'" @click="openModal">Создать новую запись</UIMainButton>
+            </div>
           </div>
 
           <SpreadsheetsDeliveryTable @update-delivery-row="updateDeliveryRow" :rows="filteredRows" :user="user"
