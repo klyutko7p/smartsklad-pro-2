@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import QrcodeVue from "qrcode.vue";
+import QrcodeVue, { Level, RenderAs } from 'qrcode.vue'
+const renderAs = ref<RenderAs>('svg')
 
 defineProps({
   value: { type: String },
@@ -7,6 +8,6 @@ defineProps({
 </script>
 
 <template>
-  <qrcode-vue :size="500" :value="value" />
+  <qrcode-vue :size="500" :value="value" level="H" :render-as="renderAs" />
 </template>
 
