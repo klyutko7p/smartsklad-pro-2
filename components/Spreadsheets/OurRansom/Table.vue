@@ -127,10 +127,9 @@ onMounted(() => {
     isPrimaryView.value = true;
   }
 
-  if (isPrimaryView.value === false) {
-    updateRowsByFromName()
+  if (isPrimaryView.value) {
+    updateCurrentPageData()
   }
-
 
 })
 
@@ -152,8 +151,6 @@ function toggleShowPrimaryView() {
     updateRowsByFromName();
   }
 }
-
-
 
 function getRowsByFromName(fromNameData: string, cellData: string) {
   isPrimaryView.value = true;
