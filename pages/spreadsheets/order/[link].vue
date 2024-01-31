@@ -11,7 +11,6 @@ let isLoading = ref(false);
 let user = ref({} as User);
 let rows = ref<Array<IOurRansom | IClientRansom | IDelivery>>();
 let copyRows = ref<Array<IOurRansom | IClientRansom | IDelivery>>();
-let name = ref<string>();
 
 function getAmountToBePaid(flag: string) {
   let amountToPaid = 0;
@@ -70,7 +69,6 @@ onMounted(async () => {
 
   if (rows.value) {
     copyRows.value = [...rows.value];
-    name.value = rows.value.find((value) => value.name)?.name;
   } 
   isLoading.value = false;
 });
@@ -88,7 +86,6 @@ const token = Cookies.get("token");
         <h1 class="text-2xl overflow-auto">
           Информация о заказе: <span class="uppercase">{{ route.params.link }}</span>
         </h1>
-        <h1 class="text-xl mt-5">Заказ на имя – {{ name ? name : "Пусто" }}</h1>
         <h1 class="text-xl" v-if="!link.startsWith('3')">
           Оставшаяся сумма к оплате: {{ Math.ceil(getAmountToBePaid("NONE") / 10) * 10 }} руб.
         </h1>

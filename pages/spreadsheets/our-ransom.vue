@@ -173,17 +173,21 @@ onMounted(async () => {
   }
 
   isLoading.value = false;
+});
 
+onBeforeMount(() => {
   if (!token || user.value.dataOurRansom === "NONE") {
     router.push("/auth/login");
   }
-});
+})
 
 definePageMeta({
   layout: false,
 });
 
 const token = Cookies.get("token");
+let showAddFields = ref(false)
+
 
 </script>
 
@@ -198,8 +202,6 @@ const token = Cookies.get("token");
           <div>
             <SpreadsheetsOurRansomFilters v-if="rows" @filtered-rows="handleFilteredRows" :rows="rows" />
             <div class="mt-5 flex items-center gap-3" v-if="user.dataOurRansom === 'WRITE'">
-              <UIMainButton @click="deleteIssuedRows" v-if="user.role === 'ADMIN' || user.username === 'admin1'">Удалить
-                выданное</UIMainButton>
               <UIMainButton v-if="user.role === 'ADMIN'" @click="openModal">Создать новую запись</UIMainButton>
             </div>
           </div>
@@ -222,13 +224,6 @@ const token = Cookies.get("token");
                 <input :disabled="user.cell1 === 'READ'"
                   class="bg-transparent rounded-md border-2 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.cell" type="text" />
-              </div>
-
-              <div class="grid grid-cols-2 mb-5" v-if="user.name1 === 'READ' || user.name1 === 'WRITE'">
-                <label for="name">Имя</label>
-                <input :disabled="user.name1 === 'READ'"
-                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.name" type="text" />
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'">
@@ -281,7 +276,7 @@ const token = Cookies.get("token");
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
-                <label for="deliveredKGT1">Разница цен</label>
+                <label for="deliveredKGT1">Дополнительная стоимость</label>
                 <input :disabled="user.deliveredKGT1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.deliveredKGT" placeholder="По умолчанию: 0" type="number" />
@@ -318,43 +313,49 @@ const token = Cookies.get("token");
                 </select>
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
-                <label for="deliveredSC1">Доставлено на СЦ</label>
-                <input :disabled="user.deliveredSC1 === 'READ'"
-                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.deliveredSC" type="datetime-local" />
-              </div>
-
-              <div class="grid grid-cols-2 mb-5" v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'">
-                <label for="deliveredPVZ1">Доставлено на ПВЗ</label>
-                <input :disabled="user.deliveredPVZ1 === 'READ'"
-                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.deliveredPVZ" type="datetime-local" />
-              </div>
-
-              <div class="grid grid-cols-2 mb-5" v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'">
-                <label for="issued1">Выдан клиенту</label>
-                <input :disabled="user.issued1 === 'READ'"
-                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.issued" type="datetime-local" />
-              </div>
-
               <div class="grid grid-cols-2 mb-5" v-if="!rowData.id">
                 <label for="quantity">Количество строк</label>
-                <input type="number" class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400" min="1" v-model="rowData.quantity">
+                <input type="number"
+                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                  min="1" v-model="rowData.quantity">
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'">
-                <label for="additionally1">Дополнительно</label>
-                <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
-                  v-model="rowData.additionally" :disabled="user.additionally1 === 'READ'">
-                  <option value="">Отменить</option>
-                  <option value="Оплачено онлайн">Оплачено онлайн</option>
-                  <option value="Отказ клиент">Отказ клиент</option>
-                  <option value="Отказ брак">Отказ брак</option>
-                </select>
+              <h1 @click="showAddFields = !showAddFields" class="cursor-pointer hover:opacity-50 text-secondary-color font-bold duration-200 mb-5">Показать ещё настройки</h1>
+              <div v-if="showAddFields">
+                <div class="grid grid-cols-2 mb-5" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
+                  <label for="deliveredSC1">Доставлено на СЦ</label>
+                  <input :disabled="user.deliveredSC1 === 'READ'"
+                    class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                    v-model="rowData.deliveredSC" type="datetime-local" />
+                </div>
+
+                <div class="grid grid-cols-2 mb-5" v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'">
+                  <label for="deliveredPVZ1">Доставлено на ПВЗ</label>
+                  <input :disabled="user.deliveredPVZ1 === 'READ'"
+                    class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                    v-model="rowData.deliveredPVZ" type="datetime-local" />
+                </div>
+
+                <div class="grid grid-cols-2 mb-5" v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'">
+                  <label for="issued1">Выдан клиенту</label>
+                  <input :disabled="user.issued1 === 'READ'"
+                    class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                    v-model="rowData.issued" type="datetime-local" />
+                </div>
+
+                <div class="grid grid-cols-2 mb-5" v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'">
+                  <label for="additionally1">Дополнительно</label>
+                  <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
+                    v-model="rowData.additionally" :disabled="user.additionally1 === 'READ'">
+                    <option value="">Отменить</option>
+                    <option value="Оплачено онлайн">Оплачено онлайн</option>
+                    <option value="Отказ клиент">Отказ клиент</option>
+                    <option value="Отказ брак">Отказ брак</option>
+                  </select>
+                </div>
               </div>
             </div>
+
 
             <div class="flex items-center justify-center gap-3 mt-10" v-if="rowData.id">
               <UIMainButton @click="updateRow">Сохранить
@@ -399,13 +400,6 @@ const token = Cookies.get("token");
                   v-model="rowData.cell" type="text" />
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.name1 === 'READ' || user.name1 === 'WRITE'">
-                <label for="name">Имя</label>
-                <input :disabled="user.name1 === 'READ'"
-                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.name" type="text" />
-              </div>
-
               <div class="grid grid-cols-2 mb-5" v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'">
                 <label for="fromName">Телефон <sup>*</sup></label>
                 <input :disabled="user.fromName1 === 'READ'"
@@ -456,7 +450,7 @@ const token = Cookies.get("token");
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
-                <label for="deliveredKGT1">Разница цен</label>
+                <label for="deliveredKGT1">Дополнительная стоимость</label>
                 <input :disabled="user.deliveredKGT1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.deliveredKGT" placeholder="По умолчанию: 0" type="number" />
@@ -493,36 +487,46 @@ const token = Cookies.get("token");
                 </select>
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
-                <label for="deliveredSC1">Доставлено на СЦ</label>
-                <input :disabled="user.deliveredSC1 === 'READ'"
+              <div class="grid grid-cols-2 mb-5" v-if="!rowData.id">
+                <label for="quantity">Количество строк</label>
+                <input type="number"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.deliveredSC" type="datetime-local" />
+                  min="1" v-model="rowData.quantity">
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'">
-                <label for="deliveredPVZ1">Доставлено на ПВЗ</label>
-                <input :disabled="user.deliveredPVZ1 === 'READ'"
-                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.deliveredPVZ" type="datetime-local" />
-              </div>
+              <h1 @click="showAddFields = !showAddFields" class="cursor-pointer hover:opacity-50 text-secondary-color font-bold duration-200 mb-5">Показать ещё настройки</h1>
+              <div v-if="showAddFields">
+                <div class="grid grid-cols-2 mb-5" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
+                  <label for="deliveredSC1">Доставлено на СЦ</label>
+                  <input :disabled="user.deliveredSC1 === 'READ'"
+                    class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                    v-model="rowData.deliveredSC" type="datetime-local" />
+                </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'">
-                <label for="issued1">Выдан клиенту</label>
-                <input :disabled="user.issued1 === 'READ'"
-                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.issued" type="datetime-local" />
-              </div>
+                <div class="grid grid-cols-2 mb-5" v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'">
+                  <label for="deliveredPVZ1">Доставлено на ПВЗ</label>
+                  <input :disabled="user.deliveredPVZ1 === 'READ'"
+                    class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                    v-model="rowData.deliveredPVZ" type="datetime-local" />
+                </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'">
-                <label for="additionally1">Дополнительно</label>
-                <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
-                  v-model="rowData.additionally" :disabled="user.additionally1 === 'READ'">
-                  <option value="">Отменить</option>
-                  <option value="Оплачено онлайн">Оплачено онлайн</option>
-                  <option value="Отказ клиент">Отказ клиент</option>
-                  <option value="Отказ брак">Отказ брак</option>
-                </select>
+                <div class="grid grid-cols-2 mb-5" v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'">
+                  <label for="issued1">Выдан клиенту</label>
+                  <input :disabled="user.issued1 === 'READ'"
+                    class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                    v-model="rowData.issued" type="datetime-local" />
+                </div>
+
+                <div class="grid grid-cols-2 mb-5" v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'">
+                  <label for="additionally1">Дополнительно</label>
+                  <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
+                    v-model="rowData.additionally" :disabled="user.additionally1 === 'READ'">
+                    <option value="">Отменить</option>
+                    <option value="Оплачено онлайн">Оплачено онлайн</option>
+                    <option value="Отказ клиент">Отказ клиент</option>
+                    <option value="Отказ брак">Отказ брак</option>
+                  </select>
+                </div>
               </div>
             </div>
 

@@ -115,6 +115,7 @@ const toggleShowDeletedRows = () => {
 };
 
 let isPrimaryView = ref(false)
+let isVisiblePages = ref(true)
 
 
 onMounted(() => {
@@ -130,6 +131,7 @@ let searchQuery = ref('')
 
 function toggleShowPrimaryView() {
   isPrimaryView.value = !isPrimaryView.value;
+  isVisiblePages.value = true;
   updateCurrentPageData();
   if (!isPrimaryView.value) {
     updateRowsByFromName();
@@ -138,20 +140,17 @@ function toggleShowPrimaryView() {
 
 function updateRowsByFromName() {
   updateCurrentPageData();
-  returnRows.value = returnRows.value?.filter((element, index) => {
-    return returnRows.value?.findIndex(i => i.cell === element.cell && i.fromName === element.fromName) === index;
+  returnRows.value = props.rows?.filter((element, index) => {
+    return props.rows?.findIndex(i => i.cell === element.cell && i.fromName === element.fromName) === index;
   })
 }
 
 function getRowsByFromName(fromNameData: string) {
   isPrimaryView.value = true;
+  isVisiblePages.value = false;
   returnRows.value = props.rows?.filter((row) => row.fromName === fromNameData);
 }
 
-
-function showLastPage() {
-  currentPage.value = totalPages.value;
-}
 
 function formatPhoneNumber(phoneNumber: string) {
   if (!phoneNumber) {
@@ -191,19 +190,14 @@ function formatPhoneNumber(phoneNumber: string) {
           min="1" :max="totalRows" type="number" v-model="perPage">
         <UIMainButton @click="updateCurrentPageData">Применить</UIMainButton>
       </div>
-      <div class="flex items-center gap-5">
+      <div class="flex items-center gap-5" v-if="user.role === 'ADMIN'">
         <UIActionButton @click="toggleShowDeletedRows">
           {{ showDeletedRows ? 'Скрыть удаленное' : 'Показать удаленное' }}
         </UIActionButton>
-        <div v-if="isPrimaryView">
-          <a href="#down" @click="showLastPage">
-            <Icon name="ic:round-last-page" class="text-secondary-color hover:opacity-50 duration-200" size="40" />
-          </a>
-        </div>
       </div>
     </div>
     <div class="flex items-end max-lg:mt-5 max-lg:justify-between gap-20" v-if="isPrimaryView">
-      <div class="flex flex-col text-center">
+      <div class="flex flex-col text-center" v-if="isVisiblePages">
         <h1 class="text-base">Страница:</h1>
         <h1 class="text-base mb-2"> {{ currentPage }} из {{ totalPages }} </h1>
         <div class="flex items-center justify-center gap-2">
@@ -224,7 +218,7 @@ function formatPhoneNumber(phoneNumber: string) {
 
   <div class="fixed z-40 flex flex-col gap-3 top-40 left-1/2 translate-x-[-50%] translate-y-[-50%]"
     v-if="user.dataOurRansom === 'WRITE' && checkedRows.length > 0">
-    <UIActionButton v-if="user.dataOurRansom === 'WRITE' && checkedRows.length === 1" @click="createCopyRow">Скопировать
+    <UIActionButton v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN' && checkedRows.length === 1" @click="createCopyRow">Скопировать
       запись</UIActionButton>
     <UIActionButton v-if="user.role === 'ADMIN' && user.dataOurRansom === 'WRITE'" @click="deleteSelectedRows">Удалить
       выделенные записи</UIActionButton>
@@ -233,8 +227,10 @@ function formatPhoneNumber(phoneNumber: string) {
     <UIActionButton v-if="user.deliveredPVZ1 === 'WRITE'" @click="updateDeliveryRows('PVZ')">Доставить на пвз
     </UIActionButton>
     <UIActionButton v-if="user.issued1 === 'WRITE'" @click="updateDeliveryRows('issued')">Выдать клиенту</UIActionButton>
-    <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally')">Оплачено онлайн
+    <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally'), updateDeliveryRows('issued')">Оплачено онлайн
     </UIActionButton>
+    <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally1')">Отказ клиент</UIActionButton>
+    <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally2')">Отказ брак</UIActionButton>
   </div>
 
   <div class="relative max-h-[610px] mt-5 mb-10 mr-5" v-if="isPrimaryView">
@@ -246,7 +242,7 @@ function formatPhoneNumber(phoneNumber: string) {
           <th scope="col" class="border-2" v-if="user.dataOurRansom === 'WRITE'">
             Выделение
           </th>
-          <th scope="col" class="exclude-row border-2" v-if="user.dataOurRansom === 'WRITE'">
+          <th scope="col" class="exclude-row border-2" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
             изменение
           </th>
           <th scope="col" class="border-2">id</th>
@@ -255,9 +251,6 @@ function formatPhoneNumber(phoneNumber: string) {
           </th>
           <th scope="col" class=" border-2" v-if="user.cell1 === 'READ' || user.cell1 === 'WRITE'">
             ячейка
-          </th>
-          <th scope="col" class="border-2" v-if="user.name1 === 'READ' || user.name1 === 'WRITE'">
-            имя
           </th>
           <th scope="col" class="border-2" v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'">
             телефон
@@ -281,7 +274,7 @@ function formatPhoneNumber(phoneNumber: string) {
             процент с клиента (%)
           </th>
           <th scope="col" class="border-2" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
-            разница цен
+            Дополнительная стоимость
           </th>
           <th scope="col" class="border-2" v-if="user.amountFromClient1 === 'READ' || user.amountFromClient1 === 'WRITE'">
             сумма с клиента
@@ -328,7 +321,7 @@ function formatPhoneNumber(phoneNumber: string) {
           <td v-if="user.dataOurRansom === 'WRITE'" class="border-2 text-secondary-color">
             <input type="checkbox" :value="row.id" :checked="isChecked(row.id)" @change="handleCheckboxChange(row.id)" />
           </td>
-          <td class="border-2" v-if="user.dataOurRansom === 'WRITE'">
+          <td class="border-2" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
             <Icon @click="openModal(row)" class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
               name="material-symbols:edit" size="32" />
           </td>
@@ -348,9 +341,6 @@ function formatPhoneNumber(phoneNumber: string) {
           </td>
           <td v-if="user.cell1 === 'READ' || user.cell1 === 'WRITE'" class="border-2">
             {{ row.cell }}
-          </td>
-          <td v-if="user.name1 === 'READ' || user.name1 === 'WRITE'" class="px-6 py-4 border-2 whitespace-nowrap">
-            {{ row.name }}
           </td>
           <td v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'" class="py-4 border-2">
             {{ row.fromName }}
@@ -391,25 +381,25 @@ function formatPhoneNumber(phoneNumber: string) {
             {{ row.orderAccount }}
           </td>
           <td class="px-3 py-4 border-2" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
-            <Icon @click="updateDeliveryRow(row, 'SC')" v-if="!row.deliveredSC && user.deliveredSC1 === 'WRITE'"
+            <!-- <Icon @click="updateDeliveryRow(row, 'SC')" v-if="!row.deliveredSC && user.deliveredSC1 === 'WRITE'"
               class="text-green-500 cursor-pointer hover:text-green-300 duration-200"
-              name="mdi:checkbox-multiple-marked-circle" size="32" />
+              name="mdi:checkbox-multiple-marked-circle" size="32" /> -->
             <h1 class="font-bold text-green-500">
               {{ row.deliveredSC ? storeUsers.getNormalizedDate(row.deliveredSC) : "" }}
             </h1>
           </td>
           <td class="px-3 py-4 border-2" v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'">
-            <Icon @click="updateDeliveryRow(row, 'PVZ')" v-if="!row.deliveredPVZ && user.deliveredPVZ1 === 'WRITE'"
+            <!-- <Icon @click="updateDeliveryRow(row, 'PVZ')" v-if="!row.deliveredPVZ && user.deliveredPVZ1 === 'WRITE'"
               class="text-green-500 cursor-pointer hover:text-green-300 duration-200"
-              name="mdi:checkbox-multiple-marked-circle" size="32" />
+              name="mdi:checkbox-multiple-marked-circle" size="32" /> -->
             <h1 class="font-bold text-green-500">
               {{ row.deliveredPVZ ? storeUsers.getNormalizedDate(row.deliveredPVZ) : "" }}
             </h1>
           </td>
           <td class="px-3 py-4 border-2" v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'">
-            <Icon @click="updateDeliveryRow(row, 'issued')" v-if="!row.issued && user.issued1 === 'WRITE'"
+            <!-- <Icon @click="updateDeliveryRow(row, 'issued')" v-if="!row.issued && user.issued1 === 'WRITE'"
               class="text-green-500 cursor-pointer hover:text-green-300 duration-200"
-              name="mdi:checkbox-multiple-marked-circle" size="32" />
+              name="mdi:checkbox-multiple-marked-circle" size="32" /> -->
             <h1 class="font-bold text-green-500">
               {{ row.issued ? storeUsers.getNormalizedDate(row.issued) : "" }}
             </h1>

@@ -8,6 +8,16 @@ interface IRequestBody {
     flagRansom: string;
 }
 
+function getAdditionally(status: string) {
+    if (status === 'additionally') {
+        return 'Оплачено онлайн'
+    } else if (status === 'additionally1') {
+        return 'Отказ клиент'
+    } else if (status === 'additionally2') {
+        return 'Отказ брак'
+    }
+}
+
 
 export default defineEventHandler(async (event) => {
     try {
@@ -31,6 +41,10 @@ export default defineEventHandler(async (event) => {
             case 'paid':
                 updateField = 'paid';
             case 'additionally':
+                updateField = 'additionally'
+            case 'additionally1':
+                updateField = 'additionally'
+            case 'additionally2':
                 updateField = 'additionally'
                 break;
             default:
@@ -56,7 +70,7 @@ export default defineEventHandler(async (event) => {
                     },
                 },
                 data: {
-                    additionally: 'Оплачено онлайн',
+                    additionally: getAdditionally(flag),
                 },
             });
         } else if (flagRansom === 'ClientRansom') {
