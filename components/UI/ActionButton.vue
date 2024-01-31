@@ -6,9 +6,9 @@
 
 <style scoped>
 .button-87 {
-  padding: 5px 15px;
+  padding: 5px 10px;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
   text-transform: uppercase;
   transition: 0.5s;
   background-size: 200% auto;

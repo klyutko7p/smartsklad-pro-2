@@ -15,7 +15,7 @@ defineProps({
 
 <style scoped>
 .button-87 {
-  padding: 10px 15px;
+  padding: 5px 10px;
   text-align: center;
   text-transform: uppercase;
   font-size: 14px;

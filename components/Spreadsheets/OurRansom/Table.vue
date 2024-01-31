@@ -153,13 +153,33 @@ function showLastPage() {
   currentPage.value = totalPages.value;
 }
 
+function formatPhoneNumber(phoneNumber: string) {
+  if (!phoneNumber) {
+    return 'Номер телефона не указан';
+  }
+
+  const digitsOnly = phoneNumber.replace(/\D/g, '');
+
+  if (digitsOnly.length < 11) {
+    return 'Неправильный формат номера телефона';
+  }
+
+  const maskedPhoneNumber =
+    '+7' +
+    '*'.repeat(digitsOnly.length - 5) +
+    digitsOnly.slice(-4);
+
+  return maskedPhoneNumber;
+}
+
+
 </script>
 <template>
 
   <div class="flex items-center justify-between max-lg:block mt-10">
     <div>
       <div class="flex items-center max-sm:flex-col max-sm:items-start gap-5 mb-5">
-        <h1 class="text-2xl">Всего записей: <span class="text-secondary-color font-bold">{{ totalRows }}</span> </h1>
+        <h1 class="text-xl">Всего записей: <span class="text-secondary-color font-bold">{{ totalRows }}</span> </h1>
         <UIActionButton @click="toggleShowPrimaryView">
           {{ isPrimaryView ? 'Режим выдачи' : 'Режим заполнения' }}
         </UIActionButton>
@@ -444,7 +464,7 @@ function showLastPage() {
           <h1>{{ row.cell }}</h1>
         </div>
         <div>
-          <h1>Телефон: {{ row.fromName }}</h1>
+          <h1>Телефон: {{ formatPhoneNumber(row.fromName) }} </h1>
         </div>
       </div>
     </div>
