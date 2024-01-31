@@ -36,8 +36,8 @@ function printPage() {
 
   .print-content {
     position: absolute;
-    left: 2%;
-    top: 1%;
+    left: 15%;
+    top: 5%;
   }
 }
 </style>
