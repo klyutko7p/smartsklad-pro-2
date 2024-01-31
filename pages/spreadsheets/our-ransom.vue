@@ -48,39 +48,31 @@ function closeModal() {
 }
 
 async function updateDeliveryRow(obj: any) {
-  isLoading.value = true;
   let answer = confirm("Вы точно хотите изменить статус доставки?");
   if (answer) await storeRansom.updateDeliveryStatus(obj.row, obj.flag, 'OurRansom');
   filteredRows.value = await storeRansom.getRansomRows("OurRansom");
   rows.value = await storeRansom.getRansomRows('OurRansom');
-  isLoading.value = false;
 }
 
 async function updateDeliveryRows(obj: any) {
-  isLoading.value = true;
   let answer = confirm("Вы точно хотите изменить статус доставки?");
   if (answer) await storeRansom.updateDeliveryRowsStatus(obj.idArray, obj.flag, 'OurRansom');
   filteredRows.value = await storeRansom.getRansomRows("OurRansom");
   rows.value = await storeRansom.getRansomRows('OurRansom');
-  isLoading.value = false;
 }
 
 async function deleteRow(id: number) {
-  isLoading.value = true;
   let answer = confirm("Вы точно хотите удалить данную строку?");
   if (answer) await storeRansom.deleteRansomRow(id, 'OurRansom');
   filteredRows.value = await storeRansom.getRansomRows("OurRansom");
   rows.value = await storeRansom.getRansomRows('OurRansom');
-  isLoading.value = false;
 }
 
 async function deleteSelectedRows(idArray: number[]) {
-  isLoading.value = true;
   let answer = confirm("Вы точно хотите удалить данные строки?");
   if (answer) await storeRansom.deleteRansomSelectedRows(idArray, 'OurRansom');
   filteredRows.value = await storeRansom.getRansomRows("OurRansom");
   rows.value = await storeRansom.getRansomRows('OurRansom');
-  isLoading.value = false;
 }
 
 async function updateRow() {
@@ -102,20 +94,9 @@ async function createRow() {
 }
 
 async function createCopyRow(id: number) {
-  isLoading.value = true;
   await storeRansom.createCopyRow(id, 'OurRansom');
   filteredRows.value = await storeRansom.getRansomRows("OurRansom");
   rows.value = await storeRansom.getRansomRows('OurRansom');
-  isLoading.value = false;
-}
-
-async function deleteIssuedRows() {
-  isLoading.value = true;
-  let answer = confirm("Вы точно хотите удалить выданные товары?");
-  if (answer) await storeRansom.deleteIssuedRows('OurRansom');
-  filteredRows.value = await storeRansom.getRansomRows("OurRansom");
-  rows.value = await storeRansom.getRansomRows('OurRansom');
-  isLoading.value = false;
 }
 
 async function deleteIssuedRowsTimer() {

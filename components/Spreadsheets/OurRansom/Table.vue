@@ -37,6 +37,7 @@ function deleteRow(id: number) {
 
 function deleteSelectedRows() {
   emit("deleteSelectedRows", checkedRows.value);
+  checkedRows.value = []
 }
 
 
@@ -119,13 +120,26 @@ let isVisiblePages = ref(true)
 
 
 onMounted(() => {
-  updateCurrentPageData()
+
   updateRowsByFromName();
 
   if (props.user.username === 'Светлана') {
     isPrimaryView.value = true;
   }
+
+  if (isPrimaryView.value === false) {
+    updateRowsByFromName()
+  }
+
+
 })
+
+function updateRowsByFromName() {
+  updateCurrentPageData();
+  returnRows.value = returnRows.value?.filter((element, index) => {
+    return returnRows.value?.findIndex(i => i.cell === element.cell && i.fromName === element.fromName) === index;
+  })
+}
 
 let searchQuery = ref('')
 
@@ -133,24 +147,19 @@ function toggleShowPrimaryView() {
   isPrimaryView.value = !isPrimaryView.value;
   isVisiblePages.value = true;
   updateCurrentPageData();
+
   if (!isPrimaryView.value) {
     updateRowsByFromName();
   }
 }
 
-function updateRowsByFromName() {
-  updateCurrentPageData();
-  returnRows.value = props.rows?.filter((element, index) => {
-    return props.rows?.findIndex(i => i.cell === element.cell && i.fromName === element.fromName) === index;
-  })
-}
 
-function getRowsByFromName(fromNameData: string) {
+
+function getRowsByFromName(fromNameData: string, cellData: string) {
   isPrimaryView.value = true;
   isVisiblePages.value = false;
-  returnRows.value = props.rows?.filter((row) => row.fromName === fromNameData);
+  returnRows.value = props.rows?.filter((row) => row.fromName === fromNameData && row.cell === cellData);
 }
-
 
 function formatPhoneNumber(phoneNumber: string) {
   if (!phoneNumber) {
@@ -174,7 +183,6 @@ function formatPhoneNumber(phoneNumber: string) {
 
 </script>
 <template>
-
   <div class="flex items-center justify-between max-lg:block mt-10">
     <div>
       <div class="flex items-center max-sm:flex-col max-sm:items-start gap-5 mb-5">
@@ -218,8 +226,8 @@ function formatPhoneNumber(phoneNumber: string) {
 
   <div class="fixed z-40 flex flex-col gap-3 top-40 left-1/2 translate-x-[-50%] translate-y-[-50%]"
     v-if="user.dataOurRansom === 'WRITE' && checkedRows.length > 0">
-    <UIActionButton v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN' && checkedRows.length === 1" @click="createCopyRow">Скопировать
-      запись</UIActionButton>
+    <UIActionButton v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN' && checkedRows.length === 1"
+      @click="createCopyRow">Скопировать запись</UIActionButton>
     <UIActionButton v-if="user.role === 'ADMIN' && user.dataOurRansom === 'WRITE'" @click="deleteSelectedRows">Удалить
       выделенные записи</UIActionButton>
     <UIActionButton v-if="user.deliveredSC1 === 'WRITE'" @click="updateDeliveryRows('SC')">Доставить на сц
@@ -227,10 +235,13 @@ function formatPhoneNumber(phoneNumber: string) {
     <UIActionButton v-if="user.deliveredPVZ1 === 'WRITE'" @click="updateDeliveryRows('PVZ')">Доставить на пвз
     </UIActionButton>
     <UIActionButton v-if="user.issued1 === 'WRITE'" @click="updateDeliveryRows('issued')">Выдать клиенту</UIActionButton>
-    <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally'), updateDeliveryRows('issued')">Оплачено онлайн
+    <UIActionButton v-if="user.additionally1 === 'WRITE'"
+      @click="updateDeliveryRows('additionally'), updateDeliveryRows('issued')">Оплачено онлайн
     </UIActionButton>
-    <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally1')">Отказ клиент</UIActionButton>
-    <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally2')">Отказ брак</UIActionButton>
+    <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally1')">Отказ клиент
+    </UIActionButton>
+    <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally2')">Отказ брак
+    </UIActionButton>
   </div>
 
   <div class="relative max-h-[610px] mt-5 mb-10 mr-5" v-if="isPrimaryView">
@@ -443,12 +454,14 @@ function formatPhoneNumber(phoneNumber: string) {
   </div>
 
   <div v-else class="mt-10">
-    <h1 class="text-2xl mb-5">Режим выдачи товаров</h1>
-    <input @input="updateRowsByFromName" type="text" v-model="searchQuery"
+    <div class="flex items-center gap-10 mb-5">
+      <h1 class="text-2xl">Режим выдачи товаров</h1>
+    </div>
+    <input type="text" v-model="searchQuery"
       class="block w-full bg-transparent mb-5 border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 rounded-2xl focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"
-      placeholder="Введите телефон или ячейку..." />
+      placeholder="Введите телефон или ячейку..." @input="updateRowsByFromName" />
     <div v-for="row in returnRows">
-      <div @click="getRowsByFromName(row.fromName)"
+      <div @click="getRowsByFromName(row.fromName, row.cell)"
         class="cursor-pointer hover:bg-hover-color duration-300 flex items-center  justify-between p-10 mb-3 border-2">
         <div class="rounded-full border-2 p-3 min-w-[50px] text-center border-secondary-color">
           <h1>{{ row.cell }}</h1>
