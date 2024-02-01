@@ -225,7 +225,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-3 mt-14 max-xl:mt-0">
       <h1 class="text-xl font-bold">Фильтры</h1>
       <Icon @click="showFilters = !showFilters" class="cursor-pointer duration-200 hover:text-secondary-color"
         name="solar:filters-line-duotone" size="24" />

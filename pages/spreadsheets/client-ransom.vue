@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useToast } from "vue-toastification";
 import Cookies from "js-cookie";
 
 const storeUsers = useUsersStore();
@@ -46,71 +45,55 @@ function closeModal() {
 }
 
 async function updateDeliveryRow(obj: any) {
-  isLoading.value = true;
   let answer = confirm("Вы точно хотите изменить статус доставки?");
-  if (answer) await storeRansom.updateDeliveryStatus(obj.row, obj.flag, "ClientRansom");
-  rows.value = await storeRansom.getRansomRows("ClientRansom");
-  isLoading.value = false;
+  if (answer) await storeRansom.updateDeliveryStatus(obj.row, obj.flag, 'ClientRansom');
+  filteredRows.value = await storeRansom.getRansomRows("ClientRansom");
+  rows.value = await storeRansom.getRansomRows('ClientRansom');
 }
 
 async function updateDeliveryRows(obj: any) {
-  isLoading.value = true;
-  let answer = confirm("Вы точно хотите изменить статус доставки?");
-  if (answer)
-    await storeRansom.updateDeliveryRowsStatus(obj.idArray, obj.flag, "ClientRansom");
-  rows.value = await storeRansom.getRansomRows("ClientRansom");
-  isLoading.value = false;
+  let answer = confirm(`Вы точно хотите изменить статус доставки? Количество записей: ${obj.idArray.length}`);
+  if (answer) await storeRansom.updateDeliveryRowsStatus(obj.idArray, obj.flag, 'ClientRansom');
+  filteredRows.value = await storeRansom.getRansomRows("ClientRansom");
+  rows.value = await storeRansom.getRansomRows('OurRansom');
 }
 
 async function deleteRow(id: number) {
-  isLoading.value = true;
   let answer = confirm("Вы точно хотите удалить данную строку?");
-  if (answer) await storeRansom.deleteRansomRow(id, "ClientRansom");
-  rows.value = await storeRansom.getRansomRows("ClientRansom");
-  isLoading.value = false;
+  if (answer) await storeRansom.deleteRansomRow(id, 'ClientRansom');
+  filteredRows.value = await storeRansom.getRansomRows("ClientRansom");
+  rows.value = await storeRansom.getRansomRows('ClientRansom');
 }
 
 async function deleteSelectedRows(idArray: number[]) {
-  isLoading.value = true;
-  let answer = confirm("Вы точно хотите удалить данные строки?");
-  if (answer) await storeRansom.deleteRansomSelectedRows(idArray, "ClientRansom");
-  filteredRows.value = await storeRansom.getRansomRows("OurRansom");
-  rows.value = await storeRansom.getRansomRows("ClientRansom");
-  isLoading.value = false;
+  let answer = confirm(`Вы точно хотите удалить данные строки? Количество записей: ${idArray.length}`);
+  if (answer) await storeRansom.deleteRansomSelectedRows(idArray, 'ClientRansom');
+  filteredRows.value = await storeRansom.getRansomRows("ClientRansom");
+  rows.value = await storeRansom.getRansomRows('ClientRansom');
 }
 
 async function updateRow() {
   isLoading.value = true;
-  await storeRansom.updateRansomRow(rowData.value, user.value.username, "ClientRansom");
-  rows.value = await storeRansom.getRansomRows("ClientRansom");
+  await storeRansom.updateRansomRow(rowData.value, user.value.username, 'ClientRansom');
+  filteredRows.value = await storeRansom.getRansomRows("ClientRansom");
+  rows.value = await storeRansom.getRansomRows('ClientRansom');
   closeModal();
   isLoading.value = false;
 }
 
 async function createRow() {
   isLoading.value = true;
-  await storeRansom.createRansomRow(rowData.value, user.value.username, "ClientRansom");
+  await storeRansom.createRansomRow(rowData.value, user.value.username, 'ClientRansom');
   filteredRows.value = await storeRansom.getRansomRows("ClientRansom");
-  rows.value = await storeRansom.getRansomRows("ClientRansom");
+  rows.value = await storeRansom.getRansomRows('ClientRansom');
   closeModal();
   isLoading.value = false;
 }
 
 async function createCopyRow(id: number) {
-  isLoading.value = true;
-  await storeRansom.createCopyRow(id, "ClientRansom");
+  await storeRansom.createCopyRow(id, 'ClientRansom');
   filteredRows.value = await storeRansom.getRansomRows("ClientRansom");
-  rows.value = await storeRansom.getRansomRows("ClientRansom");
-  isLoading.value = false;
-}
-
-async function deleteIssuedRows() {
-  isLoading.value = true;
-  let answer = confirm("Вы точно хотите удалить выданные товары?");
-  if (answer) await storeRansom.deleteIssuedRows("ClientRansom");
-  filteredRows.value = await storeRansom.getRansomRows("ClientRansom");
-  rows.value = await storeRansom.getRansomRows("ClientRansom");
-  isLoading.value = false;
+  rows.value = await storeRansom.getRansomRows('ClientRansom');
 }
 
 async function deleteIssuedRowsTimer() {
@@ -123,7 +106,7 @@ async function deleteIssuedRowsTimer() {
 
 function timeUntilSunday2359() {
   const now = new Date();
-  const dayOfWeek = now.getDay(); 
+  const dayOfWeek = now.getDay();
   const daysUntilSunday = (dayOfWeek === 0) ? 0 : (7 - dayOfWeek);
 
   const nextSunday1337 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilSunday, 23, 59, 0, 0);
@@ -133,7 +116,7 @@ function timeUntilSunday2359() {
 
 function scheduleDeleteIssuedRows() {
   const timeUntilSunday2359Data = timeUntilSunday2359();
-  
+
   setTimeout(async () => {
     await deleteIssuedRowsTimer();
   }, timeUntilSunday2359Data);
@@ -143,42 +126,54 @@ scheduleDeleteIssuedRows();
 
 
 const filteredRows = ref<Array<IClientRansom>>();
-
 function handleFilteredRows(filteredRowsData: IClientRansom[]) {
   if (user.value.visiblePVZ === 'ВСЕ' && user.value.visibleSC === 'ВСЕ') {
     filteredRows.value = filteredRowsData;
   } else if (user.value.visiblePVZ === 'ВСЕ' && user.value.visibleSC !== 'ВСЕ') {
-    filteredRows.value = filteredRowsData.filter((row) => row.orderPVZ === user.value.visibleSC);
+    filteredRows.value = filteredRowsData.filter((row) => row.orderPVZ === user.value.visibleSC && row.deliveredSC !== null);
   } else if (user.value.visiblePVZ !== 'ВСЕ' && user.value.visibleSC === 'ВСЕ') {
-    filteredRows.value = filteredRowsData.filter((row) => row.dispatchPVZ === user.value.visiblePVZ);
+    filteredRows.value = filteredRowsData.filter((row) => row.dispatchPVZ === user.value.visiblePVZ && row.deliveredSC !== null);
   } else if (user.value.visiblePVZ !== 'ВСЕ' && user.value.visibleSC !== 'ВСЕ') {
-    filteredRows.value = filteredRowsData.filter((row) => row.dispatchPVZ === user.value.visiblePVZ && row.orderPVZ === user.value.visibleSC);
+    filteredRows.value = filteredRowsData.filter((row) => row.dispatchPVZ === user.value.visiblePVZ && row.orderPVZ === user.value.visibleSC && row.deliveredSC !== null);
   }
 }
+
 
 onMounted(async () => {
   isLoading.value = true;
   user.value = await storeUsers.getUser();
-  rows.value = await storeRansom.getRansomRows("ClientRansom");
+  rows.value = await storeRansom.getRansomRows('ClientRansom');
   pvz.value = await storePVZ.getPVZ();
   sortingCenters.value = await storeSortingCenters.getSortingCenters();
 
   if (rows.value) {
-    handleFilteredRows(rows.value);
+    handleFilteredRows(rows.value)
   }
 
   isLoading.value = false;
+});
 
+onBeforeMount(() => {
   if (!token || user.value.dataClientRansom === "NONE") {
     router.push("/auth/login");
   }
-});
+})
 
 definePageMeta({
   layout: false,
 });
 
 const token = Cookies.get("token");
+let showAddFields = ref(false)
+
+function getCellFromName() {
+  if (rowData.value.fromName.trim().length === 12) {
+    let rowCell = rows.value?.filter((row) => row.fromName === rowData.value.fromName)
+    if (rowCell) {
+      rowData.value.cell = rowCell[0].cell;
+    }
+  }
+}
 </script>
 
 <template>
@@ -191,9 +186,7 @@ const token = Cookies.get("token");
         <div v-if="!isLoading" class="mt-3">
           <div>
             <SpreadsheetsClientRansomFilters v-if="rows" @filtered-rows="handleFilteredRows" :rows="rows" />
-            <div class="mt-5 flex items-center gap-3" v-if="user.dataOurRansom === 'WRITE'">
-              <UIMainButton @click="deleteIssuedRows" v-if="user.role === 'ADMIN' || user.username === 'admin1'">Удалить
-                выданное</UIMainButton>
+            <div class="mt-5 flex items-center gap-3" v-if="user.dataClientRansom === 'WRITE'">
               <UIMainButton v-if="user.role === 'ADMIN'" @click="openModal">Создать новую запись</UIMainButton>
             </div>
           </div>
@@ -210,37 +203,30 @@ const token = Cookies.get("token");
               <div class="custom-header" v-else>Создание новой строки</div>
             </template>
             <div class="text-black">
-              <div class="grid grid-cols-2 mb-5" v-if="user.cell1 === 'READ' || user.cell1 === 'WRITE'">
-                <label for="cell1">Ячейка</label>
-                <input :disabled="user.cell1 === 'READ'"
+              <div class="grid grid-cols-2 mb-5" v-if="user.cell2 === 'READ' || user.cell2 === 'WRITE'">
+                <label for="cell2">Ячейка</label>
+                <input :disabled="user.cell2 === 'READ'"
                   class="bg-transparent rounded-md border-2 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.cell" type="text" />
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.name1 === 'READ' || user.name1 === 'WRITE'">
-                <label for="name1">Имя</label>
-                <input :disabled="user.name1 === 'READ'"
+              <div class="grid grid-cols-2 mb-5" v-if="user.fromName2 === 'READ' || user.fromName2 === 'WRITE'">
+                <label for="fromName">Телефон <sup>*</sup></label>
+                <input :disabled="user.fromName2 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.name" type="text" />
+                  v-model="rowData.fromName" @input="getCellFromName" type="text" />
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'">
-                <label for="fromName1">Телефон</label>
-                <input :disabled="user.fromName1 === 'READ'"
-                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.fromName" type="text" />
-              </div>
-
-              <div class="grid grid-cols-2 mb-5" v-if="user.productLink1 === 'READ' || user.productLink1 === 'WRITE'">
+              <div class="grid grid-cols-2 mb-5" v-if="user.productLink2 === 'READ' || user.productLink2 === 'WRITE'">
                 <label for="productLink1">Товар (ссылка)</label>
-                <input :disabled="user.productLink1 === 'READ'"
+                <input :disabled="user.productLink2 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.productLink" type="text" />
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'">
+              <div class="grid grid-cols-2 mb-5" v-if="user.productName2 === 'READ' || user.productName2 === 'WRITE'">
                 <label for="productName1">Название товара</label>
-                <input :disabled="user.productName1 === 'READ'"
+                <input :disabled="user.productName2 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.productName" type="text" />
               </div>
@@ -252,28 +238,28 @@ const token = Cookies.get("token");
                   v-model="rowData.priceProgram" type="number" />
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.prepayment1 === 'READ' || user.prepayment1 === 'WRITE'">
+              <div class="grid grid-cols-2 mb-5" v-if="user.prepayment2 === 'READ' || user.prepayment2 === 'WRITE'">
                 <label for="prepayment1">Предоплата</label>
-                <input :disabled="user.prepayment1 === 'READ'"
+                <input :disabled="user.prepayment2 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.prepayment" type="number" />
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.percentClient1 === 'READ' || user.percentClient1 === 'WRITE'">
+              <div class="grid grid-cols-2 mb-5" v-if="user.percentClient2 === 'READ' || user.percentClient2 === 'WRITE'">
                 <label for="percentClient1">Процент с клиента</label>
-                <input :disabled="user.percentClient1 === 'READ'"
+                <input :disabled="user.percentClient2 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.percentClient" placeholder="По умолчанию: 10" type="number" />
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
-                <label for="deliveredKGT1">Доставка КГТ</label>
-                <input :disabled="user.deliveredKGT1 === 'READ'"
+              <div class="grid grid-cols-2 mb-5" v-if="user.deliveredKGT2 === 'READ' || user.deliveredKGT2 === 'WRITE'">
+                <label for="deliveredKGT1">Дополнительная <br> стоимость</label>
+                <input :disabled="user.deliveredKGT2 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.deliveredKGT" placeholder="По умолчанию: 0" type="number" />
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.dispatchPVZ1 === 'READ' || user.dispatchPVZ1 === 'WRITE'">
+              <div class="grid grid-cols-2 mb-5" v-if="user.dispatchPVZ2=== 'READ' || user.dispatchPVZ2 === 'WRITE'">
                 <label for="dispatchPVZ1">Отправка в ПВЗ</label>
                 <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
                   v-model="rowData.dispatchPVZ" :disabled="user.dispatchPVZ1 === 'READ'">
@@ -283,7 +269,7 @@ const token = Cookies.get("token");
                 </select>
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.orderPVZ1 === 'READ' || user.orderPVZ1 === 'WRITE'">
+              <div class="grid grid-cols-2 mb-5" v-if="user.orderPVZ2 === 'READ' || user.orderPVZ2 === 'WRITE'">
                 <label for="orderPVZ1">Заказано на СЦ</label>
                 <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
                   v-model="rowData.orderPVZ" :disabled="user.orderPVZ1 === 'READ'">
@@ -292,37 +278,47 @@ const token = Cookies.get("token");
                   </option>
                 </select>
               </div>
-
-              <div class="grid grid-cols-2 mb-5" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
-                <label for="deliveredSC1">Доставлено на СЦ</label>
-                <input :disabled="user.deliveredSC1 === 'READ'"
+              
+              <div class="grid grid-cols-2 mb-5" v-if="!rowData.id">
+                <label for="quantity">Количество строк</label>
+                <input type="number"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.deliveredSC" type="datetime-local" />
+                  min="1" v-model="rowData.quantity">
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'">
-                <label for="deliveredPVZ1">Доставлено на ПВЗ</label>
-                <input :disabled="user.deliveredPVZ1 === 'READ'"
-                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.deliveredPVZ" type="datetime-local" />
-              </div>
+              <h1 @click="showAddFields = !showAddFields" class="cursor-pointer hover:opacity-50 text-secondary-color font-bold duration-200 mb-5">Показать ещё настройки</h1>
+              <div v-if="showAddFields">
+                <div class="grid grid-cols-2 mb-5" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
+                  <label for="deliveredSC1">Доставлено на СЦ</label>
+                  <input :disabled="user.deliveredSC1 === 'READ'"
+                    class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                    v-model="rowData.deliveredSC" type="datetime-local" />
+                </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'">
-                <label for="issued1">Выдан клиенту</label>
-                <input :disabled="user.issued1 === 'READ'"
-                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.issued" type="datetime-local" />
-              </div>
+                <div class="grid grid-cols-2 mb-5" v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'">
+                  <label for="deliveredPVZ1">Доставлено на ПВЗ</label>
+                  <input :disabled="user.deliveredPVZ1 === 'READ'"
+                    class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                    v-model="rowData.deliveredPVZ" type="datetime-local" />
+                </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'">
-                <label for="additionally1">Дополнительно</label>
-                <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
-                  v-model="rowData.additionally" :disabled="user.additionally1 === 'READ'">
-                  <option value="">Отменить</option>
-                  <option value="Оплачено онлайн">Оплачено онлайн</option>
-                  <option value="Отказ клиент">Отказ клиент</option>
-                  <option value="Отказ брак">Отказ брак</option>
-                </select>
+                <div class="grid grid-cols-2 mb-5" v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'">
+                  <label for="issued1">Выдан клиенту</label>
+                  <input :disabled="user.issued1 === 'READ'"
+                    class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                    v-model="rowData.issued" type="datetime-local" />
+                </div>
+
+                <div class="grid grid-cols-2 mb-5" v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'">
+                  <label for="additionally1">Дополнительно</label>
+                  <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
+                    v-model="rowData.additionally" :disabled="user.additionally1 === 'READ'">
+                    <option value="">Отменить</option>
+                    <option value="Оплачено онлайн">Оплачено онлайн</option>
+                    <option value="Отказ клиент">Отказ клиент</option>
+                    <option value="Отказ брак">Отказ брак</option>
+                  </select>
+                </div>
               </div>
             </div>
 

@@ -51,6 +51,8 @@ function createUser() {
           <option disabled>Выберите роль</option>
           <option value="ADMIN">ADMIN</option>
           <option selected value="USER">USER</option>
+          <option selected value="SORTIROVKA">SORTIROVKA</option>
+          <option selected value="PVZ">PVZ</option>
         </select>
       </div>
     </div>

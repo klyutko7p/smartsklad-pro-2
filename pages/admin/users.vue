@@ -166,6 +166,8 @@ definePageMeta({
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.role">
                 <option value="ADMIN">ADMIN</option>
                 <option value="USER">USER</option>
+                <option value="SORTIROVKA">SORTIROVKA</option>
+                <option value="PVZ">PVZ</option>
               </select>
             </div>
 

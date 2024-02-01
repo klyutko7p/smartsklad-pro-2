@@ -119,6 +119,15 @@ function handleFilteredRows(filteredRowsData: IOurRansom[]) {
   } else if (user.value.visiblePVZ !== 'ВСЕ' && user.value.visibleSC !== 'ВСЕ') {
     filteredRows.value = filteredRowsData.filter((row) => row.dispatchPVZ === user.value.visiblePVZ && row.orderPVZ === user.value.visibleSC && row.deliveredSC !== null);
   }
+
+  if (filteredRows.value) {
+    if (user.value.role === 'SORTIROVKA') {
+      filteredRows.value = filteredRows.value.filter((row) => row.deliveredPVZ === null);
+    } else if (user.value.role === 'PVZ') {
+      filteredRows.value = filteredRows.value.filter((row) => row.deliveredSC !== null);
+    }
+  }
+
 }
 
 function timeUntilSunday2359() {
@@ -309,7 +318,9 @@ function getCellFromName() {
                   min="1" v-model="rowData.quantity">
               </div>
 
-              <h1 @click="showAddFields = !showAddFields" class="cursor-pointer hover:opacity-50 text-secondary-color font-bold duration-200 mb-5">Показать ещё настройки</h1>
+              <h1 @click="showAddFields = !showAddFields"
+                class="cursor-pointer hover:opacity-50 text-secondary-color font-bold duration-200 mb-5">Показать ещё
+                настройки</h1>
               <div v-if="showAddFields">
                 <div class="grid grid-cols-2 mb-5" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
                   <label for="deliveredSC1">Доставлено на СЦ</label>
@@ -483,7 +494,9 @@ function getCellFromName() {
                   min="1" v-model="rowData.quantity">
               </div>
 
-              <h1 @click="showAddFields = !showAddFields" class="cursor-pointer hover:opacity-50 text-secondary-color font-bold duration-200 mb-5">Показать ещё настройки</h1>
+              <h1 @click="showAddFields = !showAddFields"
+                class="cursor-pointer hover:opacity-50 text-secondary-color font-bold duration-200 mb-5">Показать ещё
+                настройки</h1>
               <div v-if="showAddFields">
                 <div class="grid grid-cols-2 mb-5" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
                   <label for="deliveredSC1">Доставлено на СЦ</label>
@@ -536,5 +549,4 @@ function getCellFromName() {
         </div>
       </NuxtLayout>
     </div>
-  </div>
-</template>
+</div></template>
