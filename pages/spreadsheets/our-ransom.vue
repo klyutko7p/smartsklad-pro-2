@@ -169,6 +169,14 @@ definePageMeta({
 const token = Cookies.get("token");
 let showAddFields = ref(false)
 
+function getCellFromName() {
+  if (rowData.value.fromName.trim().length === 12) {
+    let rowCell = rows.value?.filter((row) => row.fromName === rowData.value.fromName)
+    if (rowCell) {
+      rowData.value.cell = rowCell[0].cell;
+    }
+  }
+}
 
 </script>
 
@@ -211,7 +219,7 @@ let showAddFields = ref(false)
                 <label for="fromName">Телефон <sup>*</sup></label>
                 <input :disabled="user.fromName1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.fromName" type="text" />
+                  v-model="rowData.fromName" @input="getCellFromName" type="text" />
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.productLink1 === 'READ' || user.productLink1 === 'WRITE'">
@@ -385,7 +393,7 @@ let showAddFields = ref(false)
                 <label for="fromName">Телефон <sup>*</sup></label>
                 <input :disabled="user.fromName1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.fromName" type="text" />
+                  v-model="rowData.fromName" @input="getCellFromName" type="text" />
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.productLink1 === 'READ' || user.productLink1 === 'WRITE'">
