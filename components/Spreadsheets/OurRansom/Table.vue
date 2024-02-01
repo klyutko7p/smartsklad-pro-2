@@ -54,16 +54,30 @@ function exportToExcel() {
   writeFile(wb, "наш_выкуп.xlsx");
 }
 
-const checkedRows = ref<number[]>([]);
+interface RowData {
+  rowId: number;
+  amount: number;
+}
 
-const isChecked = (rowId: number): boolean => checkedRows.value.includes(rowId);
+const allSum: Ref<RowData[]> = ref([]);
+const checkedRows: Ref<number[]> = ref([]);
 
-const handleCheckboxChange = (rowId: number): void => {
+const getAllSum: Ref<number> = ref(0);
+
+const isChecked = (rowId: number): boolean => {
+  return checkedRows.value.includes(rowId);
+};
+
+const handleCheckboxChange = (rowId: number, amountData: number): void => {
   if (isChecked(rowId)) {
     checkedRows.value = checkedRows.value.filter((id) => id !== rowId);
+    allSum.value = allSum.value.filter((obj) => obj.rowId !== rowId);
   } else {
     checkedRows.value.push(rowId);
+    allSum.value.push({ rowId, amount: amountData });
   }
+
+  getAllSum.value = allSum.value.reduce((sum, obj) => sum + obj.amount, 0);
 };
 
 const showDeletedRows = ref(false);
@@ -221,6 +235,11 @@ function formatPhoneNumber(phoneNumber: string) {
     </div>
   </div>
 
+  <div class="fixed top-10 left-10 z-40" v-if="getAllSum > 0">
+    <h1 class="text-2xl backdrop-blur-xl p-5 rounded-xl border-2 text-secondary-color font-bold">Итого к оплате: {{
+      getAllSum }} </h1>
+  </div>
+
   <div class="fixed z-40 flex flex-col gap-3 top-40 left-1/2 translate-x-[-50%] translate-y-[-50%]"
     v-if="user.dataOurRansom === 'WRITE' && checkedRows.length > 0">
     <UIActionButton v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN' && checkedRows.length === 1"
@@ -327,7 +346,8 @@ function formatPhoneNumber(phoneNumber: string) {
         <tr :class="{ 'bg-orange-100': isChecked(row.id) }" class="border-b text-center text-sm"
           v-for="row in returnRows">
           <td v-if="user.dataOurRansom === 'WRITE'" class="border-2 text-secondary-color">
-            <input type="checkbox" :value="row.id" :checked="isChecked(row.id)" @change="handleCheckboxChange(row.id)" />
+            <input type="checkbox" :value="row.id" :checked="isChecked(row.id)"
+              @change="handleCheckboxChange(row.id, Math.ceil(row.amountFromClient1 / 10) * 10)" />
           </td>
           <td class="border-2" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
             <Icon @click="openModal(row)" class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
@@ -389,25 +409,16 @@ function formatPhoneNumber(phoneNumber: string) {
             {{ row.orderAccount }}
           </td>
           <td class="px-3 py-4 border-2" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
-            <!-- <Icon @click="updateDeliveryRow(row, 'SC')" v-if="!row.deliveredSC && user.deliveredSC1 === 'WRITE'"
-              class="text-green-500 cursor-pointer hover:text-green-300 duration-200"
-              name="mdi:checkbox-multiple-marked-circle" size="32" /> -->
             <h1 class="font-bold text-green-500">
               {{ row.deliveredSC ? storeUsers.getNormalizedDate(row.deliveredSC) : "" }}
             </h1>
           </td>
           <td class="px-3 py-4 border-2" v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'">
-            <!-- <Icon @click="updateDeliveryRow(row, 'PVZ')" v-if="!row.deliveredPVZ && user.deliveredPVZ1 === 'WRITE'"
-              class="text-green-500 cursor-pointer hover:text-green-300 duration-200"
-              name="mdi:checkbox-multiple-marked-circle" size="32" /> -->
             <h1 class="font-bold text-green-500">
               {{ row.deliveredPVZ ? storeUsers.getNormalizedDate(row.deliveredPVZ) : "" }}
             </h1>
           </td>
           <td class="px-3 py-4 border-2" v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'">
-            <!-- <Icon @click="updateDeliveryRow(row, 'issued')" v-if="!row.issued && user.issued1 === 'WRITE'"
-              class="text-green-500 cursor-pointer hover:text-green-300 duration-200"
-              name="mdi:checkbox-multiple-marked-circle" size="32" /> -->
             <h1 class="font-bold text-green-500">
               {{ row.issued ? storeUsers.getNormalizedDate(row.issued) : "" }}
             </h1>

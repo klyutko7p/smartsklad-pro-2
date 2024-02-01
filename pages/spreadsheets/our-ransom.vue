@@ -55,7 +55,7 @@ async function updateDeliveryRow(obj: any) {
 }
 
 async function updateDeliveryRows(obj: any) {
-  let answer = confirm("Вы точно хотите изменить статус доставки?");
+  let answer = confirm(`Вы точно хотите изменить статус доставки? Количество записей: ${obj.idArray.length}`);
   if (answer) await storeRansom.updateDeliveryRowsStatus(obj.idArray, obj.flag, 'OurRansom');
   filteredRows.value = await storeRansom.getRansomRows("OurRansom");
   rows.value = await storeRansom.getRansomRows('OurRansom');
@@ -69,7 +69,7 @@ async function deleteRow(id: number) {
 }
 
 async function deleteSelectedRows(idArray: number[]) {
-  let answer = confirm("Вы точно хотите удалить данные строки?");
+  let answer = confirm(`Вы точно хотите удалить данные строки? Количество записей: ${idArray.length}`);
   if (answer) await storeRansom.deleteRansomSelectedRows(idArray, 'OurRansom');
   filteredRows.value = await storeRansom.getRansomRows("OurRansom");
   rows.value = await storeRansom.getRansomRows('OurRansom');
@@ -257,7 +257,7 @@ let showAddFields = ref(false)
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
-                <label for="deliveredKGT1">Дополнительная стоимость</label>
+                <label for="deliveredKGT1">Дополнительная <br> стоимость</label>
                 <input :disabled="user.deliveredKGT1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.deliveredKGT" placeholder="По умолчанию: 0" type="number" />
@@ -341,12 +341,12 @@ let showAddFields = ref(false)
             <div class="flex items-center justify-center gap-3 mt-10" v-if="rowData.id">
               <UIMainButton @click="updateRow">Сохранить
               </UIMainButton>
-              <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
+              <UIMainButton @click="closeModal">Отменить </UIMainButton>
             </div>
             <div class="flex items-center justify-center gap-3 mt-10" v-else>
               <UIMainButton :disabled="rowData.fromName === '' || rowData.fromName === null" @click="createRow">Создать
               </UIMainButton>
-              <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
+              <UIMainButton @click="closeModal">Отменить </UIMainButton>
             </div>
           </UIModal>
         </div>
@@ -431,7 +431,7 @@ let showAddFields = ref(false)
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
-                <label for="deliveredKGT1">Дополнительная стоимость</label>
+                <label for="deliveredKGT1">Дополнительная <br> стоимость</label>
                 <input :disabled="user.deliveredKGT1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.deliveredKGT" placeholder="По умолчанию: 0" type="number" />
@@ -514,12 +514,12 @@ let showAddFields = ref(false)
             <div class="flex items-center justify-center gap-3 mt-10" v-if="rowData.id">
               <UIMainButton @click="updateRow">Сохранить
               </UIMainButton>
-              <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
+              <UIMainButton @click="closeModal">Отменить </UIMainButton>
             </div>
             <div class="flex items-center justify-center gap-3 mt-10" v-else>
               <UIMainButton :disabled="rowData.fromName === '' || rowData.fromName === null" @click="createRow">Создать
               </UIMainButton>
-              <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
+              <UIMainButton @click="closeModal">Отменить </UIMainButton>
             </div>
           </UIModal>
         </div>

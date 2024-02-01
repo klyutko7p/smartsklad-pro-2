@@ -220,7 +220,7 @@ onBeforeMount(() => {
       </div>
     </nav>
   </div>
-  <div v-else class="p-5 absolute z-40 right-0">
+  <div v-else class="p-5 absolute z-40 max-xl:right-0">
     <Icon @click="editMenu" size="40" name="material-symbols-light:menu"
       class="hover:text-orange-300 duration-200 cursor-pointer" />
   </div>
