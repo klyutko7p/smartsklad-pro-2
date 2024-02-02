@@ -222,7 +222,7 @@ let showOthersVariants = ref(false)
         <UIActionButton @click="toggleShowPrimaryView" v-if="user.role !== 'PVZ' && user.role !== 'SORTIROVKA'">
           {{ isPrimaryView ? 'Режим выдачи' : 'Режим заполнения' }}
         </UIActionButton>
-        <UIActionButton @click="isPrimaryView = false" v-if="user.role === 'PVZ' && isPrimaryView === true">
+        <UIActionButton @click="toggleShowPrimaryView" v-if="user.role === 'PVZ' && isPrimaryView === true">
           Режим выдачи
         </UIActionButton>
       </div>
@@ -253,7 +253,7 @@ let showOthersVariants = ref(false)
   </div>
 
   <div class="fixed top-10 z-40 left-1/2 translate-x-[-50%] translate-y-[-50%]" v-if="getAllSum > 0">
-    <h1 class="text-2xl backdrop-blur-xl p-5 rounded-xl border-2 text-secondary-color font-bold">К оплате: {{
+    <h1 class="text-base backdrop-blur-xl p-2 rounded-xl border-2 text-secondary-color font-bold">К оплате: {{
       getAllSum }} </h1>
   </div>
 
@@ -279,7 +279,7 @@ let showOthersVariants = ref(false)
     </UIActionButton>
   </div>
 
-  <div class="fixed z-40 flex flex-col gap-3 top-40 left-1/2 translate-x-[-50%] translate-y-[-50%]"
+  <div class="fixed z-40 flex flex-col gap-3 top-44 left-1/2 translate-x-[-50%] translate-y-[-50%]"
     v-if="user.dataOurRansom === 'WRITE' && checkedRows.length > 0 && user.role === 'PVZ'">
     <UIActionButton v-if="user.deliveredPVZ1 === 'WRITE' && showButtonPVZ" @click="updateDeliveryRows('PVZ')">Принять на пвз
     </UIActionButton>
