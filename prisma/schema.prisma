@@ -175,4 +175,5 @@ enum Role {
   ADMIN
   SORTIROVKA
   PVZ
+  ADMINISTRATOR
 }

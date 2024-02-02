@@ -15,6 +15,8 @@ function getAdditionally(status: string) {
         return 'Отказ клиент'
     } else if (status === 'additionally2') {
         return 'Отказ брак'
+    } else if (status === 'additionally3') {
+        return 'Оплата наличными'
     }
 }
 
@@ -46,6 +48,8 @@ export default defineEventHandler(async (event) => {
                 updateField = 'additionally'
             case 'additionally2':
                 updateField = 'additionally'
+            case 'additionally3':
+                updateField = 'additionally'
                 break;
             default:
                 throw new Error(`Unsupported flag: ${flag}`);
@@ -71,6 +75,7 @@ export default defineEventHandler(async (event) => {
                 },
                 data: {
                     additionally: getAdditionally(flag),
+                    issued: new Date(),
                 },
             });
         } else if (flagRansom === 'ClientRansom') {

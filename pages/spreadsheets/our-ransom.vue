@@ -198,9 +198,9 @@ function getCellFromName() {
       <NuxtLayout name="admin">
         <div v-if="!isLoading" class="mt-3">
           <div>
-            <SpreadsheetsOurRansomFilters v-if="rows" @filtered-rows="handleFilteredRows" :rows="rows" />
+            <SpreadsheetsOurRansomFilters v-if="rows" @filtered-rows="handleFilteredRows" :rows="rows" :user="user" />
             <div class="mt-5 flex items-center gap-3" v-if="user.dataOurRansom === 'WRITE'">
-              <UIMainButton v-if="user.role === 'ADMIN'" @click="openModal">Создать новую запись</UIMainButton>
+              <UIMainButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'" @click="openModal">Создать новую запись</UIMainButton>
             </div>
           </div>
 
@@ -378,7 +378,10 @@ function getCellFromName() {
       <NuxtLayout name="user">
         <div v-if="!isLoading" class="mt-3">
           <div>
-            <SpreadsheetsOurRansomFilters v-if="rows" @filtered-rows="handleFilteredRows" :rows="rows" />
+            <SpreadsheetsOurRansomFilters v-if="rows && user.role !== 'PVZ'" @filtered-rows="handleFilteredRows" :rows="rows" :user="user" />
+            <div class="mt-5 flex items-center gap-3" v-if="user.dataOurRansom === 'WRITE'">
+              <UIMainButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'" @click="openModal">Создать новую запись</UIMainButton>
+            </div>
           </div>
 
           <SpreadsheetsOurRansomTable @update-delivery-row="updateDeliveryRow" :rows="filteredRows" :user="user"

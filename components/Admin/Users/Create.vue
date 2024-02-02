@@ -53,6 +53,7 @@ function createUser() {
           <option selected value="USER">USER</option>
           <option selected value="SORTIROVKA">SORTIROVKA</option>
           <option selected value="PVZ">PVZ</option>
+          <option selected value="ADMINISTRATOR">ADMINISTRATOR</option>
         </select>
       </div>
     </div>

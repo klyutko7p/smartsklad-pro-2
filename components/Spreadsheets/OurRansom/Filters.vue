@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const props = defineProps({
   rows: { type: Array as PropType<IOurRansom[]>, required: true },
+  user: { type: Object as PropType<User>}
 });
 
 const storeRansom = useRansomStore();
@@ -21,6 +22,8 @@ const startingDate2 = ref<Date | string | null>(null);
 const endDate2 = ref<Date | string | null>(null);
 const startingDate3 = ref<Date | string | null>(null);
 const endDate3 = ref<Date | string | null>(null);
+const startingDate4 = ref<Date | string | null>(null);
+const endDate4 = ref<Date | string | null>(null);
 
 const uniqueOrderAccounts = computed(() => {
   return storeRansom.getUniqueNonEmptyValues(props.rows, "orderAccount");
@@ -79,7 +82,9 @@ const filterRows = () => {
       (!startingDate2.value || new Date(row.deliveredSC) >= new Date(startingDate2.value)) &&
       (!endDate2.value || new Date(row.deliveredSC) <= new Date(endDate2.value)) &&
       (!startingDate3.value || new Date(row.created_at) >= new Date(startingDate3.value)) &&
-      (!endDate3.value || new Date(row.created_at) <= new Date(endDate3.value)) 
+      (!endDate3.value || new Date(row.created_at) <= new Date(endDate3.value)) &&
+      (!startingDate4.value || new Date(row.deliveredPVZ) >= new Date(startingDate4.value)) &&
+      (!endDate4.value || new Date(row.deliveredPVZ) <= new Date(endDate4.value))
     );
   });
   emit("filtered-rows", filteredRows.value);
@@ -101,6 +106,8 @@ function clearFields() {
   endDate2.value = "";
   startingDate3.value = "";
   endDate3.value = "";
+  startingDate4.value = "";
+  endDate4.value = "";
   filterRows();
 }
 
@@ -121,6 +128,8 @@ watch(
     endDate2,
     startingDate3,
     endDate3,
+    startingDate4,
+    endDate4,
   ],
   filterRows
 );
@@ -149,6 +158,8 @@ function saveFiltersToLocalStorage() {
   saveToLocalStorage('endDate2', endDate2.value);
   saveToLocalStorage('startingDate3', startingDate3.value);
   saveToLocalStorage('endDate3', endDate3.value);
+  saveToLocalStorage('startingDate4', startingDate4.value);
+  saveToLocalStorage('endDate4', endDate4.value);
   showFilters.value = false;
 }
 
@@ -168,6 +179,8 @@ function clearLocalStorage() {
   endDate2.value = null;
   startingDate3.value = null;
   endDate3.value = null;
+  startingDate4.value = null;
+  endDate4.value = null;
 }
 
 onMounted(() => {
@@ -220,7 +233,40 @@ onMounted(() => {
   if (storedEndDate !== null) {
     endDate.value = storedEndDate;
   }
+
+  const storedStartingDate2 = loadFromLocalStorage('startingDate2');
+  if (storedStartingDate2 !== null) {
+    startingDate2.value = storedStartingDate2;
+  }
+
+  const storedEndDate2 = loadFromLocalStorage('endDate2');
+  if (storedEndDate2 !== null) {
+    endDate2.value = storedEndDate2;
+  }
+
+  const storedStartingDate3 = loadFromLocalStorage('startingDate3');
+  if (storedStartingDate3 !== null) {
+    startingDate3.value = storedStartingDate3;
+  }
+
+  const storedEndDate3 = loadFromLocalStorage('endDate3');
+  if (storedEndDate3 !== null) {
+    endDate3.value = storedEndDate3;
+  }
+
+  
+  const storedStartingDate4 = loadFromLocalStorage('startingDate4');
+  if (storedStartingDate4 !== null) {
+    startingDate4.value = storedStartingDate4;
+  }
+
+  const storedEndDate4 = loadFromLocalStorage('endDate4');
+  if (storedEndDate4 !== null) {
+    endDate4.value = storedEndDate4;
+  }
 })
+
+let dateFilter = ref('issued')
 </script>
 
 <template>
@@ -305,43 +351,67 @@ onMounted(() => {
           </datalist>
         </div>
       </div>
-      <div class="mt-10 grid grid-cols-1">
-        <div class="grid grid-cols-2 my-2">
-          <h1>От Даты (Выдача клиенту):</h1>
-          <input
-            class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-            type="date" v-model="startingDate" />
+      <div v-if="user?.role !== 'SORTIROVKA'">
+        <div class="mt-10">
+          <div>
+            <select v-model="dateFilter" class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400 mb-3">
+              <option value="issued" selected>Дата выдачи</option>
+              <option value="sorted">Дата сортировки</option>
+              <option value="delivered">Дата доставки на пвз</option>
+              <option value="created">Дата создания</option>
+            </select>
+          </div>
         </div>
-        <div class="grid grid-cols-2 my-2">
-          <h1>До Даты (Выдача клиенту):</h1>
-          <input
-            class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-            type="date" v-model="endDate" />
-        </div>
-        <div class="grid grid-cols-2 my-2">
-          <h1>От Даты (Дата сортировки):</h1>
-          <input
-            class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-            type="date" v-model="startingDate2" />
-        </div>
-        <div class="grid grid-cols-2 my-2">
-          <h1>До Даты (Дата сортировки):</h1>
-          <input
-            class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-            type="date" v-model="endDate2" />
-        </div>
-        <div class="grid grid-cols-2 my-2">
-          <h1>От Даты (Дата создания):</h1>
-          <input
-            class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-            type="date" v-model="startingDate3" />
-        </div>
-        <div class="grid grid-cols-2 my-2">
-          <h1>До Даты (Дата создания):</h1>
-          <input
-            class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-            type="date" v-model="endDate3" />
-        </div>
+        <div class="rid grid-cols-1">
+          <div class="grid grid-cols-2 my-2" v-if="dateFilter === 'issued'">
+            <h1>От Даты:</h1>
+            <input
+              class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+              type="date" v-model="startingDate" />
+          </div>
+          <div class="grid grid-cols-2 my-2" v-if="dateFilter === 'issued'">
+            <h1>До Даты:</h1>
+            <input
+              class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+              type="date" v-model="endDate" />
+          </div>
+          <div class="grid grid-cols-2 my-2" v-if="dateFilter === 'sorted'">
+            <h1>От Даты:</h1>
+            <input
+              class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+              type="date" v-model="startingDate2" />
+          </div>
+          <div class="grid grid-cols-2 my-2" v-if="dateFilter === 'sorted'">
+            <h1>До Даты:</h1>
+            <input
+              class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+              type="date" v-model="endDate2" />
+          </div>
+          <div class="grid grid-cols-2 my-2" v-if="dateFilter === 'created'">
+            <h1>От Даты:</h1>
+            <input
+              class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+              type="date" v-model="startingDate3" />
+          </div>
+          <div class="grid grid-cols-2 my-2" v-if="dateFilter === 'created'">
+            <h1>До Даты:</h1>
+            <input
+              class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+              type="date" v-model="endDate3" />
+          </div>
+          <div class="grid grid-cols-2 my-2" v-if="dateFilter === 'delivered'">
+            <h1>От Даты:</h1>
+            <input
+              class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+              type="date" v-model="startingDate4" />
+          </div>
+          <div class="grid grid-cols-2 my-2" v-if="dateFilter === 'delivered'">
+            <h1>До Даты:</h1>
+            <input
+              class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+              type="date" v-model="endDate4" />
+          </div>
+      </div>
       </div>
       <div class="flex justify-end gap-3 mt-3">
         <UIMainButton @click="saveFiltersToLocalStorage">Принять</UIMainButton>

@@ -94,12 +94,6 @@ defineProps({
             {{ userData.paid }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.name1 }}
-          </td>
-          <td class="px-6 py-4 border-2">
-            {{ userData.name2 }}
-          </td>
-          <td class="px-6 py-4 border-2">
             {{ userData.name3 }}
           </td>
           <td class="px-6 py-4 border-2">

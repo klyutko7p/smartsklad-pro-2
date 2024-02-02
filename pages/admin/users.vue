@@ -30,8 +30,6 @@ const fields = [
   "название (доставка)",
   "отсортировано (доставка)",
   "оплачено (доставка)",
-  "имя (наш выкуп)",
-  "имя (выкуп клиента)",
   "имя (доставка)",
   "телефон (наш выкуп)",
   "телефон (выкуп клиента)",
@@ -168,6 +166,7 @@ definePageMeta({
                 <option value="USER">USER</option>
                 <option value="SORTIROVKA">SORTIROVKA</option>
                 <option value="PVZ">PVZ</option>
+                <option value="ADMINISTRATOR">ADMINISTRATOR</option>
               </select>
             </div>
 

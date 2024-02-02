@@ -57,32 +57,38 @@ function exportToExcel() {
 interface RowData {
   rowId: number;
   amount: number;
+  issued: Date | null | string | number;
 }
 
 const allSum: Ref<RowData[]> = ref([]);
 const checkedRows: Ref<number[]> = ref([]);
+const allIssuedRows: Ref<RowData[]> = ref([]);
 
 const getAllSum: Ref<number> = ref(0);
+const showButton: Ref<boolean> = ref(true);
 
 const isChecked = (rowId: number): boolean => {
   return checkedRows.value.includes(rowId);
 };
 
-const handleCheckboxChange = (rowId: number, amountData: number): void => {
+const handleCheckboxChange = (rowId: number, amountData: number, issuedData: Date | null | string | number): void => {
   if (isChecked(rowId)) {
     checkedRows.value = checkedRows.value.filter((id) => id !== rowId);
     allSum.value = allSum.value.filter((obj) => obj.rowId !== rowId);
+    allIssuedRows.value = allIssuedRows.value.filter((obj) => obj.rowId !== rowId);
   } else {
     checkedRows.value.push(rowId);
-    allSum.value.push({ rowId, amount: amountData });
+    allSum.value.push({ rowId, amount: amountData, issued: issuedData });
+    allIssuedRows.value.push({ rowId, amount: amountData, issued: issuedData });
   }
 
   getAllSum.value = allSum.value.reduce((sum, obj) => sum + obj.amount, 0);
+  showButton.value = returnRows.value?.find(obj => obj.id === rowId)?.issued === null;
 };
 
 const showDeletedRows = ref(false);
 
-const perPage = ref(50)
+const perPage = ref(100)
 const currentPage = ref(1)
 const totalPages = computed(() => Math.ceil((props.rows?.length || 0) / perPage.value));
 const totalRows = computed(() => Math.ceil(props.rows?.length || 0));
@@ -145,6 +151,12 @@ onMounted(() => {
     updateCurrentPageData()
   }
 
+  if (props.user.role === 'SORTIROVKA') {
+    perPage.value = totalRows.value;
+    updateCurrentPageData();
+    isPrimaryView.value = true;
+  }
+
 })
 
 function updateRowsByFromName() {
@@ -194,28 +206,22 @@ function formatPhoneNumber(phoneNumber: string) {
   return maskedPhoneNumber;
 }
 
+let showOthersVariants = ref(false)
 
 </script>
 <template>
   <div class="flex items-center justify-between max-lg:block mt-10">
     <div>
       <div class="flex items-center max-sm:flex-col max-sm:items-start gap-5 mb-5">
-        <h1 class="text-xl">Всего записей: <span class="text-secondary-color font-bold">{{ totalRows }}</span> </h1>
-        <UIActionButton @click="toggleShowPrimaryView" v-if="user.role !== 'PVZ'">
+        <h1 class="text-xl">Товаров в работе: <span class="text-secondary-color font-bold">{{ totalRows }}</span> </h1>
+        <UIActionButton @click="toggleShowPrimaryView" v-if="user.role !== 'PVZ' && user.role !== 'SORTIROVKA'">
           {{ isPrimaryView ? 'Режим выдачи' : 'Режим заполнения' }}
         </UIActionButton>
-        <UIActionButton @click="isPrimaryView = false" v-if="user.role === 'PVZ'">
+        <UIActionButton @click="isPrimaryView = false" v-if="user.role === 'PVZ' && isPrimaryView === true">
           Режим выдачи
         </UIActionButton>
       </div>
-      <div class="mb-5 flex items-center max-sm:flex-col max-sm:items-start gap-5" v-if="isPrimaryView">
-        <h1>Сколько записей отображается в таблице: </h1>
-        <input
-          class="max-w-[100px] bg-transparent border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 rounded-2xl focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"
-          min="1" :max="totalRows" type="number" v-model="perPage">
-        <UIMainButton @click="updateCurrentPageData">Применить</UIMainButton>
-      </div>
-      <div class="flex items-center gap-5" v-if="user.role === 'ADMIN'">
+      <div class="flex items-center gap-5" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
         <UIActionButton @click="toggleShowDeletedRows">
           {{ showDeletedRows ? 'Скрыть удаленное' : 'Показать удаленное' }}
         </UIActionButton>
@@ -247,23 +253,45 @@ function formatPhoneNumber(phoneNumber: string) {
   </div>
 
   <div class="fixed z-40 flex flex-col gap-3 top-40 left-1/2 translate-x-[-50%] translate-y-[-50%]"
-    v-if="user.dataOurRansom === 'WRITE' && checkedRows.length > 0">
-    <UIActionButton v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN' && checkedRows.length === 1"
+    v-if="user.dataOurRansom === 'WRITE' && checkedRows.length > 0 && user.role !== 'PVZ'">
+    <UIActionButton
+      v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN' || user.role === 'ADMINISTRATOR' && checkedRows.length === 1"
       @click="createCopyRow">Скопировать запись</UIActionButton>
-    <UIActionButton v-if="user.role === 'ADMIN' && user.dataOurRansom === 'WRITE'" @click="deleteSelectedRows">Удалить
+    <UIActionButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR' && user.dataOurRansom === 'WRITE'"
+      @click="deleteSelectedRows">Удалить
       выделенные записи</UIActionButton>
     <UIActionButton v-if="user.deliveredSC1 === 'WRITE'" @click="updateDeliveryRows('SC')">Доставить на сц
     </UIActionButton>
     <UIActionButton v-if="user.deliveredPVZ1 === 'WRITE'" @click="updateDeliveryRows('PVZ')">Доставить на пвз
     </UIActionButton>
-    <UIActionButton v-if="user.issued1 === 'WRITE'" @click="updateDeliveryRows('issued')">Выдать клиенту</UIActionButton>
+    <UIActionButton v-if="user.issued1 === 'WRITE' && showButton" @click="updateDeliveryRows('issued')">Выдать клиенту
+    </UIActionButton>
     <UIActionButton v-if="user.additionally1 === 'WRITE'"
-      @click="updateDeliveryRows('additionally'), updateDeliveryRows('issued')">Оплачено онлайн
+      @click="updateDeliveryRows('additionally')">Оплачено онлайн
     </UIActionButton>
     <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally1')">Отказ клиент
     </UIActionButton>
     <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally2')">Отказ брак
     </UIActionButton>
+  </div>
+
+  <div class="fixed z-40 flex flex-col gap-3 top-40 left-1/2 translate-x-[-50%] translate-y-[-50%]"
+    v-if="user.dataOurRansom === 'WRITE' && checkedRows.length > 0 && user.role === 'PVZ'">
+    <UIActionButton v-if="user.deliveredPVZ1 === 'WRITE'" @click="updateDeliveryRows('PVZ')">Принять на пвз
+    </UIActionButton>
+    <UIActionButton v-if="user.issued1 === 'WRITE' && showButton" @click="showOthersVariants = !showOthersVariants">Выдать клиенту
+    </UIActionButton>
+    <div v-if="showOthersVariants" class="flex flex-col gap-3">
+      <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally3')">Оплата наличными
+      </UIActionButton>
+      <UIActionButton v-if="user.additionally1 === 'WRITE'"
+        @click="updateDeliveryRows('additionally')">Оплачено онлайн
+      </UIActionButton>
+      <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally1')">Отказ клиент
+      </UIActionButton>
+      <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally2')">Отказ брак
+      </UIActionButton>
+    </div>
   </div>
 
   <div class="relative max-h-[610px] mt-5 mb-10 mr-5" v-if="isPrimaryView">
@@ -275,7 +303,8 @@ function formatPhoneNumber(phoneNumber: string) {
           <th scope="col" class="border-2" v-if="user.dataOurRansom === 'WRITE'">
             Выделение
           </th>
-          <th scope="col" class="exclude-row border-2" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
+          <th scope="col" class="exclude-row border-2"
+            v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
             изменение
           </th>
           <th scope="col" class="border-2">id</th>
@@ -336,13 +365,13 @@ function formatPhoneNumber(phoneNumber: string) {
           <th scope="col" class="border-2" v-if="user.profit1 === 'READ' || user.profit1 === 'WRITE'">
             прибыль (доход)
           </th>
-          <th scope="col" class="border-2">создан (время)</th>
-          <th scope="col" class="border-2">изменен (время)</th>
-          <th scope="col" class="border-2">удален (время)</th>
-          <th scope="col" class="border-2">создан</th>
-          <th scope="col" class="border-2">изменен</th>
+          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">создан (время)</th>
+          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">изменен (время)</th>
+          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">удален (время)</th>
+          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">создан</th>
+          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">изменен</th>
           <th scope="col" class="exclude-row px-6 py-3 border-2"
-            v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
+            v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
             удаление
           </th>
         </tr>
@@ -353,13 +382,14 @@ function formatPhoneNumber(phoneNumber: string) {
           v-for="row in returnRows">
           <td v-if="user.dataOurRansom === 'WRITE'" class="border-2 text-secondary-color">
             <input type="checkbox" :value="row.id" :checked="isChecked(row.id)"
-              @change="handleCheckboxChange(row.id, Math.ceil(row.amountFromClient1 / 10) * 10)" />
+              @change="handleCheckboxChange(row.id, Math.ceil(row.amountFromClient1 / 10) * 10, row.issued)" />
           </td>
-          <td class="border-2" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
+          <td class="border-2"
+            v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
             <Icon @click="openModal(row)" class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
               name="material-symbols:edit" size="32" />
           </td>
-          <th scope="row" class="px-3 py-4 border-2 font-medium underline text-secondary-color whitespace-nowrap">
+          <th scope="row" class="border-2 font-medium underline text-secondary-color whitespace-nowrap">
             <NuxtLink target="_blank" class="cursor-pointer hover:text-orange-200 duration-200"
               :to="`/spreadsheets/record/1/${row.id}`">
               {{ row.id }}
@@ -384,7 +414,7 @@ function formatPhoneNumber(phoneNumber: string) {
             <a :href="row.productLink" target="_blank" class="hover:text-orange-200 duration-200">{{ row.productLink
             }}</a>
           </td>
-          <td class="py-4 px-6 border-2" v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'">
+          <td class="border-2" v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'">
             {{ row.productName }}
           </td>
           <td class="px-6 py-4 border-2" v-if="user.notation1 === 'READ' || user.notation1 === 'WRITE'">
@@ -399,10 +429,10 @@ function formatPhoneNumber(phoneNumber: string) {
           <td class="border-2" v-if="user.percentClient1 === 'READ' || user.percentClient1 === 'WRITE'">
             {{ row.percentClient }}
           </td>
-          <td class="px-2 py-4 border-2" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
+          <td class="border-2" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
             {{ row.deliveredKGT }}
           </td>
-          <td class="px-6 py-4 border-2" v-if="user.amountFromClient1 === 'READ' || user.amountFromClient1 === 'WRITE'">
+          <td class="border-2" v-if="user.amountFromClient1 === 'READ' || user.amountFromClient1 === 'WRITE'">
             {{ Math.ceil(row.amountFromClient1 / 10) * 10 }}
           </td>
           <td class="px-2 py-4 border-2" v-if="user.dispatchPVZ1 === 'READ' || user.dispatchPVZ1 === 'WRITE'">
@@ -414,17 +444,17 @@ function formatPhoneNumber(phoneNumber: string) {
           <td class="px-2 py-4 border-2" v-if="user.orderAccount === 'READ' || user.orderAccount === 'WRITE'">
             {{ row.orderAccount }}
           </td>
-          <td class="px-3 py-4 border-2" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
+          <td class="border-2" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
             <h1 class="font-bold text-green-500">
               {{ row.deliveredSC ? storeUsers.getNormalizedDate(row.deliveredSC) : "" }}
             </h1>
           </td>
-          <td class="px-3 py-4 border-2" v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'">
+          <td class="border-2" v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'">
             <h1 class="font-bold text-green-500">
               {{ row.deliveredPVZ ? storeUsers.getNormalizedDate(row.deliveredPVZ) : "" }}
             </h1>
           </td>
-          <td class="px-3 py-4 border-2" v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'">
+          <td class="border-2" v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'">
             <h1 class="font-bold text-green-500">
               {{ row.issued ? storeUsers.getNormalizedDate(row.issued) : "" }}
             </h1>
@@ -435,23 +465,24 @@ function formatPhoneNumber(phoneNumber: string) {
           <td class="px-1 py-4 border-2" v-if="user.profit1 === 'READ' || user.profit1 === 'WRITE'">
             {{ Math.ceil(row.amountFromClient1 / 10) * 10 - row.priceSite + row.deliveredKGT }}
           </td>
-          <td class="px-6 py-4 border-2">
+          <td class="px-6 border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
             {{ storeUsers.getNormalizedDate(row.created_at) }}
           </td>
-          <td class="px-6 py-4 border-2">
+          <td class="px-6 border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
             {{ storeUsers.getNormalizedDate(row.updated_at) }}
           </td>
-          <td class="px-6 py-4 border-2">
+          <td class="px-6 border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
             {{ storeUsers.getNormalizedDate(row.deleted) }}
           </td>
-          <td class="px-6 py-4 border-2">
+          <td class="px-6 border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
             {{ row.createdUser }}
           </td>
-          <td class="px-6 py-4 border-2">
+          <td class="px-6 border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
             {{ row.updatedUser }}
           </td>
 
-          <td class="px-6 py-4 border-2" v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN'">
+          <td class="px-6 py-4 border-2"
+            v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
             <Icon @click="deleteRow(row.id)" class="text-red-600 cursor-pointer hover:text-red-300 duration-200"
               name="material-symbols:playlist-remove-rounded" size="32" />
           </td>
@@ -491,5 +522,4 @@ function formatPhoneNumber(phoneNumber: string) {
 <style scoped>
 .hidden-row {
   display: none !important;
-}
-</style>
+}</style>
