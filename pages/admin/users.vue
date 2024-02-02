@@ -22,8 +22,8 @@ const fields = [
   "доставлено на СЦ (выкуп клиента)",
   "доставлено на ПВЗ (наш выкуп)",
   "доставлено на ПВЗ (выкуп клиента)",
-  "доставка КГТ (наш выкуп)",
-  "доставка КГТ (выкуп клиента)",
+  "дополнительная стоимость (наш выкуп)",
+  "дополнительная стоимость (выкуп клиента)",
   "отправка в ПВЗ (наш выкуп)",
   "отправка в ПВЗ (выкуп клиента)",
   "отправка в ПВЗ (доставка)",
@@ -271,7 +271,7 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Доставка КГТ <br> (Наш выкуп)</label>
+              <label for="cell">дополнительная стоимость<br> (Наш выкуп)</label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.deliveredKGT1">
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -280,7 +280,7 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Доставка КГТ <br> (Выкуп клиента)</label>
+              <label for="cell">дополнительная стоимость<br> (Выкуп клиента)</label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.deliveredKGT2">
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -336,24 +336,6 @@ definePageMeta({
             <div class="grid grid-cols-2 mb-5">
               <label for="cell">Оплачено <br> (Доставка)</label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.paid">
-                <option value="NONE">NONE</option>
-                <option value="READ">READ</option>
-                <option value="WRITE">WRITE</option>
-              </select>
-            </div>
-
-            <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Имя <br> (Наш выкуп)</label>
-              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.name1">
-                <option value="NONE">NONE</option>
-                <option value="READ">READ</option>
-                <option value="WRITE">WRITE</option>
-              </select>
-            </div>
-
-            <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Имя <br> (Выкуп клиента)</label>
-              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.name2">
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
                 <option value="WRITE">WRITE</option>

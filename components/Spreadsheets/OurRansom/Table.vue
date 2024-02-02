@@ -158,6 +158,9 @@ let searchQuery = ref('')
 
 function toggleShowPrimaryView() {
   isPrimaryView.value = !isPrimaryView.value;
+  checkedRows.value = [];
+  allSum.value = [];
+  getAllSum.value = 0;
   isVisiblePages.value = true;
   updateCurrentPageData();
 
@@ -198,8 +201,11 @@ function formatPhoneNumber(phoneNumber: string) {
     <div>
       <div class="flex items-center max-sm:flex-col max-sm:items-start gap-5 mb-5">
         <h1 class="text-xl">Всего записей: <span class="text-secondary-color font-bold">{{ totalRows }}</span> </h1>
-        <UIActionButton @click="toggleShowPrimaryView">
+        <UIActionButton @click="toggleShowPrimaryView" v-if="user.role !== 'PVZ'">
           {{ isPrimaryView ? 'Режим выдачи' : 'Режим заполнения' }}
+        </UIActionButton>
+        <UIActionButton @click="isPrimaryView = false" v-if="user.role === 'PVZ'">
+          Режим выдачи
         </UIActionButton>
       </div>
       <div class="mb-5 flex items-center max-sm:flex-col max-sm:items-start gap-5" v-if="isPrimaryView">
@@ -427,7 +433,7 @@ function formatPhoneNumber(phoneNumber: string) {
             {{ row.additionally ? row.additionally : "Пусто" }}
           </td>
           <td class="px-1 py-4 border-2" v-if="user.profit1 === 'READ' || user.profit1 === 'WRITE'">
-            {{ row.profit1 }}
+            {{ Math.ceil(row.amountFromClient1 / 10) * 10 - row.priceSite + row.deliveredKGT }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ storeUsers.getNormalizedDate(row.created_at) }}
