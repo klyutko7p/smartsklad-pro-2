@@ -63,9 +63,11 @@ interface RowData {
 const allSum: Ref<RowData[]> = ref([]);
 const checkedRows: Ref<number[]> = ref([]);
 const allIssuedRows: Ref<RowData[]> = ref([]);
+const allDeliveredPVZRows: Ref<RowData[]> = ref([]);
 
 const getAllSum: Ref<number> = ref(0);
 const showButton: Ref<boolean> = ref(true);
+const showButtonPVZ: Ref<boolean> = ref(true);
 
 const isChecked = (rowId: number): boolean => {
   return checkedRows.value.includes(rowId);
@@ -76,14 +78,17 @@ const handleCheckboxChange = (rowId: number, amountData: number, issuedData: Dat
     checkedRows.value = checkedRows.value.filter((id) => id !== rowId);
     allSum.value = allSum.value.filter((obj) => obj.rowId !== rowId);
     allIssuedRows.value = allIssuedRows.value.filter((obj) => obj.rowId !== rowId);
+    allDeliveredPVZRows.value = allIssuedRows.value.filter((obj) => obj.rowId !== rowId);
   } else {
     checkedRows.value.push(rowId);
     allSum.value.push({ rowId, amount: amountData, issued: issuedData });
     allIssuedRows.value.push({ rowId, amount: amountData, issued: issuedData });
+    allDeliveredPVZRows.value.push({ rowId, amount: amountData, issued: issuedData });
   }
 
   getAllSum.value = allSum.value.reduce((sum, obj) => sum + obj.amount, 0);
   showButton.value = returnRows.value?.find(obj => obj.id === rowId)?.issued === null;
+  showButtonPVZ.value = returnRows.value?.find(obj => obj.id === rowId)?.deliveredPVZ === null;
 };
 
 const showDeletedRows = ref(false);
@@ -247,12 +252,12 @@ let showOthersVariants = ref(false)
     </div>
   </div>
 
-  <div class="fixed top-10 left-10 z-40" v-if="getAllSum > 0">
-    <h1 class="text-2xl backdrop-blur-xl p-5 rounded-xl border-2 text-secondary-color font-bold">Итого к оплате: {{
+  <div class="fixed top-10 z-40 left-1/2 translate-x-[-50%] translate-y-[-50%]" v-if="getAllSum > 0">
+    <h1 class="text-2xl backdrop-blur-xl p-5 rounded-xl border-2 text-secondary-color font-bold">К оплате: {{
       getAllSum }} </h1>
   </div>
 
-  <div class="fixed z-40 flex flex-col gap-3 top-40 left-1/2 translate-x-[-50%] translate-y-[-50%]"
+  <div class="fixed z-40 flex flex-col gap-3 left-1/2 translate-x-[-50%] translate-y-[-50%]"
     v-if="user.dataOurRansom === 'WRITE' && checkedRows.length > 0 && user.role !== 'PVZ'">
     <UIActionButton
       v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN' || user.role === 'ADMINISTRATOR' && checkedRows.length === 1"
@@ -266,8 +271,7 @@ let showOthersVariants = ref(false)
     </UIActionButton>
     <UIActionButton v-if="user.issued1 === 'WRITE' && showButton" @click="updateDeliveryRows('issued')">Выдать клиенту
     </UIActionButton>
-    <UIActionButton v-if="user.additionally1 === 'WRITE'"
-      @click="updateDeliveryRows('additionally')">Оплачено онлайн
+    <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally')">Оплачено онлайн
     </UIActionButton>
     <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally1')">Отказ клиент
     </UIActionButton>
@@ -277,15 +281,15 @@ let showOthersVariants = ref(false)
 
   <div class="fixed z-40 flex flex-col gap-3 top-40 left-1/2 translate-x-[-50%] translate-y-[-50%]"
     v-if="user.dataOurRansom === 'WRITE' && checkedRows.length > 0 && user.role === 'PVZ'">
-    <UIActionButton v-if="user.deliveredPVZ1 === 'WRITE'" @click="updateDeliveryRows('PVZ')">Принять на пвз
+    <UIActionButton v-if="user.deliveredPVZ1 === 'WRITE' && showButtonPVZ" @click="updateDeliveryRows('PVZ')">Принять на пвз
     </UIActionButton>
-    <UIActionButton v-if="user.issued1 === 'WRITE' && showButton" @click="showOthersVariants = !showOthersVariants">Выдать клиенту
+    <UIActionButton v-if="user.issued1 === 'WRITE' && showButton" @click="showOthersVariants = !showOthersVariants">Выдать
+      клиенту
     </UIActionButton>
     <div v-if="showOthersVariants" class="flex flex-col gap-3">
       <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally3')">Оплата наличными
       </UIActionButton>
-      <UIActionButton v-if="user.additionally1 === 'WRITE'"
-        @click="updateDeliveryRows('additionally')">Оплачено онлайн
+      <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally')">Оплачено онлайн
       </UIActionButton>
       <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally1')">Отказ клиент
       </UIActionButton>
@@ -365,9 +369,12 @@ let showOthersVariants = ref(false)
           <th scope="col" class="border-2" v-if="user.profit1 === 'READ' || user.profit1 === 'WRITE'">
             прибыль (доход)
           </th>
-          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">создан (время)</th>
-          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">изменен (время)</th>
-          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">удален (время)</th>
+          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">создан (время)
+          </th>
+          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">изменен (время)
+          </th>
+          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">удален (время)
+          </th>
           <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">создан</th>
           <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">изменен</th>
           <th scope="col" class="exclude-row px-6 py-3 border-2"

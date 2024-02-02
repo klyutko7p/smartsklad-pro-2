@@ -8,6 +8,7 @@ const storeUsers = useUsersStore();
 
 const props = defineProps({
   rows: { type: Array as PropType<IOurRansom[] | IClientRansom[] | IDelivery[]>, required: true },
+  user: { type: Object as PropType<User>},
   link: { type: String }
 });
 
@@ -18,7 +19,6 @@ function exportToExcel() {
 
   writeFile(wb, "информация_о_заказе.xlsx");
 }
-
 </script>
 
 <template>
@@ -35,6 +35,9 @@ function exportToExcel() {
           </th>
           <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             ячейка
+          </th>
+          <th scope="col" class="border-2" v-if="user?.role !== 'PVZ'">
+            телефон
           </th>
           <th scope="col" class="border-2" v-if="link?.startsWith('3')">
             название
@@ -85,6 +88,9 @@ function exportToExcel() {
           </td>
           <td class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             {{ row.cell }}
+          </td>
+          <td class="px-2 border-2" v-if="user?.role !== 'PVZ'">
+            {{ row.fromName }}
           </td>
           <td class="px-2 border-2" v-if="link?.startsWith('3')">
             {{ row.nameOfAction }}

@@ -34,7 +34,7 @@ definePageMeta({
 onMounted(() => {
   if (!token) {
     router.push("/auth/login");
-  }
+  } 
 });
 
 const token = Cookies.get("token");

@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { useToast } from "vue-toastification";
+
+const toast = useToast()
 const router = useRouter();
 const storeUsers = useUsersStore();
-defineProps({
+const props = defineProps({
   row: { type: Object as PropType<IOurRansom | IClientRansom | IDelivery>, required: true },
   user: { type: Object as PropType<User>, required: true },
   link: { type: String }
@@ -12,6 +15,15 @@ const emit = defineEmits(["updateDeliveryRow"]);
 function updateDeliveryRow(row: IOurRansom | IClientRansom, flag: string) {
   emit("updateDeliveryRow", { row: row, flag: flag });
 }
+
+onMounted(() => {
+  if (props.user.visiblePVZ === 'ВСЕ') {
+    toast.success('Нужный доступ подтвержден')
+  } else if (props.user.visiblePVZ !== props.row.dispatchPVZ) {
+    toast.error("Это товар не Вашего ПВЗ!")
+    router.push('/spreadsheets/our-ransom')
+  }
+})
 </script>
 
 <template>
