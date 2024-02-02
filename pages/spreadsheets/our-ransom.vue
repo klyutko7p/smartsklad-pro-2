@@ -187,6 +187,15 @@ function getCellFromName() {
   }
 }
 
+function getFromNameFromCell() {
+  if (rowData.value.cell.trim()) {
+    let rowFromName = rows.value?.filter((row) => row.cell === rowData.value.cell)
+    if (rowFromName) {
+      rowData.value.fromName = rowFromName[0].fromName;
+    }
+  }
+}
+
 </script>
 
 <template>
@@ -221,7 +230,7 @@ function getCellFromName() {
                 <label for="cell">Ячейка</label>
                 <input :disabled="user.cell1 === 'READ'"
                   class="bg-transparent rounded-md border-2 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.cell" type="text" />
+                  v-model="rowData.cell" @input="getFromNameFromCell" type="text" />
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'">

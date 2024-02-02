@@ -36,9 +36,6 @@ function exportToExcel() {
           <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             ячейка
           </th>
-          <th scope="col" class="border-2" v-if="user?.role !== 'PVZ'">
-            телефон
-          </th>
           <th scope="col" class="border-2" v-if="link?.startsWith('3')">
             название
           </th>
@@ -88,9 +85,6 @@ function exportToExcel() {
           </td>
           <td class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             {{ row.cell }}
-          </td>
-          <td class="px-2 border-2" v-if="user?.role !== 'PVZ'">
-            {{ row.fromName }}
           </td>
           <td class="px-2 border-2" v-if="link?.startsWith('3')">
             {{ row.nameOfAction }}

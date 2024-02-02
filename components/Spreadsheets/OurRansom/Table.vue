@@ -58,6 +58,7 @@ interface RowData {
   rowId: number;
   amount: number;
   issued: Date | null | string | number;
+  deliveredPVZ: Date | null | string | number;
 }
 
 const allSum: Ref<RowData[]> = ref([]);
@@ -73,22 +74,17 @@ const isChecked = (rowId: number): boolean => {
   return checkedRows.value.includes(rowId);
 };
 
-const handleCheckboxChange = (rowId: number, amountData: number, issuedData: Date | null | string | number): void => {
-  if (isChecked(rowId)) {
-    checkedRows.value = checkedRows.value.filter((id) => id !== rowId);
-    allSum.value = allSum.value.filter((obj) => obj.rowId !== rowId);
-    allIssuedRows.value = allIssuedRows.value.filter((obj) => obj.rowId !== rowId);
-    allDeliveredPVZRows.value = allIssuedRows.value.filter((obj) => obj.rowId !== rowId);
+const handleCheckboxChange = (row: IOurRansom): void => {
+  if (isChecked(row.id)) {
+    checkedRows.value = checkedRows.value.filter((id) => id !== row.id);
+    allSum.value = allSum.value.filter((obj) => obj.rowId !== row.id);
   } else {
-    checkedRows.value.push(rowId);
-    allSum.value.push({ rowId, amount: amountData, issued: issuedData });
-    allIssuedRows.value.push({ rowId, amount: amountData, issued: issuedData });
-    allDeliveredPVZRows.value.push({ rowId, amount: amountData, issued: issuedData });
+    checkedRows.value.push(row.id);
+    allSum.value.push({ rowId: row.id, amount: Math.ceil(row.amountFromClient1 / 10) * 10, issued: row.issued, deliveredPVZ: row.deliveredPVZ });
   }
-
-  getAllSum.value = allSum.value.reduce((sum, obj) => sum + obj.amount, 0);
-  showButton.value = returnRows.value?.find(obj => obj.id === rowId)?.issued === null;
-  showButtonPVZ.value = returnRows.value?.find(obj => obj.id === rowId)?.deliveredPVZ === null;
+  getAllSum.value = allSum.value.filter((obj) => obj.issued === null).reduce((sum, obj) => sum + obj.amount, 0);
+  showButton.value = allSum.value.every(obj => obj.issued === null);
+  showButtonPVZ.value = allSum.value.every(obj => obj.deliveredPVZ === null);
 };
 
 const showDeletedRows = ref(false);
@@ -281,7 +277,8 @@ let showOthersVariants = ref(false)
 
   <div class="fixed z-40 flex flex-col gap-3 top-44 left-1/2 translate-x-[-50%] translate-y-[-50%]"
     v-if="user.dataOurRansom === 'WRITE' && checkedRows.length > 0 && user.role === 'PVZ'">
-    <UIActionButton v-if="user.deliveredPVZ1 === 'WRITE' && showButtonPVZ" @click="updateDeliveryRows('PVZ')">Принять на пвз
+    <UIActionButton v-if="user.deliveredPVZ1 === 'WRITE' && showButtonPVZ" @click="updateDeliveryRows('PVZ')">Принять на
+      пвз
     </UIActionButton>
     <UIActionButton v-if="user.issued1 === 'WRITE' && showButton" @click="showOthersVariants = !showOthersVariants">Выдать
       клиенту
@@ -388,8 +385,7 @@ let showOthersVariants = ref(false)
         <tr :class="{ 'bg-orange-100': isChecked(row.id) }" class="border-b text-center text-sm"
           v-for="row in returnRows">
           <td v-if="user.dataOurRansom === 'WRITE'" class="border-2 text-secondary-color">
-            <input type="checkbox" :value="row.id" :checked="isChecked(row.id)"
-              @change="handleCheckboxChange(row.id, Math.ceil(row.amountFromClient1 / 10) * 10, row.issued)" />
+            <input type="checkbox" :value="row.id" :checked="isChecked(row.id)" @change="handleCheckboxChange(row)" />
           </td>
           <td class="border-2"
             v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
@@ -529,4 +525,5 @@ let showOthersVariants = ref(false)
 <style scoped>
 .hidden-row {
   display: none !important;
-}</style>
+}
+</style>

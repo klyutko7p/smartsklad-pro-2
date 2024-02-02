@@ -24,6 +24,25 @@ onMounted(() => {
     router.push('/spreadsheets/our-ransom')
   }
 })
+
+function formatPhoneNumber(phoneNumber: string) {
+  if (!phoneNumber) {
+    return 'Номер телефона не указан';
+  }
+
+  const digitsOnly = phoneNumber.replace(/\D/g, '');
+
+  if (digitsOnly.length < 11) {
+    return 'Неправильный формат номера телефона';
+  }
+
+  const maskedPhoneNumber =
+    '+7' +
+    '*'.repeat(digitsOnly.length - 5) +
+    digitsOnly.slice(-4);
+
+  return maskedPhoneNumber;
+}
 </script>
 
 <template>
@@ -36,7 +55,7 @@ onMounted(() => {
       <h1 v-if="link?.includes('1') || link?.includes('old') && row.fromName "
         class="cursor-pointer underline text-secondary-color duration-200 hover:opacity-50"
         @click="router.push(`/spreadsheets/order/${row.clientLink1}`)">
-        {{ row.fromName }}
+        {{ formatPhoneNumber(row.fromName) }}
       </h1>
       <h1
         v-if="link?.includes(2) && row.fromName"
