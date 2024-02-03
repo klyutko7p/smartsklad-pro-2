@@ -73,7 +73,7 @@ onBeforeMount(() => {
         </div>
         <h1>Доставка</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' || user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/users')" tabindex="0"
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/users')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
@@ -85,21 +85,21 @@ onBeforeMount(() => {
         </div>
         <h1>Пользователи</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' || user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/pvz')" tabindex="0"
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/pvz')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="tabler:reorder" size="20" />
         </div>
         <h1>Пункты выдачи заказов (ПВЗ)</h1>
       </div>
-      <div role="button" @click="router.push('/admin/sorting-centers')" tabindex="0"
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/sorting-centers')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="material-symbols-light:box-sharp" size="20" />
         </div>
         <h1>Сортировочные центры (СЦ)</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' || user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/order-accounts')" tabindex="0"
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/order-accounts')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="material-symbols:deployed-code-account-outline-rounded" size="20" />
@@ -173,7 +173,7 @@ onBeforeMount(() => {
         </div>
         <h1>Доставка</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' || user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/users')" tabindex="0"
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/users')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
@@ -185,21 +185,21 @@ onBeforeMount(() => {
         </div>
         <h1>Пользователи</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' || user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/pvz')" tabindex="0"
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/pvz')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="tabler:reorder" size="20" />
         </div>
         <h1>Пункты выдачи заказов (ПВЗ)</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' || user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/sorting-centers')" tabindex="0"
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/sorting-centers')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="material-symbols-light:box-sharp" size="20" />
         </div>
         <h1>Сортировочные центры (СЦ)</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' || user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/order-accounts')" tabindex="0"
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/order-accounts')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="material-symbols:deployed-code-account-outline-rounded" size="20" />
