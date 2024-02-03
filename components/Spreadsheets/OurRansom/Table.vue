@@ -46,12 +46,18 @@ const props = defineProps({
   rows: { type: Array as PropType<IOurRansom[]> },
 });
 
-function exportToExcel() {
-  let table = document.querySelector("#theTable");
+async function exportToExcel() {
+  perPage.value = await totalRows.value;
+  await updateCurrentPageData();
+  isPrimaryView.value = await true;
 
-  let wb = utils.table_to_book(table);
+  let table = await document.querySelector("#theTable");
 
-  writeFile(wb, "наш_выкуп.xlsx");
+  let wb = await utils.table_to_book(table);
+
+  await writeFile(wb, "наш_выкуп.xlsx");
+
+  perPage.value = await 100;
 }
 
 interface RowData {
@@ -63,8 +69,6 @@ interface RowData {
 
 const allSum: Ref<RowData[]> = ref([]);
 const checkedRows: Ref<number[]> = ref([]);
-const allIssuedRows: Ref<RowData[]> = ref([]);
-const allDeliveredPVZRows: Ref<RowData[]> = ref([]);
 
 const getAllSum: Ref<number> = ref(0);
 const showButton: Ref<boolean> = ref(true);
@@ -465,7 +469,7 @@ let showOthersVariants = ref(false)
           <td class="px-6 py-4 border-2" v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'">
             {{ row.additionally ? row.additionally : "Пусто" }}
           </td>
-          
+
           <td class="px-1 py-4 border-2" v-if="(user.profit1 === 'READ' || user.profit1 === 'WRITE') &&
             (row.additionally !== 'Отказ клиент' && row.additionally !== 'Отказ брак')">
             {{ Math.ceil(row.amountFromClient1 / 10) * 10 - row.priceSite + row.deliveredKGT }}
