@@ -146,8 +146,20 @@ function showLastPage() {
   currentPage.value = totalPages.value;
 }
 
+async function openCamera() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    const videoElement = document.createElement('video');
+    videoElement.srcObject = stream;
+    document.body.appendChild(videoElement);
+  } catch (error) {
+    console.error('Ошибка при открытии камеры:', error);
+  }
+}
+
 </script>
 <template>
+  <UIMainButton>Открыть камеру</UIMainButton>
   <div class="flex items-center justify-between max-lg:block mt-10">
     <div>
       <div class="flex items-center max-sm:flex-col max-sm:items-start gap-5 mb-5">
@@ -185,8 +197,7 @@ function showLastPage() {
               class="text-secondary-color hover:opacity-50 duration-200" size="40" />
           </a>
           <a href="#down" @click="showLastPage">
-            <Icon name="ic:round-last-page"
-              class="text-secondary-color hover:opacity-50 duration-200" size="40" />
+            <Icon name="ic:round-last-page" class="text-secondary-color hover:opacity-50 duration-200" size="40" />
           </a>
         </div>
       </div>
@@ -206,7 +217,8 @@ function showLastPage() {
           </button>
         </div>
       </div>
-      <Icon class="duration-200 hover:text-secondary-color cursor-pointer" size="40" name="material-symbols:sheets-add-on" @click="exportToExcel" />
+      <Icon class="duration-200 hover:text-secondary-color cursor-pointer" size="40" name="material-symbols:sheets-add-on"
+        @click="exportToExcel" />
     </div>
   </div>
 
@@ -341,8 +353,7 @@ function showLastPage() {
             <a :href="row.productLink" target="_blank" class="hover:text-orange-200 duration-200">{{ row.productLink
             }}</a>
           </td>
-          <td class="py-4 px-6 border-2"
-            v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'">
+          <td class="py-4 px-6 border-2" v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'">
             {{ row.productName }}
           </td>
           <td class="px-6 py-4 border-2" v-if="user.priceProgram === 'READ' || user.priceProgram === 'WRITE'">

@@ -36,6 +36,7 @@ function openModal(row: IOurRansom) {
     rowData.value.issued = rowData.value.issued
       ? storeUsers.getISODateTime(rowData.value.issued)
       : null;
+      console.log(rowData.value.deliveredSC);
   } else {
     rowData.value = {} as IOurRansom;
     rowData.value.fromName = "";

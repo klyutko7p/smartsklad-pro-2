@@ -146,7 +146,7 @@ export const useUsersStore = defineStore("users", () => {
                 month: '2-digit',
                 hour: 'numeric',
                 minute: '2-digit',
-                timeZone: 'Europe/Moscow', // Устанавливаем временную зону Москвы
+                timeZone: 'Europe/Moscow', 
             };
             return new Date(date).toLocaleString('ru-RU', options);
         }
