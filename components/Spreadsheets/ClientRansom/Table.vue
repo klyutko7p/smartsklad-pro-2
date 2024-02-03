@@ -159,7 +159,7 @@ async function openCamera() {
 
 </script>
 <template>
-  <UIMainButton>Открыть камеру</UIMainButton>
+  <UIMainButton @click="openCamera">Открыть камеру</UIMainButton>
   <div class="flex items-center justify-between max-lg:block mt-10">
     <div>
       <div class="flex items-center max-sm:flex-col max-sm:items-start gap-5 mb-5">
