@@ -17,9 +17,14 @@ export default defineEventHandler(async (event) => {
                     clientLink1: link,
                     deleted: null,
                 },
-                orderBy: {
-                    created_at: 'desc',   
-                }
+                orderBy: [
+                    {
+                        deliveredPVZ: 'asc'
+                    },
+                    {
+                        deliveredSC: 'asc'
+                    },
+                ]
             });
             return rows;
         } else if (flag === 'ClientRansom') {

@@ -20,6 +20,30 @@ function getAdditionally(status: string) {
     }
 }
 
+function getAmountFromClient(status: string) {
+    if (status === 'additionally') {
+        return
+    } else if (status === 'additionally1') {
+        return 200
+    } else if (status === 'additionally2') {
+        return 0
+    } else if (status === 'additionally3') {
+        return
+    }
+}
+
+function getProfit(status: string) {
+    if (status === 'additionally') {
+        return
+    } else if (status === 'additionally1') {
+        return 200
+    } else if (status === 'additionally2') {
+        return 0
+    } else if (status === 'additionally3') {
+        return
+    }
+}
+
 
 export default defineEventHandler(async (event) => {
     try {
@@ -76,6 +100,8 @@ export default defineEventHandler(async (event) => {
                 data: {
                     additionally: getAdditionally(flag),
                     issued: new Date(),
+                    amountFromClient1: getAmountFromClient(flag),
+                    profit1: getProfit(flag),
                 },
             });
         } else if (flagRansom === 'ClientRansom') {

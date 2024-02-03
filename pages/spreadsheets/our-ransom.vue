@@ -38,7 +38,7 @@ function openModal(row: IOurRansom) {
       : null;
   } else {
     rowData.value = {} as IOurRansom;
-    rowData.value.fromName = ''
+    rowData.value.fromName = "";
   }
 }
 
@@ -49,54 +49,59 @@ function closeModal() {
 
 async function updateDeliveryRow(obj: any) {
   let answer = confirm("Вы точно хотите изменить статус доставки?");
-  if (answer) await storeRansom.updateDeliveryStatus(obj.row, obj.flag, 'OurRansom');
+  if (answer) await storeRansom.updateDeliveryStatus(obj.row, obj.flag, "OurRansom");
   filteredRows.value = await storeRansom.getRansomRows("OurRansom");
-  rows.value = await storeRansom.getRansomRows('OurRansom');
+  rows.value = await storeRansom.getRansomRows("OurRansom");
 }
 
 async function updateDeliveryRows(obj: any) {
-  let answer = confirm(`Вы точно хотите изменить статус доставки? Количество записей: ${obj.idArray.length}`);
-  if (answer) await storeRansom.updateDeliveryRowsStatus(obj.idArray, obj.flag, 'OurRansom');
+  let answer = confirm(
+    `Вы точно хотите изменить статус доставки? Количество записей: ${obj.idArray.length}`
+  );
+  if (answer)
+    await storeRansom.updateDeliveryRowsStatus(obj.idArray, obj.flag, "OurRansom");
   filteredRows.value = await storeRansom.getRansomRows("OurRansom");
-  rows.value = await storeRansom.getRansomRows('OurRansom');
+  rows.value = await storeRansom.getRansomRows("OurRansom");
 }
 
 async function deleteRow(id: number) {
   let answer = confirm("Вы точно хотите удалить данную строку?");
-  if (answer) await storeRansom.deleteRansomRow(id, 'OurRansom');
+  if (answer) await storeRansom.deleteRansomRow(id, "OurRansom");
   filteredRows.value = await storeRansom.getRansomRows("OurRansom");
-  rows.value = await storeRansom.getRansomRows('OurRansom');
+  rows.value = await storeRansom.getRansomRows("OurRansom");
 }
 
 async function deleteSelectedRows(idArray: number[]) {
-  let answer = confirm(`Вы точно хотите удалить данные строки? Количество записей: ${idArray.length}`);
-  if (answer) await storeRansom.deleteRansomSelectedRows(idArray, 'OurRansom');
+  let answer = confirm(
+    `Вы точно хотите удалить данные строки? Количество записей: ${idArray.length}`
+  );
+  if (answer) await storeRansom.deleteRansomSelectedRows(idArray, "OurRansom");
   filteredRows.value = await storeRansom.getRansomRows("OurRansom");
-  rows.value = await storeRansom.getRansomRows('OurRansom');
+  rows.value = await storeRansom.getRansomRows("OurRansom");
 }
 
 async function updateRow() {
   isLoading.value = true;
-  await storeRansom.updateRansomRow(rowData.value, user.value.username, 'OurRansom');
+  await storeRansom.updateRansomRow(rowData.value, user.value.username, "OurRansom");
   filteredRows.value = await storeRansom.getRansomRows("OurRansom");
-  rows.value = await storeRansom.getRansomRows('OurRansom');
+  rows.value = await storeRansom.getRansomRows("OurRansom");
   closeModal();
   isLoading.value = false;
 }
 
 async function createRow() {
   isLoading.value = true;
-  await storeRansom.createRansomRow(rowData.value, user.value.username, 'OurRansom');
+  await storeRansom.createRansomRow(rowData.value, user.value.username, "OurRansom");
   filteredRows.value = await storeRansom.getRansomRows("OurRansom");
-  rows.value = await storeRansom.getRansomRows('OurRansom');
+  rows.value = await storeRansom.getRansomRows("OurRansom");
   closeModal();
   isLoading.value = false;
 }
 
 async function createCopyRow(id: number) {
-  await storeRansom.createCopyRow(id, 'OurRansom');
+  await storeRansom.createCopyRow(id, "OurRansom");
   filteredRows.value = await storeRansom.getRansomRows("OurRansom");
-  rows.value = await storeRansom.getRansomRows('OurRansom');
+  rows.value = await storeRansom.getRansomRows("OurRansom");
 }
 
 async function deleteIssuedRowsTimer() {
@@ -107,35 +112,63 @@ async function deleteIssuedRowsTimer() {
   isLoading.value = false;
 }
 
-
 const filteredRows = ref<Array<IOurRansom>>();
 function handleFilteredRows(filteredRowsData: IOurRansom[]) {
-  if (user.value.visiblePVZ === 'ВСЕ' && user.value.visibleSC === 'ВСЕ') {
+  if (user.value.visiblePVZ === "ВСЕ" && user.value.visibleSC === "ВСЕ") {
     filteredRows.value = filteredRowsData;
-  } else if (user.value.visiblePVZ === 'ВСЕ' && user.value.visibleSC !== 'ВСЕ') {
-    filteredRows.value = filteredRowsData.filter((row) => row.orderPVZ === user.value.visibleSC && row.deliveredSC !== null);
-  } else if (user.value.visiblePVZ !== 'ВСЕ' && user.value.visibleSC === 'ВСЕ') {
-    filteredRows.value = filteredRowsData.filter((row) => row.dispatchPVZ === user.value.visiblePVZ && row.deliveredSC !== null);
-  } else if (user.value.visiblePVZ !== 'ВСЕ' && user.value.visibleSC !== 'ВСЕ') {
-    filteredRows.value = filteredRowsData.filter((row) => row.dispatchPVZ === user.value.visiblePVZ && row.orderPVZ === user.value.visibleSC && row.deliveredSC !== null);
+  } else if (user.value.visiblePVZ === "ВСЕ" && user.value.visibleSC !== "ВСЕ") {
+    filteredRows.value = filteredRowsData.filter(
+      (row) => row.orderPVZ === user.value.visibleSC && row.deliveredSC !== null
+    );
+  } else if (user.value.visiblePVZ !== "ВСЕ" && user.value.visibleSC === "ВСЕ") {
+    filteredRows.value = filteredRowsData.filter(
+      (row) => row.dispatchPVZ === user.value.visiblePVZ && row.deliveredSC !== null
+    );
+  } else if (user.value.visiblePVZ !== "ВСЕ" && user.value.visibleSC !== "ВСЕ") {
+    filteredRows.value = filteredRowsData.filter(
+      (row) =>
+        row.dispatchPVZ === user.value.visiblePVZ &&
+        row.orderPVZ === user.value.visibleSC &&
+        row.deliveredSC !== null
+    );
   }
 
   if (filteredRows.value) {
-    if (user.value.role === 'SORTIROVKA') {
+    if (user.value.role === "SORTIROVKA") {
       filteredRows.value = filteredRows.value.filter((row) => row.deliveredPVZ === null);
-    } else if (user.value.role === 'PVZ') {
-      filteredRows.value = filteredRows.value.filter((row) => row.deliveredSC !== null);
+    } else if (user.value.role === "PVZ") {
+      let today = new Date().toLocaleDateString("ru-RU", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "2-digit",
+      });
+      filteredRows.value = filteredRows.value.filter(
+        (row) =>
+          row.deliveredSC !== null &&
+          new Date(row.issued).toLocaleDateString("ru-RU", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "2-digit",
+          }) === today && row.deliveredPVZ !== null
+      );
     }
   }
-
 }
 
 function timeUntilSunday2359() {
   const now = new Date();
   const dayOfWeek = now.getDay();
-  const daysUntilSunday = (dayOfWeek === 0) ? 0 : (7 - dayOfWeek);
+  const daysUntilSunday = dayOfWeek === 0 ? 0 : 7 - dayOfWeek;
 
-  const nextSunday1337 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilSunday, 23, 59, 0, 0);
+  const nextSunday1337 = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + daysUntilSunday,
+    23,
+    59,
+    0,
+    0
+  );
 
   return nextSunday1337.getTime() - now.getTime();
 }
@@ -153,13 +186,13 @@ scheduleDeleteIssuedRows();
 onMounted(async () => {
   isLoading.value = true;
   user.value = await storeUsers.getUser();
-  rows.value = await storeRansom.getRansomRows('OurRansom');
+  rows.value = await storeRansom.getRansomRows("OurRansom");
   pvz.value = await storePVZ.getPVZ();
   sortingCenters.value = await storeSortingCenters.getSortingCenters();
   orderAccounts.value = await storeOrderAccounts.getOrderAccounts();
 
   if (rows.value) {
-    handleFilteredRows(rows.value)
+    handleFilteredRows(rows.value);
   }
 
   isLoading.value = false;
@@ -169,18 +202,18 @@ onBeforeMount(() => {
   if (!token || user.value.dataOurRansom === "NONE") {
     router.push("/auth/login");
   }
-})
+});
 
 definePageMeta({
   layout: false,
 });
 
 const token = Cookies.get("token");
-let showAddFields = ref(false)
+let showAddFields = ref(false);
 
 function getCellFromName() {
   if (rowData.value.fromName.trim().length === 12) {
-    let rowCell = rows.value?.filter((row) => row.fromName === rowData.value.fromName)
+    let rowCell = rows.value?.filter((row) => row.fromName === rowData.value.fromName);
     if (rowCell) {
       rowData.value.cell = rowCell[0].cell;
     }
@@ -189,13 +222,12 @@ function getCellFromName() {
 
 function getFromNameFromCell() {
   if (rowData.value.cell.trim()) {
-    let rowFromName = rows.value?.filter((row) => row.cell === rowData.value.cell)
+    let rowFromName = rows.value?.filter((row) => row.cell === rowData.value.cell);
     if (rowFromName) {
       rowData.value.fromName = rowFromName[0].fromName;
     }
   }
 }
-
 </script>
 
 <template>
@@ -209,14 +241,14 @@ function getFromNameFromCell() {
           <div>
             <SpreadsheetsOurRansomFilters v-if="rows" @filtered-rows="handleFilteredRows" :rows="rows" :user="user" />
             <div class="mt-5 flex items-center gap-3" v-if="user.dataOurRansom === 'WRITE'">
-              <UIMainButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'" @click="openModal">Создать новую запись</UIMainButton>
+              <UIMainButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'" @click="openModal">Создать новую
+                запись</UIMainButton>
             </div>
           </div>
 
           <SpreadsheetsOurRansomTable @update-delivery-row="updateDeliveryRow" :rows="filteredRows" :user="user"
             @delete-row="deleteRow" @open-modal="openModal" @delete-selected-rows="deleteSelectedRows"
             @update-delivery-rows="updateDeliveryRows" @create-copy-row="createCopyRow" />
-
 
           <UIModal v-show="isOpen" @close-modal="closeModal">
             <template v-slot:header>
@@ -283,7 +315,8 @@ function getFromNameFromCell() {
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
-                <label for="deliveredKGT1">Дополнительная <br> стоимость</label>
+                <label for="deliveredKGT1">Дополнительная <br />
+                  стоимость</label>
                 <input :disabled="user.deliveredKGT1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.deliveredKGT" placeholder="По умолчанию: 0" type="number" />
@@ -324,12 +357,13 @@ function getFromNameFromCell() {
                 <label for="quantity">Количество строк</label>
                 <input type="number"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  min="1" v-model="rowData.quantity">
+                  min="1" v-model="rowData.quantity" />
               </div>
 
               <h1 @click="showAddFields = !showAddFields"
-                class="cursor-pointer hover:opacity-50 text-secondary-color font-bold duration-200 mb-5">Показать ещё
-                настройки</h1>
+                class="cursor-pointer hover:opacity-50 text-secondary-color font-bold duration-200 mb-5">
+                Показать ещё настройки
+              </h1>
               <div v-if="showAddFields">
                 <div class="grid grid-cols-2 mb-5" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
                   <label for="deliveredSC1">Доставлено на СЦ</label>
@@ -365,10 +399,8 @@ function getFromNameFromCell() {
               </div>
             </div>
 
-
             <div class="flex items-center justify-center gap-3 mt-10" v-if="rowData.id">
-              <UIMainButton @click="updateRow">Сохранить
-              </UIMainButton>
+              <UIMainButton @click="updateRow">Сохранить </UIMainButton>
               <UIMainButton @click="closeModal">Отменить </UIMainButton>
             </div>
             <div class="flex items-center justify-center gap-3 mt-10" v-else>
@@ -387,9 +419,11 @@ function getFromNameFromCell() {
       <NuxtLayout name="user">
         <div v-if="!isLoading" class="mt-3">
           <div>
-            <SpreadsheetsOurRansomFilters v-if="rows && user.role !== 'PVZ'" @filtered-rows="handleFilteredRows" :rows="rows" :user="user" />
+            <SpreadsheetsOurRansomFilters v-if="rows && user.role !== 'PVZ'" @filtered-rows="handleFilteredRows"
+              :rows="rows" :user="user" />
             <div class="mt-5 flex items-center gap-3" v-if="user.dataOurRansom === 'WRITE'">
-              <UIMainButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'" @click="openModal">Создать новую запись</UIMainButton>
+              <UIMainButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'" @click="openModal">Создать новую
+                запись</UIMainButton>
             </div>
           </div>
 
@@ -462,7 +496,8 @@ function getFromNameFromCell() {
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
-                <label for="deliveredKGT1">Дополнительная <br> стоимость</label>
+                <label for="deliveredKGT1">Дополнительная <br />
+                  стоимость</label>
                 <input :disabled="user.deliveredKGT1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.deliveredKGT" placeholder="По умолчанию: 0" type="number" />
@@ -503,12 +538,13 @@ function getFromNameFromCell() {
                 <label for="quantity">Количество строк</label>
                 <input type="number"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  min="1" v-model="rowData.quantity">
+                  min="1" v-model="rowData.quantity" />
               </div>
 
               <h1 @click="showAddFields = !showAddFields"
-                class="cursor-pointer hover:opacity-50 text-secondary-color font-bold duration-200 mb-5">Показать ещё
-                настройки</h1>
+                class="cursor-pointer hover:opacity-50 text-secondary-color font-bold duration-200 mb-5">
+                Показать ещё настройки
+              </h1>
               <div v-if="showAddFields">
                 <div class="grid grid-cols-2 mb-5" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
                   <label for="deliveredSC1">Доставлено на СЦ</label>
@@ -545,8 +581,7 @@ function getFromNameFromCell() {
             </div>
 
             <div class="flex items-center justify-center gap-3 mt-10" v-if="rowData.id">
-              <UIMainButton @click="updateRow">Сохранить
-              </UIMainButton>
+              <UIMainButton @click="updateRow">Сохранить </UIMainButton>
               <UIMainButton @click="closeModal">Отменить </UIMainButton>
             </div>
             <div class="flex items-center justify-center gap-3 mt-10" v-else>
@@ -561,4 +596,5 @@ function getFromNameFromCell() {
         </div>
       </NuxtLayout>
     </div>
-</div></template>
+  </div>
+</template>

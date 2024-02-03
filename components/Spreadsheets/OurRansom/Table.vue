@@ -214,7 +214,10 @@ let showOthersVariants = ref(false)
   <div class="flex items-center justify-between max-lg:block mt-10">
     <div>
       <div class="flex items-center max-sm:flex-col max-sm:items-start gap-5 mb-5">
-        <h1 class="text-xl">Товаров в работе: <span class="text-secondary-color font-bold">{{ totalRows }}</span> </h1>
+        <h1 class="text-xl" v-if="user.role !== 'PVZ'">Товаров в работе: <span class="text-secondary-color font-bold">{{
+          totalRows }}</span> </h1>
+        <h1 class="text-xl" v-if="user.role === 'PVZ'">Товаров к выдаче: <span class="text-secondary-color font-bold">{{
+          totalRows }}</span> </h1>
         <UIActionButton @click="toggleShowPrimaryView" v-if="user.role !== 'PVZ' && user.role !== 'SORTIROVKA'">
           {{ isPrimaryView ? 'Режим выдачи' : 'Режим заполнения' }}
         </UIActionButton>
@@ -277,9 +280,6 @@ let showOthersVariants = ref(false)
 
   <div class="fixed z-40 flex flex-col gap-3 top-44 left-1/2 translate-x-[-50%] translate-y-[-50%]"
     v-if="user.dataOurRansom === 'WRITE' && checkedRows.length > 0 && user.role === 'PVZ'">
-    <UIActionButton v-if="user.deliveredPVZ1 === 'WRITE' && showButtonPVZ" @click="updateDeliveryRows('PVZ')">Принять на
-      пвз
-    </UIActionButton>
     <UIActionButton v-if="user.issued1 === 'WRITE' && showButton" @click="showOthersVariants = !showOthersVariants">Выдать
       клиенту
     </UIActionButton>
@@ -420,7 +420,7 @@ let showOthersVariants = ref(false)
           <td class="border-2" v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'">
             {{ row.productName }}
           </td>
-          <td class="px-6 py-4 border-2" v-if="user.notation1 === 'READ' || user.notation1 === 'WRITE'">
+          <td class="border-2" v-if="user.notation1 === 'READ' || user.notation1 === 'WRITE'">
             {{ row.notation ? row.notation : "Пусто" }}
           </td>
           <td class="border-2" v-if="user.priceSite === 'READ' || user.priceSite === 'WRITE'">
@@ -465,9 +465,16 @@ let showOthersVariants = ref(false)
           <td class="px-6 py-4 border-2" v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'">
             {{ row.additionally ? row.additionally : "Пусто" }}
           </td>
-          <td class="px-1 py-4 border-2" v-if="user.profit1 === 'READ' || user.profit1 === 'WRITE'">
+          
+          <td class="px-1 py-4 border-2" v-if="(user.profit1 === 'READ' || user.profit1 === 'WRITE') &&
+            (row.additionally !== 'Отказ клиент' && row.additionally !== 'Отказ брак')">
             {{ Math.ceil(row.amountFromClient1 / 10) * 10 - row.priceSite + row.deliveredKGT }}
           </td>
+          <td class="px-1 py-4 border-2" v-if="(user.profit1 === 'READ' || user.profit1 === 'WRITE') &&
+            (row.additionally === 'Отказ клиент' || row.additionally === 'Отказ брак')">
+            {{ row.profit1 }}
+          </td>
+
           <td class="px-6 border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
             {{ storeUsers.getNormalizedDate(row.created_at) }}
           </td>

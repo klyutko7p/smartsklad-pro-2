@@ -70,6 +70,7 @@ onMounted(async () => {
   if (rows.value) {
     copyRows.value = [...rows.value];
   } 
+  disableReceivedItems()
   isLoading.value = false;
 });
 

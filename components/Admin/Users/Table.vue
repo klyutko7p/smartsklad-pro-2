@@ -29,6 +29,15 @@ defineProps({
       </thead>
       <tbody>
         <tr class="bg-white border-b text-center" v-for="userData in users">
+          <td class="px-6 py-4 border-2">
+            <Icon @click="openModal(userData)" class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
+              name="material-symbols:person-edit-outline" size="32" />
+          </td>
+          <td class="px-6 py-4 border-2">
+            <Icon @click="deleteUser(userData.username)"
+              class="text-red-600 cursor-pointer hover:text-red-300 duration-200"
+              name="material-symbols:person-remove-outline" size="32" />
+          </td>
           <th scope="row" class="px-6 py-4 border-2 font-medium text-gray-900 whitespace-nowrap">
             {{ userData.username }}
           </th>
@@ -200,15 +209,6 @@ defineProps({
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.profit3 }}
-          </td>
-          <td class="px-6 py-4 border-2">
-            <Icon @click="openModal(userData)" class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
-              name="material-symbols:person-edit-outline" size="32" />
-          </td>
-          <td class="px-6 py-4 border-2">
-            <Icon @click="deleteUser(userData.username)"
-              class="text-red-600 cursor-pointer hover:text-red-300 duration-200"
-              name="material-symbols:person-remove-outline" size="32" />
           </td>
         </tr>
       </tbody>
