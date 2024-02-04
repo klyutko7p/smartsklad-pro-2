@@ -28,17 +28,18 @@ function openModal(row: IClientRansom) {
   emit("openModal", row);
 }
 
+function createCopyRow() {
+  emit("createCopyRow", checkedRows.value[0]);
+  showLastPage();
+}
+
 function deleteRow(id: number) {
   emit("deleteRow", id);
 }
 
 function deleteSelectedRows() {
   emit("deleteSelectedRows", checkedRows.value);
-}
-
-function createCopyRow() {
-  emit("createCopyRow", checkedRows.value[0]);
-  showLastPage();
+  checkedRows.value = []
 }
 
 const props = defineProps({
@@ -146,20 +147,8 @@ function showLastPage() {
   currentPage.value = totalPages.value;
 }
 
-async function openCamera() {
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    const videoElement = document.createElement('video');
-    videoElement.srcObject = stream;
-    document.body.appendChild(videoElement);
-  } catch (error) {
-    console.error('Ошибка при открытии камеры:', error);
-  }
-}
-
 </script>
 <template>
-  <UIMainButton @click="openCamera">Открыть камеру</UIMainButton>
   <div class="flex items-center justify-between max-lg:block mt-10">
     <div>
       <div class="flex items-center max-sm:flex-col max-sm:items-start gap-5 mb-5">

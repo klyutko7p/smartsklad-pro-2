@@ -21,6 +21,7 @@ function updateDeliveryRow(row: IOurRansom, flag: string) {
 
 function updateDeliveryRows(flag: string) {
   emit("updateDeliveryRows", { idArray: checkedRows.value, flag: flag });
+  checkedRows.value = []
 }
 
 function openModal(row: IOurRansom) {
@@ -29,6 +30,7 @@ function openModal(row: IOurRansom) {
 
 function createCopyRow() {
   emit("createCopyRow", checkedRows.value[0]);
+  checkedRows.value = []
 }
 
 function deleteRow(id: number) {
@@ -513,6 +515,9 @@ let showOthersVariants = ref(false)
   </div>
 
   <div v-else class="mt-10">
+    <!-- <input type="text" v-model="searchQuery"
+    class="block w-full bg-transparent mb-5 border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"
+    placeholder="Нажмите сюда и отсканируйте товар сканером" @input="updateRowsByFromName" /> -->
     <div class="flex items-center gap-10 mb-5">
       <h1 class="text-2xl">Режим выдачи товаров</h1>
     </div>

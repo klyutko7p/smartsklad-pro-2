@@ -145,12 +145,13 @@ function handleFilteredRows(filteredRowsData: IOurRansom[]) {
       });
       filteredRows.value = filteredRows.value.filter(
         (row) =>
-          row.deliveredSC !== null &&
+          // row.deliveredSC !== null &&
           (new Date(row.issued).toLocaleDateString("ru-RU", {
             day: "2-digit",
             month: "2-digit",
             year: "2-digit",
-          }) === today || row.issued === null) && row.deliveredPVZ !== null
+          }) === today || row.issued === null)
+          // && row.deliveredPVZ !== null
       );
     }
   }
