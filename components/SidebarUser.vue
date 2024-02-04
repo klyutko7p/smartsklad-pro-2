@@ -156,7 +156,8 @@ onBeforeMount(() => {
     </nav>
   </div>
   
-  <div v-else class="p-5 absolute z-40 max-xl:right-0">
+  <div v-else class="p-5 flex flex-col absolute z-40 max-xl:right-0">
+    {{ user.username }}
     <Icon @click="editMenu" size="40" name="material-symbols-light:menu"
       class="hover:text-orange-300 duration-200 cursor-pointer" />
   </div>

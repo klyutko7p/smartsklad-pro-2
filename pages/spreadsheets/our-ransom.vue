@@ -36,7 +36,7 @@ function openModal(row: IOurRansom) {
     rowData.value.issued = rowData.value.issued
       ? storeUsers.getISODateTime(rowData.value.issued)
       : null;
-      console.log(rowData.value.deliveredSC);
+    console.log(rowData.value.deliveredSC);
   } else {
     rowData.value = {} as IOurRansom;
     rowData.value.fromName = "";
@@ -56,13 +56,14 @@ async function updateDeliveryRow(obj: any) {
 }
 
 async function updateDeliveryRows(obj: any) {
+  isLoading.value = true;
   let answer = confirm(
     `Вы точно хотите изменить статус доставки? Количество записей: ${obj.idArray.length}`
   );
-  if (answer)
-    await storeRansom.updateDeliveryRowsStatus(obj.idArray, obj.flag, "OurRansom");
+  if (answer) await storeRansom.updateDeliveryRowsStatus(obj.idArray, obj.flag, "OurRansom");
   filteredRows.value = await storeRansom.getRansomRows("OurRansom");
   rows.value = await storeRansom.getRansomRows("OurRansom");
+  isLoading.value = false;
 }
 
 async function deleteRow(id: number) {
@@ -151,7 +152,7 @@ function handleFilteredRows(filteredRowsData: IOurRansom[]) {
             month: "2-digit",
             year: "2-digit",
           }) === today || row.issued === null)
-          // && row.deliveredPVZ !== null
+        // && row.deliveredPVZ !== null
       );
     }
   }

@@ -391,7 +391,7 @@ let showOthersVariants = ref(false)
         <tr :class="{ 'bg-orange-100': isChecked(row.id) }" class="border-b text-center text-sm"
           v-for="row in returnRows">
           <td v-if="user.dataOurRansom === 'WRITE'" class="border-2 text-secondary-color">
-            <input type="checkbox" :value="row.id" :checked="isChecked(row.id)" @change="handleCheckboxChange(row)" />
+            <input type="checkbox" class="max-w-[50px]" :value="row.id" :checked="isChecked(row.id)" @change="handleCheckboxChange(row)" />
           </td>
           <td class="border-2"
             v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
@@ -418,12 +418,12 @@ let showOthersVariants = ref(false)
           <td v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'" class="py-4 border-2">
             {{ row.fromName }}
           </td>
-          <td class="underline border-2 text-secondary-color whitespace-nowrap overflow-hidden max-w-[100px]"
+          <td class="underline border-2 text-secondary-color whitespace-nowrap overflow-hidden max-w-[30px]"
             v-if="user.productLink1 === 'READ' || user.productLink1 === 'WRITE'">
             <a :href="row.productLink" target="_blank" class="hover:text-orange-200 duration-200">{{ row.productLink
             }}</a>
           </td>
-          <td class="border-2" v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'">
+          <td class="border-2 overflow-hidden max-h-[40px]" v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'">
             {{ row.productName }}
           </td>
           <td class="border-2" v-if="user.notation1 === 'READ' || user.notation1 === 'WRITE'">
