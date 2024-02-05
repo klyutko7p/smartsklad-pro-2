@@ -20,7 +20,7 @@ onBeforeMount(() => {
 </script>
 <template>
   <div
-    class="relative h-screen flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 w-full max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5 max-xl:hidden"
+    class="fixed z-50 backdrop-blur-2xl w-full h-screen flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5 max-xl:hidden"
     v-if="isOpen">
     <div class="p-4 flex justify-between items-center">
       <h1 class="font-bold text-xl text-secondary-color">DAROM.PRO</h1>
@@ -122,7 +122,7 @@ onBeforeMount(() => {
   </div>
 
   <div
-    class="absolute bg-gradient-to-tr from-white via-white to-yellow-100 bg-image top-0 bottom-0 left-0 right-0 z-50 hidden max-xl:flex items-center justify-center bg-white"
+    class="fixed bg-gradient-to-tr from-white via-white to-yellow-100 bg-image top-0 bottom-0 left-0 right-0 z-50 hidden max-xl:flex items-center justify-center bg-white"
     v-if="isOpen">
     <Icon name="material-symbols:close" class="absolute duration-200 cursor-pointer hover:text-orange-400 top-2 right-4"
       size="40" @click="editMenu" />
@@ -220,7 +220,7 @@ onBeforeMount(() => {
       </div>
     </nav>
   </div>
-  <div v-else class="p-5 absolute z-40 max-xl:right-0 flex flex-col">
+  <div v-else class="p-5 fixed z-40 max-xl:right-0 flex flex-col">
     {{ user.username }}
     <Icon @click="editMenu" size="40" name="material-symbols-light:menu"
       class="hover:text-orange-300 duration-200 cursor-pointer" />

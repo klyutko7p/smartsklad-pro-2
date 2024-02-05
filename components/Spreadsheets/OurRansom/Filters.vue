@@ -41,10 +41,6 @@ const uniqueCells = computed(() => {
   return storeRansom.getUniqueNonEmptyValues(props.rows, "cell");
 });
 
-const uniqueNames = computed(() => {
-  return storeRansom.getUniqueNonEmptyValues(props.rows, "name");
-});
-
 const uniqueFromNames = computed(() => {
   return storeRansom.getUniqueNonEmptyValues(props.rows, "fromName");
 });

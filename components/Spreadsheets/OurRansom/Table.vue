@@ -12,7 +12,6 @@ const emit = defineEmits([
   "deleteSelectedRows",
   "updateDeliveryRows",
   "createCopyRow",
-  "showLastPage",
 ]);
 
 function updateDeliveryRow(row: IOurRansom, flag: string) {
@@ -391,7 +390,7 @@ let showOthersVariants = ref(false)
         <tr :class="{ 'bg-orange-100': isChecked(row.id) }" class="border-b text-center text-sm"
           v-for="row in returnRows">
           <td v-if="user.dataOurRansom === 'WRITE'" class="border-2 text-secondary-color">
-            <input type="checkbox" class="max-w-[50px]" :value="row.id" :checked="isChecked(row.id)" @change="handleCheckboxChange(row)" />
+            <input type="checkbox" :value="row.id" :checked="isChecked(row.id)" @change="handleCheckboxChange(row)" />
           </td>
           <td class="border-2"
             v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">

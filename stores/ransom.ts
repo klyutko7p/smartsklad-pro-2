@@ -210,8 +210,16 @@ export const useRansomStore = defineStore("ransom", () => {
                     row.clientLink2 = ''
                 }
 
-                row.amountFromClient2 = row.priceProgram * row.percentClient / 100;
-                row.profit2 = row.amountFromClient2 + row.prepayment;
+                if (row.additionally === 'Отказ клиент') {
+                    row.amountFromClient2 = 200
+                    row.profit2 = 200
+                } else if (row.additionally === 'Отказ брак') {
+                    row.amountFromClient2 = 0
+                    row.profit2 = 0
+                } else {
+                    row.amountFromClient2 = row.priceProgram * row.percentClient / 100;
+                    row.profit2 = row.amountFromClient2 + row.prepayment;
+                }
             } else if (flag === 'Delivery') {
                 if (row.percentClient === undefined) row.percentClient = 2;
                 if (row.purchaseOfGoods === undefined) row.purchaseOfGoods = 0;

@@ -115,6 +115,20 @@ export default defineEventHandler(async (event) => {
                     [updateField]: new Date(),
                 },
             });
+        } else if ((flagRansom === 'ClientRansom' && updateField === 'additionally')) {
+            const updateRow = await prisma.clientRansom.updateMany({
+                where: {
+                    id: {
+                        in: idArray,
+                    },
+                },
+                data: {
+                    additionally: getAdditionally(flag),
+                    issued: new Date(),
+                    amountFromClient2: getAmountFromClient(flag),
+                    profit2: getProfit(flag),
+                },
+            });
         } else if (flagRansom === 'Delivery') {
             const updateRow = await prisma.delivery.updateMany({
                 where: {
