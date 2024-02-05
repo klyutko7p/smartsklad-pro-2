@@ -15,6 +15,7 @@ model User {
   username          String   @unique
   role              Role     @default(USER)
   password          String
+  PVZ               String[] @default([])
   created_at        DateTime @default(now())
   // Права доступа
   visibleSC         String   @default("ВСЕ")

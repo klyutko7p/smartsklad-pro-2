@@ -42,6 +42,7 @@ defineProps({
             {{ userData.username }}
           </th>
           <td class="px-6 py-4 border-2">{{ userData.role }}</td>
+          <td class="px-6 py-4 border-2 whitespace-nowrap">{{ userData.PVZ.join(', ') }}</td>
           <td class="px-6 py-4 border-2">
             {{ storeUsers.getNormalizedDate(userData.created_at) }}
           </td>

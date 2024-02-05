@@ -148,6 +148,23 @@ export const useRansomStore = defineStore("ransom", () => {
         }
     }
 
+    async function getRansomRowsByPVZ(PVZ: string | string[], flag: string) {
+        try {
+            let { data }: any = await useFetch('/api/ransom/get-rows-by-pvz', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ PVZ: PVZ, flag: flag })
+            })
+            return data.value;
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error(error.message);
+            }
+        }
+    }
+
     async function getRansomRowsByLink(link: string, flag: string) {
         try {
             let { data }: any = await useFetch('/api/ransom/get-rows-by-link', {
@@ -191,7 +208,11 @@ export const useRansomStore = defineStore("ransom", () => {
                     row.profit1 = 0
                 } else {
                     row.amountFromClient1 = Math.ceil(row.priceSite + (row.priceSite * row.percentClient / 100) - row.prepayment);
-                    row.profit1 = row.amountFromClient1 - row.priceSite + row.deliveredKGT;
+                    if (row.percentClient == 0) {
+                        row.profit1 = row.deliveredKGT
+                    } else {
+                        row.profit1 = row.amountFromClient1 - row.priceSite + row.deliveredKGT;
+                    }
                 }
 
             } else if (flag === 'ClientRansom') {
@@ -399,5 +420,5 @@ export const useRansomStore = defineStore("ransom", () => {
         return Array.from(uniqueNonEmptyValues);
     };
 
-    return { createRansomRow, getRansomRows, updateRansomRow, deleteRansomRow, updateDeliveryStatus, getUniqueNonEmptyValues, getRansomRow, deleteRansomSelectedRows, getRansomRowsByLink, updateDeliveryRowsStatus, createCopyRow, deleteIssuedRows, getOldRansomRow }
+    return { createRansomRow, getRansomRows, updateRansomRow, deleteRansomRow, updateDeliveryStatus, getUniqueNonEmptyValues, getRansomRow, deleteRansomSelectedRows, getRansomRowsByLink, updateDeliveryRowsStatus, createCopyRow, deleteIssuedRows, getOldRansomRow, getRansomRowsByPVZ }
 })

@@ -12,6 +12,7 @@ const fields = [
   "удаление",
   "имя пользователя",
   "роль",
+  "Доступ к пвз",
   "дата создания",
   "сортировочный центр",
   "ПВЗ",
@@ -131,6 +132,8 @@ onMounted(() => {
 definePageMeta({
   layout: false,
 });
+
+const selectedPVZs = ref<string[]>([]);
 </script>
 
 <template>
@@ -168,6 +171,13 @@ definePageMeta({
                 <option value="PVZ">PVZ</option>
                 <option value="ADMINISTRATOR">ADMINISTRATOR</option>
               </select>
+            </div>
+            
+            <div class="flex items-center justify-centers gap-3 mb-5 flex-wrap text-center max-sm:flex-col">
+              <label v-for="(pvzData, index) in pvz" :key="index">
+                <input type="checkbox" :value="pvzData.name" v-model="userData.PVZ" />
+                {{ pvzData.name }}
+              </label>
             </div>
 
             <div class="grid grid-cols-2 mb-5">
@@ -279,7 +289,7 @@ definePageMeta({
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">дополнительная стоимость<br> (Выкуп клиента)</label>
+              <label for="cell">Дополнительная стоимость<br> (Выкуп клиента)</label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.deliveredKGT2">
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>

@@ -473,7 +473,7 @@ let showOthersVariants = ref(false)
 
           <td class="px-1 py-4 border-2" v-if="(user.profit1 === 'READ' || user.profit1 === 'WRITE') &&
             (row.additionally !== 'Отказ клиент' && row.additionally !== 'Отказ брак')">
-            {{ Math.ceil(row.amountFromClient1 / 10) * 10 - row.priceSite + row.deliveredKGT }}
+            {{ row.percentClient !== 0 ? Math.ceil(row.amountFromClient1 / 10) * 10 - row.priceSite + row.deliveredKGT : row.deliveredKGT }}
           </td>
           <td class="px-1 py-4 border-2" v-if="(user.profit1 === 'READ' || user.profit1 === 'WRITE') &&
             (row.additionally === 'Отказ клиент' || row.additionally === 'Отказ брак')">

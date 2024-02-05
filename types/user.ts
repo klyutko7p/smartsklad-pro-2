@@ -3,6 +3,7 @@ interface User {
     username: string,
     password: string,
     role: string | Role,
+    PVZ: string[],
     created_at: Date | number,
     visibleSC: string;
     visiblePVZ: string;
