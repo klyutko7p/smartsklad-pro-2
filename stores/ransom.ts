@@ -89,6 +89,7 @@ export const useRansomStore = defineStore("ransom", () => {
 
                 row.amountFromClient2 = row.priceProgram * row.percentClient / 100 - row.prepayment;
                 row.profit2 = row.amountFromClient2 + row.prepayment;
+
             } else if (flag === 'Delivery') {
                 if (row.percentClient === undefined) row.percentClient = 2;
                 if (row.purchaseOfGoods === undefined) row.purchaseOfGoods = 0;
@@ -139,6 +140,23 @@ export const useRansomStore = defineStore("ransom", () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ flag: flag })
+            })
+            return data.value;
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error(error.message);
+            }
+        }
+    }
+
+    async function getRansomRowsByFromName(fromName: string | string[], cell: string | string[], flag: string) {
+        try {
+            let { data }: any = await useFetch('/api/ransom/get-rows-by-fromname', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ fromName: fromName, cell: cell, flag: flag })
             })
             return data.value;
         } catch (error) {
@@ -420,5 +438,5 @@ export const useRansomStore = defineStore("ransom", () => {
         return Array.from(uniqueNonEmptyValues);
     };
 
-    return { createRansomRow, getRansomRows, updateRansomRow, deleteRansomRow, updateDeliveryStatus, getUniqueNonEmptyValues, getRansomRow, deleteRansomSelectedRows, getRansomRowsByLink, updateDeliveryRowsStatus, createCopyRow, deleteIssuedRows, getOldRansomRow, getRansomRowsByPVZ }
+    return { createRansomRow, getRansomRows, updateRansomRow, deleteRansomRow, updateDeliveryStatus, getUniqueNonEmptyValues, getRansomRow, deleteRansomSelectedRows, getRansomRowsByLink, updateDeliveryRowsStatus, createCopyRow, deleteIssuedRows, getOldRansomRow, getRansomRowsByPVZ, getRansomRowsByFromName }
 })

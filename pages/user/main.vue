@@ -28,16 +28,14 @@ definePageMeta({
   <Head>
     <Title>Главная страница</Title>
   </Head>
-  <div v-if="token">
-    <div class="py-5">
-      <h1 class="text-xl mt-10">Приветствуем, {{ user.username }}!</h1>
-      <div class="flex flex-col gap-5 mt-10">
-        <h1 class="font-bold text-xl">Список доступных ПВЗ:</h1>
-        <div @click="router.push(`/spreadsheets/our-ransom/${pvz}`)" v-for="pvz in user.PVZ"
-          class="border-2 border-secondary-color p-10 font-medium hover:bg-secondary-color duration-300 rounded-2xl cursor-pointer">
-          {{ pvz }}
-        </div>
+  <div v-if="!isLoading">
+    <div v-if="token">
+      <div class="py-5">
+        <h1 class="text-xl mt-10">Приветствуем, {{ user.username }}!</h1>
       </div>
     </div>
+  </div>
+  <div v-else>
+    <UISpinner />
   </div>
 </template>

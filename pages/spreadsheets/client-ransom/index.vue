@@ -136,6 +136,28 @@ function handleFilteredRows(filteredRowsData: IClientRansom[]) {
   } else if (user.value.visiblePVZ !== 'ВСЕ' && user.value.visibleSC !== 'ВСЕ') {
     filteredRows.value = filteredRowsData.filter((row) => row.dispatchPVZ === user.value.visiblePVZ && row.orderPVZ === user.value.visibleSC && row.deliveredSC !== null);
   }
+
+  if (filteredRows.value) {
+    if (user.value.role === "SORTIROVKA") {
+      filteredRows.value = filteredRows.value.filter((row) => row.deliveredPVZ === null);
+    } else if (user.value.role === "PVZ") {
+      let today = new Date().toLocaleDateString("ru-RU", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "2-digit",
+      });
+      filteredRows.value = filteredRows.value.filter(
+        (row) =>
+          row.deliveredSC !== null &&
+          (new Date(row.issued).toLocaleDateString("ru-RU", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "2-digit",
+          }) === today || row.issued === null)
+        && row.deliveredPVZ !== null
+      );
+    }
+  }
 }
 
 
@@ -202,7 +224,7 @@ function getFromNameFromCell() {
             </div>
           </div>
 
-          <SpreadsheetsClientRansomTable @update-delivery-row="updateDeliveryRow" :rows="filteredRows" :user="user"
+          <SpreadsheetsClientRansomTable1 @update-delivery-row="updateDeliveryRow" :rows="filteredRows" :user="user"
             @delete-row="deleteRow" @open-modal="openModal" @delete-selected-rows="deleteSelectedRows"
             @update-delivery-rows="updateDeliveryRows" @create-copy-row="createCopyRow" />
 
@@ -364,7 +386,7 @@ function getFromNameFromCell() {
             </div>
           </div>
 
-          <SpreadsheetsClientRansomTable @update-delivery-row="updateDeliveryRow" :rows="filteredRows" :user="user"
+          <SpreadsheetsClientRansomTable1 @update-delivery-row="updateDeliveryRow" :rows="filteredRows" :user="user"
             @delete-row="deleteRow" @open-modal="openModal" @delete-selected-rows="deleteSelectedRows"
             @update-delivery-rows="updateDeliveryRows" @create-copy-row="createCopyRow" />
 

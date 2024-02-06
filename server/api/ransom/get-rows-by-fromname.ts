@@ -3,18 +3,20 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 interface IRequestBody {
-    PVZ: string;
+    fromName: string;
+    cell: string;
     flag: string;
 }
 
 export default defineEventHandler(async (event) => {
     try {
-        const { PVZ, flag } = await readBody<IRequestBody>(event);
+        const { fromName, cell, flag } = await readBody<IRequestBody>(event);
 
         if (flag === 'OurRansom') {
             const rows = await prisma.ourRansom.findMany({
                 where: {
-                    dispatchPVZ: PVZ,
+                    fromName: fromName,
+                    cell: cell,
                 },
                 orderBy: [
                     {
@@ -26,7 +28,8 @@ export default defineEventHandler(async (event) => {
         } else if (flag === 'ClientRansom') {
             const rows = await prisma.clientRansom.findMany({
                 where: {
-                    dispatchPVZ: PVZ,
+                    fromName: fromName,
+                    cell: cell,
                 },
                 orderBy: [
                     {

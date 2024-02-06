@@ -40,7 +40,7 @@ onBeforeMount(() => {
         </div>
         <h1>Главная</h1>
       </div>
-      <div role="button" @click="router.push('/spreadsheets/our-ransom')" tabindex="0"
+      <div role="button" @click="router.push('/spreadsheets/our-ransom/info')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-orange-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none"
         v-if="user.dataOurRansom === 'READ' || user.dataOurRansom === 'WRITE'">
         <div class="grid place-items-center mr-4">
@@ -53,7 +53,7 @@ onBeforeMount(() => {
         </div>
         <h1>Наш Выкуп</h1>
       </div>
-      <div role="button" tabindex="0" @click="router.push('/spreadsheets/client-ransom')"
+      <div role="button" tabindex="0" @click="router.push('/spreadsheets/client-ransom/info')"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none"
         v-if="user.dataClientRansom === 'READ' || user.dataClientRansom === 'WRITE'">
         <div class="grid place-items-center mr-4">
@@ -107,7 +107,7 @@ onBeforeMount(() => {
         </div>
         <h1>Главная</h1>
       </div>
-      <div role="button" @click="router.push('/spreadsheets/our-ransom')" tabindex="0"
+      <div role="button" @click="router.push('/spreadsheets/our-ransom/info')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-orange-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none"
         v-if="user.dataOurRansom === 'READ' || user.dataOurRansom === 'WRITE'">
         <div class="grid place-items-center mr-4">
@@ -120,7 +120,7 @@ onBeforeMount(() => {
         </div>
         <h1>Наш Выкуп</h1>
       </div>
-      <div role="button" tabindex="0" @click="router.push('/spreadsheets/client-ransom')"
+      <div role="button" tabindex="0" @click="router.push('/spreadsheets/client-ransom/info')"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none"
         v-if="user.dataClientRansom === 'READ' || user.dataClientRansom === 'WRITE'">
         <div class="grid place-items-center mr-4">

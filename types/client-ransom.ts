@@ -25,4 +25,5 @@ interface IClientRansom {
     updated_at: Date | string;
     createdUser: string;
     updatedUser: string;
+    quantity: number;
 }
