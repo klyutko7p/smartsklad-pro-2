@@ -65,7 +65,7 @@ definePageMeta({
             <div class="flex items-center gap-5">
               <h1 class="font-bold text-xl">Список доступных ПВЗ (Наш Выкуп):</h1>
               <UIMainButton
-                v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'"
+                v-if="(user.role === 'ADMIN' || user.role === 'ADMINISTRATOR') || user.role === 'SORTIROVKA'"
                 @click="router.push('/spreadsheets/our-ransom')"
                 >Все товары</UIMainButton
               >
@@ -89,19 +89,22 @@ definePageMeta({
       <NuxtLayout name="user">
         <div class="py-5">
           <div class="flex flex-col gap-5 mt-10">
-            <h1 class="font-bold text-xl">Список доступных ПВЗ (Наш Выкуп):</h1>
+            <div class="flex items-center gap-5">
+              <h1 class="font-bold text-xl">Список доступных ПВЗ (Наш Выкуп):</h1>
+              <UIMainButton
+                v-if="(user.role === 'ADMIN' || user.role === 'ADMINISTRATOR') || user.role === 'SORTIROVKA'"
+                @click="router.push('/spreadsheets/our-ransom')"
+                >Все товары</UIMainButton
+              >
+            </div>
             <div
               @click="router.push(`/spreadsheets/our-ransom/${pvz}`)"
               v-for="pvz in user.PVZ"
               class="border-2 border-secondary-color p-10 font-medium hover:bg-secondary-color duration-300 rounded-2xl cursor-pointer"
             >
               <h1 class="text-xl">{{ pvz }}</h1>
-              <h1 v-if="user.role !== 'PVZ'">
+              <h1>
                 Товаров в работе:
-                <span class="font-bold">{{ getCountOfItemsByPVZOurRansom(pvz) }}</span>
-              </h1>
-              <h1 v-if="user.role === 'PVZ'">
-                Товаров к выдаче:
                 <span class="font-bold">{{ getCountOfItemsByPVZOurRansom(pvz) }}</span>
               </h1>
             </div>
