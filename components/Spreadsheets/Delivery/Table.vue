@@ -155,39 +155,10 @@ function showLastPage() {
           {{ isPrimaryView ? 'Режим выдачи' : 'Режим заполнения' }}
         </UIActionButton>
       </div>
-      <div class="mb-5 flex items-center max-sm:flex-col max-sm:items-start gap-5" v-if="isPrimaryView">
-        <h1>Сколько записей отображается в таблице: </h1>
-        <input
-          class="max-w-[100px] bg-transparent border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 rounded-2xl focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"
-          min="1" :max="totalRows" type="number" v-model="perPage">
-        <UIActionButton @click="updateCurrentPageData">Применить</UIActionButton>
-      </div>
       <div class="flex items-center gap-5">
         <UIActionButton @click="toggleShowDeletedRows">
           {{ showDeletedRows ? 'Скрыть удаленное' : 'Показать удаленное' }}
         </UIActionButton>
-        <div v-if="isPrimaryView">
-          <a href="#up">
-            <Icon name="material-symbols:arrow-circle-up-rounded"
-              class="text-secondary-color hover:opacity-50 duration-200" size="40" />
-          </a>
-          <a href="#down">
-            <Icon name="material-symbols:arrow-circle-down" class="text-secondary-color hover:opacity-50 duration-200"
-              size="40" />
-          </a>
-          <a href="#left">
-            <Icon name="material-symbols:arrow-circle-left-rounded"
-              class="text-secondary-color hover:opacity-50 duration-200" size="40" />
-          </a>
-          <a href="#right">
-            <Icon name="material-symbols:arrow-circle-right-rounded"
-              class="text-secondary-color hover:opacity-50 duration-200" size="40" />
-          </a>
-          <a href="#down" @click="showLastPage">
-            <Icon name="ic:round-last-page"
-              class="text-secondary-color hover:opacity-50 duration-200" size="40" />
-          </a>
-        </div>
       </div>
     </div>
     <div class="flex items-end max-lg:mt-5 max-lg:justify-between gap-20">

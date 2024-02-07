@@ -184,7 +184,7 @@ let showOthersVariants = ref(false)
         </div>
     </div>
 
-    <div class="fixed top-10 z-40 left-1/2 translate-x-[-50%] translate-y-[-50%]" v-if="getAllSum > 0">
+    <div class="fixed top-24 z-40 left-1/2 translate-x-[-50%] translate-y-[-50%]" v-if="getAllSum > 0">
         <h1 class="text-base backdrop-blur-xl p-2 rounded-xl border-2 text-secondary-color font-bold">К оплате: {{
             getAllSum }} </h1>
     </div>

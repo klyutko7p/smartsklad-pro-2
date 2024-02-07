@@ -2,6 +2,7 @@
 import { useUsersStore } from "../stores/users";
 
 const router = useRouter();
+const route = useRoute()
 const storeUsers = useUsersStore();
 let user = ref({} as User);
 let isOpen = ref(false);
@@ -28,18 +29,6 @@ onBeforeMount(() => {
         class="hover:text-orange-300 duration-200 cursor-pointer" />
     </div>
     <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
-      <div role="button" @click="router.push('/admin/main')" tabindex="0"
-        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
-        <div class="grid place-items-center mr-4">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
-            class="h-5 w-5">
-            <path fill-rule="evenodd"
-              d="M2.25 2.25a.75.75 0 000 1.5H3v10.5a3 3 0 003 3h1.21l-1.172 3.513a.75.75 0 001.424.474l.329-.987h8.418l.33.987a.75.75 0 001.422-.474l-1.17-3.513H18a3 3 0 003-3V3.75h.75a.75.75 0 000-1.5H2.25zm6.04 16.5l.5-1.5h6.42l.5 1.5H8.29zm7.46-12a.75.75 0 00-1.5 0v6a.75.75 0 001.5 0v-6zm-3 2.25a.75.75 0 00-1.5 0v3.75a.75.75 0 001.5 0V9zm-3 2.25a.75.75 0 00-1.5 0v1.5a.75.75 0 001.5 0v-1.5z"
-              clip-rule="evenodd"></path>
-          </svg>
-        </div>
-        <h1>Главная</h1>
-      </div>
       <div role="button" @click="router.push('/spreadsheets/our-ransom/info')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none"
         v-if="user.dataOurRansom === 'READ' || user.dataOurRansom === 'WRITE'">
@@ -128,18 +117,6 @@ onBeforeMount(() => {
       size="40" @click="editMenu" />
     <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-black">
       <h1 class="text-center font-bold text-3xl text-secondary-color mb-5">DAROM.PRO</h1>
-      <div role="button" @click="router.push('/admin/main')" tabindex="0"
-        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
-        <div class="grid place-items-center mr-4">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
-            class="h-5 w-5">
-            <path fill-rule="evenodd"
-              d="M2.25 2.25a.75.75 0 000 1.5H3v10.5a3 3 0 003 3h1.21l-1.172 3.513a.75.75 0 001.424.474l.329-.987h8.418l.33.987a.75.75 0 001.422-.474l-1.17-3.513H18a3 3 0 003-3V3.75h.75a.75.75 0 000-1.5H2.25zm6.04 16.5l.5-1.5h6.42l.5 1.5H8.29zm7.46-12a.75.75 0 00-1.5 0v6a.75.75 0 001.5 0v-6zm-3 2.25a.75.75 0 00-1.5 0v3.75a.75.75 0 001.5 0V9zm-3 2.25a.75.75 0 00-1.5 0v1.5a.75.75 0 001.5 0v-1.5z"
-              clip-rule="evenodd"></path>
-          </svg>
-        </div>
-        <h1>Главная</h1>
-      </div>
       <div role="button" @click="router.push('/spreadsheets/our-ransom/info')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none"
         v-if="user.dataOurRansom === 'READ' || user.dataOurRansom === 'WRITE'">
@@ -220,9 +197,14 @@ onBeforeMount(() => {
       </div>
     </nav>
   </div>
-  <div v-else class="p-5 fixed z-40 max-xl:right-0 flex flex-col">
-    {{ user.username }}
-    <Icon @click="editMenu" size="40" name="material-symbols-light:menu"
-      class="hover:text-orange-300 duration-200 cursor-pointer" />
+  <div v-else class="py-1 px-3 absolute z-40 max-xl:right-0 flex items-center max-sm:gap-3 justify-between duration-200 w-full bg-gradient-to-br from-purple-700 to-orange-400 backdrop-blur-2xl text-white">
+    <div class="flex items-center gap-1">
+      <Icon @click="editMenu" size="40" name="material-symbols-light:menu"
+        class="hover:text-orange-300 duration-200 cursor-pointer" />
+      <h1 class="font-medium">{{ user.username }}</h1>
+    </div>
+    <h1 class="text-lg font-medium max-sm:text-base" v-if="route.meta.name === 'Товары из'">{{ route.meta.name }} {{ route.params.pvz }} </h1>
+    <h1 class="text-lg font-medium max-sm:text-base" v-else-if="route.meta.name === 'Товары по телефону'">{{ route.meta.name }} {{ route.params.fromName }} </h1>
+    <h1 class="text-lg font-medium max-sm:text-base" v-else>{{ route.meta.name }}</h1>
   </div>
 </template>

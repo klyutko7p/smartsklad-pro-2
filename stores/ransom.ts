@@ -315,8 +315,12 @@ export const useRansomStore = defineStore("ransom", () => {
                 },
                 body: JSON.stringify({ row: row, flag: flag, flagRansom: flagRansom }),
             })
-            console.log(data);
-            toast.success("Доставка успешно обновлена!")
+            if (data.data.value === undefined) {
+                toast.success("Доставка успешно обновлена!")
+            } else {
+                console.log(data.data.value);
+                toast.error("Произошла ошибка")
+            }
         } catch (error) {
             if (error instanceof Error) {
                 console.error(error.message)
@@ -334,7 +338,12 @@ export const useRansomStore = defineStore("ransom", () => {
                 },
                 body: JSON.stringify({ idArray: idArray, flag: flag, flagRansom: flagRansom }),
             })
-            toast.success("Доставка у записей успешно обновлена!")
+            if (data.data.value === undefined) {
+                toast.success("Доставка у записей успешно обновлена!")
+            } else {
+                console.log(data.data.value);
+                toast.error("Произошла ошибка")
+            }
         } catch (error) {
             if (error instanceof Error) {
                 toast.error(error.message);
@@ -351,7 +360,12 @@ export const useRansomStore = defineStore("ransom", () => {
                 },
                 body: JSON.stringify({ id: id, flag: flag }),
             });
-            toast.success("Запись успешно удалена!")
+            if (data.data.value === undefined) {
+                toast.success("Запись успешно удалена!")
+            } else {
+                console.log(data.data.value);
+                toast.error("Произошла ошибка")
+            }
         } catch (error) {
             if (error instanceof Error) {
                 toast.error(error.message);
@@ -368,7 +382,12 @@ export const useRansomStore = defineStore("ransom", () => {
                 },
                 body: JSON.stringify({ flag: flag }),
             });
-            toast.success("Записи успешно удалены!")
+            if (data.data.value === undefined) {
+                toast.success("Записи успешно удалены!")
+            } else {
+                console.log(data.data.value);
+                toast.error("Произошла ошибка")
+            }
         } catch (error) {
             if (error instanceof Error) {
                 toast.error(error.message);
@@ -385,7 +404,12 @@ export const useRansomStore = defineStore("ransom", () => {
                 },
                 body: JSON.stringify({ idArray: idArray, flag: flag }),
             });
-            toast.success("Записи успешно удалены!")
+            if (data.data.value === undefined) {
+                toast.success("Записи успешно удалены!")
+            } else {
+                console.log(data.data.value);
+                toast.error("Произошла ошибка")
+            }
         } catch (error) {
             if (error instanceof Error) {
                 toast.error(error.message);

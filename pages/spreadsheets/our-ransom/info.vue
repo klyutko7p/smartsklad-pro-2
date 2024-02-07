@@ -27,14 +27,13 @@ function getCountOfItemsByPVZOurRansom(PVZ: string) {
     return rowsOurRansom.value?.filter((row) => row.dispatchPVZ === PVZ).length;
   } else if (user.value.role === "PVZ") {
     let today = new Date().toLocaleDateString("ru-RU", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "2-digit",
-      });
+      day: "2-digit",
+      month: "2-digit",
+      year: "2-digit",
+    });
     return rowsOurRansom.value?.filter(
       (row) =>
         row.dispatchPVZ === PVZ &&
-        row.deliveredSC !== null &&
         row.deliveredSC !== null &&
         (new Date(row.issued).toLocaleDateString("ru-RU", {
           day: "2-digit",
@@ -47,8 +46,13 @@ function getCountOfItemsByPVZOurRansom(PVZ: string) {
   }
 }
 
+function getCountOfItemsByPVZOurRansomIssued(PVZ: string) {
+  return rowsOurRansom.value?.filter((row) => row.dispatchPVZ === PVZ && row.deliveredSC !== null && row.issued === null && row.deliveredPVZ !== null).length;
+}
+
 definePageMeta({
   layout: false,
+  name: "Выбор ПВЗ (Наш Выкуп)"
 });
 
 </script>
@@ -58,26 +62,28 @@ definePageMeta({
     <Title>Главная страница</Title>
   </Head>
   <div v-if="!isLoading">
-    <div v-if="token && user.role === 'ADMIN'">
+    <div v-if="user.role === 'ADMIN'">
       <NuxtLayout name="admin">
-        <div class="py-5">
+        <div class="py-5" v-if="!isLoading">
           <div class="flex flex-col gap-5 mt-10">
-            <div class="flex items-center gap-5">
-              <h1 class="font-bold text-xl">Список доступных ПВЗ (Наш Выкуп):</h1>
-              <UIMainButton
-                v-if="(user.role === 'ADMIN' || user.role === 'ADMINISTRATOR') || user.role === 'SORTIROVKA'"
-                @click="router.push('/spreadsheets/our-ransom')"
-                >Все товары</UIMainButton
-              >
+            <div class="flex items-start gap-5 max-sm:flex-col">
+              <h1 class="font-bold text-xl max-sm:text-lg">Список доступных ПВЗ (Наш Выкуп):</h1>
+              <UIActionButton v-if="(user.role === 'ADMIN' || user.role === 'ADMINISTRATOR') || user.role === 'SORTIROVKA'"
+                @click="router.push('/spreadsheets/our-ransom')">Все товары</UIActionButton>
             </div>
-            <div
-              @click="router.push(`/spreadsheets/our-ransom/${pvz}`)"
-              v-for="pvz in user.PVZ"
-              class="border-2 border-secondary-color p-10 font-medium hover:bg-secondary-color duration-300 rounded-2xl cursor-pointer"
-            >
-              <h1 class="text-xl">{{ pvz }}</h1>
-              <h1>
-                Товаров в работе:
+            <div @click="router.push(`/spreadsheets/our-ransom/${pvz}`)" v-for="pvz in user.PVZ"
+              class="border-2 border-secondary-color p-10 font-medium hover:bg-secondary-color hover:text-white duration-300 rounded-2xl cursor-pointer">
+              <h1 class="text-xl font-bold">{{ pvz }}</h1>
+              <h1 v-if="user.role !== 'PVZ' && (user.role === 'ADMIN' || user.role === 'ADMINISTRATOR')">
+                Заказано:
+                <span class="font-bold">{{ getCountOfItemsByPVZOurRansom(pvz) }}</span>
+              </h1>
+              <h1 v-if="user.role !== 'PVZ' && (user.role === 'ADMIN' || user.role === 'ADMINISTRATOR')">
+                Товаров на выдачу:
+                <span class="font-bold">{{ getCountOfItemsByPVZOurRansomIssued(pvz) }}</span>
+              </h1>
+              <h1 v-if="user.role === 'PVZ'">
+                Товаров на выдачу:
                 <span class="font-bold">{{ getCountOfItemsByPVZOurRansom(pvz) }}</span>
               </h1>
             </div>
@@ -85,26 +91,29 @@ definePageMeta({
         </div>
       </NuxtLayout>
     </div>
+  
     <div v-else>
       <NuxtLayout name="user">
-        <div class="py-5">
+        <div class="py-5" v-if="!isLoading">
           <div class="flex flex-col gap-5 mt-10">
-            <div class="flex items-center gap-5">
-              <h1 class="font-bold text-xl">Список доступных ПВЗ (Наш Выкуп):</h1>
-              <UIMainButton
-                v-if="(user.role === 'ADMIN' || user.role === 'ADMINISTRATOR') || user.role === 'SORTIROVKA'"
-                @click="router.push('/spreadsheets/our-ransom')"
-                >Все товары</UIMainButton
-              >
+            <div class="flex items-start gap-5 max-sm:flex-col">
+              <h1 class="font-bold text-xl max-sm:text-lg">Список доступных ПВЗ (Наш Выкуп):</h1>
+              <UIActionButton v-if="(user.role === 'ADMIN' || user.role === 'ADMINISTRATOR') || user.role === 'SORTIROVKA'"
+                @click="router.push('/spreadsheets/our-ransom')">Все товары</UIActionButton>
             </div>
-            <div
-              @click="router.push(`/spreadsheets/our-ransom/${pvz}`)"
-              v-for="pvz in user.PVZ"
-              class="border-2 border-secondary-color p-10 font-medium hover:bg-secondary-color duration-300 rounded-2xl cursor-pointer"
-            >
-              <h1 class="text-xl">{{ pvz }}</h1>
-              <h1>
-                Товаров в работе:
+            <div @click="router.push(`/spreadsheets/our-ransom/${pvz}`)" v-for="pvz in user.PVZ"
+              class="border-2 border-secondary-color p-10 font-medium hover:bg-secondary-color hover:text-white duration-300 rounded-2xl cursor-pointer">
+              <h1 class="text-xl font-bold">{{ pvz }}</h1>
+              <h1 v-if="user.role !== 'PVZ' && (user.role === 'ADMIN' || user.role === 'ADMINISTRATOR')">
+                Заказано:
+                <span class="font-bold">{{ getCountOfItemsByPVZOurRansom(pvz) }}</span>
+              </h1>
+              <h1 v-if="user.role !== 'PVZ' && (user.role === 'ADMIN' || user.role === 'ADMINISTRATOR')">
+                Товаров на выдачу:
+                <span class="font-bold">{{ getCountOfItemsByPVZOurRansomIssued(pvz) }}</span>
+              </h1>
+              <h1 v-if="user.role === 'PVZ'">
+                Товаров на выдачу:
                 <span class="font-bold">{{ getCountOfItemsByPVZOurRansom(pvz) }}</span>
               </h1>
             </div>

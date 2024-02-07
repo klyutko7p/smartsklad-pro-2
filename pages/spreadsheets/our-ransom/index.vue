@@ -209,6 +209,7 @@ onBeforeMount(() => {
 
 definePageMeta({
   layout: false,
+  name: "Все товары: Наш Выкуп"
 });
 
 const token = Cookies.get("token");

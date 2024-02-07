@@ -223,6 +223,7 @@ onBeforeMount(() => {
 
 definePageMeta({
   layout: false,
+  name: "Товары по телефону"
 });
 
 const token = Cookies.get("token");
