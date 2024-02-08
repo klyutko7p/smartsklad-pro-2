@@ -18,6 +18,26 @@ function editMenu() {
 onBeforeMount(() => {
   user.value = storeUsers.getUser();
 });
+
+function formatPhoneNumber(phoneNumber: string) {
+  if (!phoneNumber) {
+    return 'Номер телефона не указан';
+  }
+
+  const digitsOnly = phoneNumber.replace(/\D/g, '');
+
+  if (digitsOnly.length < 11) {
+    return 'Неправильный формат номера телефона';
+  }
+
+  const maskedPhoneNumber =
+    '+7' +
+    '*'.repeat(digitsOnly.length - 5) +
+    digitsOnly.slice(-4);
+
+  return maskedPhoneNumber;
+}
+
 </script>
 <template>
   <div
@@ -222,11 +242,22 @@ onBeforeMount(() => {
         class="hover:opacity-50 duration-200 cursor-pointer" />
       <h1 class="font-medium">{{ user.username }}</h1>
     </div>
-    <h1 class="text-lg font-medium max-sm:text-sm" v-if="route.meta.name === 'Товары из'">{{ route.meta.name }} {{
-      route.params.pvz }} </h1>
-    <h1 class="text-lg font-medium max-sm:text-sm" v-else-if="route.meta.name === 'Товары по телефону'">{{
-      route.meta.name }}</h1>
+    <h1 class="text-lg font-medium max-sm:text-sm"
+      v-if="route.meta.name === 'Товары из' && route.fullPath.includes('/our-ransom')">{{ route.meta.name }} {{
+        route.params.pvz }} (Наш Выкуп) </h1>
+    <h1 class="text-lg font-medium max-sm:text-sm"
+      v-else-if="route.fullPath.includes('/client-ransom') && route.params.pvz && !route.params.fromName">
+      Товары из {{ route.meta.name }} {{ route.params.pvz }} (Выкуп Клиента) 
+    </h1>
+    <h1 class="text-lg font-medium max-sm:text-sm"
+      v-else-if="route.fullPath.includes('/client-ransom') && route.params.pvz && route.params.fromName">
+      Товары по телефону: {{ formatPhoneNumber(route.params.fromName) }} (Выкуп Клиента) 
+    </h1>
+    <h1 class="text-lg font-medium max-sm:text-sm"
+      v-else-if="route.fullPath.includes('/our-ransom') && route.params.pvz && route.params.fromName">
+      Товары по телефону: {{ formatPhoneNumber(route.params.fromName) }} (Наш Выкуп) </h1>
     <h1 class="text-lg font-medium max-sm:text-sm" v-else>{{ route.meta.name }}</h1>
-    <Icon @click="router.go(-1)" name="material-symbols:arrow-back-rounded" size="32" class="cursor-pointer hover:opacity-50 duration-200" />
-  </div>
+    <Icon @click="router.go(-1)" name="material-symbols:arrow-back-rounded" size="32"
+      class="cursor-pointer hover:opacity-50 duration-200" />
+</div>
 </template>
