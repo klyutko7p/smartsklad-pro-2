@@ -215,8 +215,11 @@ definePageMeta({
 const token = Cookies.get("token");
 let showAddFields = ref(false);
 
+let isAutoCell = ref(true);
+let isAutoFromName = ref(true);
+
 function getCellFromName() {
-  if (rowData.value.fromName.trim().length === 12) {
+  if (rowData.value.fromName.trim().length === 12 && isAutoFromName.value === true) {
     let rowCell = rows.value?.filter((row) => row.fromName === rowData.value.fromName);
     if (rowCell) {
       rowData.value.cell = rowCell[0].cell;
@@ -225,7 +228,7 @@ function getCellFromName() {
 }
 
 function getFromNameFromCell() {
-  if (rowData.value.cell.trim()) {
+  if (rowData.value.cell.trim() && isAutoCell.value === true) {
     let rowFromName = rows.value?.filter((row) => row.cell === rowData.value.cell);
     if (rowFromName) {
       rowData.value.fromName = rowFromName[0].fromName;
@@ -262,18 +265,31 @@ function getFromNameFromCell() {
               <div class="custom-header" v-else>Создание новой строки</div>
             </template>
             <div class="text-black">
+              
               <div class="grid grid-cols-2 mb-5" v-if="user.cell1 === 'READ' || user.cell1 === 'WRITE'">
                 <label for="cell">Ячейка</label>
-                <input :disabled="user.cell1 === 'READ'"
-                  class="bg-transparent rounded-md border-2 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.cell" @input="getFromNameFromCell" type="text" />
+                <div>
+                  <input :disabled="user.cell1 === 'READ'"
+                    class="bg-transparent rounded-md border-2 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                    v-model="rowData.cell" @input="getFromNameFromCell" type="text" />
+                  <div class="flex gap-3 items-center justify-center mt-1">
+                    <h1>АВТО</h1>
+                    <input type="checkbox" v-model="isAutoCell" />
+                  </div>
+                </div>
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'">
                 <label for="fromName">Телефон <sup>*</sup></label>
-                <input :disabled="user.fromName1 === 'READ'"
-                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.fromName" @input="getCellFromName" type="text" />
+                <div>
+                  <input :disabled="user.fromName1 === 'READ'"
+                    class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                    v-model="rowData.fromName" @input="getCellFromName" type="text" />
+                  <div class="flex gap-3 items-center justify-center mt-1">
+                    <h1>АВТО</h1>
+                    <input type="checkbox" v-model="isAutoFromName" />
+                  </div>
+                </div>
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.productLink1 === 'READ' || user.productLink1 === 'WRITE'">
@@ -443,18 +459,31 @@ function getFromNameFromCell() {
               <div class="custom-header" v-else>Создание новой строки</div>
             </template>
             <div class="text-black">
+              
               <div class="grid grid-cols-2 mb-5" v-if="user.cell1 === 'READ' || user.cell1 === 'WRITE'">
                 <label for="cell">Ячейка</label>
-                <input :disabled="user.cell1 === 'READ'"
-                  class="bg-transparent rounded-md border-2 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.cell" type="text" />
+                <div>
+                  <input :disabled="user.cell1 === 'READ'"
+                    class="bg-transparent rounded-md border-2 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                    v-model="rowData.cell" @input="getFromNameFromCell" type="text" />
+                  <div class="flex gap-3 items-center justify-center mt-1">
+                    <h1>АВТО</h1>
+                    <input type="checkbox" v-model="isAutoCell" />
+                  </div>
+                </div>
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'">
                 <label for="fromName">Телефон <sup>*</sup></label>
-                <input :disabled="user.fromName1 === 'READ'"
-                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.fromName" @input="getCellFromName" type="text" />
+                <div>
+                  <input :disabled="user.fromName1 === 'READ'"
+                    class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                    v-model="rowData.fromName" @input="getCellFromName" type="text" />
+                  <div class="flex gap-3 items-center justify-center mt-1">
+                    <h1>АВТО</h1>
+                    <input type="checkbox" v-model="isAutoFromName" />
+                  </div>
+                </div>
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.productLink1 === 'READ' || user.productLink1 === 'WRITE'">
