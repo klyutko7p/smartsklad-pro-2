@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Exo+2:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
 
 ::selection {
-  background-color: rgb(144, 144, 255);
+  background-color: #9553ff;
 }
 
 input[type="checkbox"] {

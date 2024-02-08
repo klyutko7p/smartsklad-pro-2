@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useToast } from "vue-toastification";
 import Cookies from "js-cookie";
 
 const storeUsers = useUsersStore();
@@ -16,7 +15,6 @@ let user = ref({} as User);
 let rows = ref<Array<IDelivery>>();
 let pvz = ref<Array<PVZ>>();
 let sortingCenters = ref<Array<SortingCenter>>();
-let orderAccounts = ref<Array<OrderAccount>>();
 
 let rowData = ref({} as IDelivery);
 
@@ -26,12 +24,12 @@ function openModal(row: IDelivery) {
   isOpen.value = true;
   if (row.id) {
     rowData.value = JSON.parse(JSON.stringify(row));
-  rowData.value.sorted = rowData.value.sorted
-    ? storeUsers.getISODateTime(rowData.value.sorted)
-    : null;
-  rowData.value.paid = rowData.value.paid
-    ? storeUsers.getISODateTime(rowData.value.paid)
-    : null;
+    rowData.value.sorted = rowData.value.sorted
+      ? storeUsers.getISODateTime(rowData.value.sorted)
+      : null;
+    rowData.value.paid = rowData.value.paid
+      ? storeUsers.getISODateTime(rowData.value.paid)
+      : null;
   } else {
     rowData.value = {} as IDelivery;
     rowData.value.fromName = ''
@@ -47,6 +45,7 @@ async function updateDeliveryRow(obj: any) {
   isLoading.value = true;
   let answer = confirm("Вы точно хотите изменить статус доставки?");
   if (answer) await storeRansom.updateDeliveryStatus(obj.row, obj.flag, 'Delivery');
+  filteredRows.value = await storeRansom.getRansomRows("Delivery");
   rows.value = await storeRansom.getRansomRows('Delivery');
   isLoading.value = false;
 }
@@ -55,6 +54,7 @@ async function updateDeliveryRows(obj: any) {
   isLoading.value = true;
   let answer = confirm("Вы точно хотите изменить статус доставки?");
   if (answer) await storeRansom.updateDeliveryRowsStatus(obj.idArray, obj.flag, 'Delivery');
+  filteredRows.value = await storeRansom.getRansomRows("Delivery");
   rows.value = await storeRansom.getRansomRows('Delivery');
   isLoading.value = false;
 }
@@ -63,7 +63,7 @@ async function deleteRow(id: number) {
   isLoading.value = true;
   let answer = confirm("Вы точно хотите удалить данную строку?");
   if (answer) await storeRansom.deleteRansomRow(id, 'Delivery');
-  filteredRows.value = await storeRansom.getRansomRows("OurRansom");
+  filteredRows.value = await storeRansom.getRansomRows("Delivery");
   rows.value = await storeRansom.getRansomRows('Delivery');
   isLoading.value = false;
 }
@@ -72,7 +72,7 @@ async function deleteSelectedRows(idArray: number[]) {
   isLoading.value = true;
   let answer = confirm("Вы точно хотите удалить данные строки?");
   if (answer) await storeRansom.deleteRansomSelectedRows(idArray, 'Delivery');
-  filteredRows.value = await storeRansom.getRansomRows("OurRansom");
+  filteredRows.value = await storeRansom.getRansomRows("Delivery");
   rows.value = await storeRansom.getRansomRows('Delivery');
   isLoading.value = false;
 }
@@ -80,6 +80,7 @@ async function deleteSelectedRows(idArray: number[]) {
 async function updateRow() {
   isLoading.value = true;
   await storeRansom.updateRansomRow(rowData.value, user.value.username, 'Delivery');
+  filteredRows.value = await storeRansom.getRansomRows("Delivery");
   rows.value = await storeRansom.getRansomRows('Delivery');
   closeModal();
   isLoading.value = false;
@@ -121,7 +122,7 @@ async function deleteIssuedRowsTimer() {
 
 function timeUntilSunday2359() {
   const now = new Date();
-  const dayOfWeek = now.getDay(); 
+  const dayOfWeek = now.getDay();
   const daysUntilSunday = (dayOfWeek === 0) ? 0 : (7 - dayOfWeek);
 
   const nextSunday1337 = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilSunday, 23, 59, 0, 0);
@@ -131,7 +132,7 @@ function timeUntilSunday2359() {
 
 function scheduleDeleteIssuedRows() {
   const timeUntilSunday2359Data = timeUntilSunday2359();
-  
+
   setTimeout(async () => {
     await deleteIssuedRowsTimer();
   }, timeUntilSunday2359Data);
@@ -174,6 +175,7 @@ onMounted(async () => {
 
 definePageMeta({
   layout: false,
+  name: "Все товары: Доставка"
 });
 
 const token = Cookies.get("token");
@@ -186,11 +188,12 @@ const token = Cookies.get("token");
   <div>
     <div v-if="user.role === 'ADMIN'">
       <NuxtLayout name="admin">
-        <div v-if="!isLoading" class="mt-3">
+        <div v-if="!isLoading" class="mt-14">
           <div>
             <SpreadsheetsDeliveryFilters v-if="rows" @filtered-rows="handleFilteredRows" :rows="rows" />
             <div class="mt-5 flex items-center gap-3" v-if="user.dataDelivery === 'WRITE'">
-              <UIMainButton v-if="user.role === 'ADMIN' || user.username === 'ОПТ'" @click="openModal">Создать новую запись</UIMainButton>
+              <UIMainButton v-if="user.role === 'ADMIN' || user.username === 'ОПТ'" @click="openModal">Создать новую
+                запись</UIMainButton>
             </div>
           </div>
 
@@ -215,7 +218,7 @@ const token = Cookies.get("token");
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.fromName3 === 'READ' || user.fromName3 === 'WRITE'">
-                <label for="fromName">Телефон</label>
+                <label for="fromName">Телефон <sup>*</sup> </label>
                 <input :disabled="user.fromName3 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.fromName" type="text" />
@@ -230,7 +233,7 @@ const token = Cookies.get("token");
 
               <div class="grid grid-cols-2 mb-5"
                 v-if="user.purchaseOfGoods === 'READ' || user.purchaseOfGoods === 'WRITE'">
-                <label for="purchaseOfGoods">Стоимость выкупа товара</label>
+                <label for="purchaseOfGoods">Стоимость выкупа <br> товара</label>
                 <input :disabled="user.purchaseOfGoods === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.purchaseOfGoods" type="text" />
@@ -314,7 +317,8 @@ const token = Cookies.get("token");
             <div class="mt-5 flex items-center gap-3" v-if="user.dataDelivery === 'WRITE'">
               <UIMainButton @click="deleteIssuedRows" v-if="user.role === 'ADMIN' || user.username === 'admin1'">Удалить
                 оплаченное</UIMainButton>
-              <UIMainButton v-if="user.role === 'ADMIN' || user.username === 'ОПТ'" @click="openModal">Создать новую запись</UIMainButton>
+              <UIMainButton v-if="user.role === 'ADMIN' || user.username === 'ОПТ'" @click="openModal">Создать новую
+                запись</UIMainButton>
             </div>
           </div>
 
@@ -354,7 +358,7 @@ const token = Cookies.get("token");
 
               <div class="grid grid-cols-2 mb-5"
                 v-if="user.purchaseOfGoods === 'READ' || user.purchaseOfGoods === 'WRITE'">
-                <label for="purchaseOfGoods">Стоимость выкупа товара</label>
+                <label for="purchaseOfGoods">Стоимость выкупа <br> товара</label>
                 <input :disabled="user.purchaseOfGoods === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.purchaseOfGoods" type="text" />

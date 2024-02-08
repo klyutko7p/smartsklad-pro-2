@@ -56,8 +56,8 @@ onBeforeMount(() => {
         </div>
         <h1>Выкуп Клиента</h1>
       </div>
-      <div v-if="user.dataDelivery === 'READ' || user.dataDelivery === 'WRITE' && user.role !== 'ADMINISTRATOR'" role="button"
-        @click="router.push('/spreadsheets/delivery')" tabindex="0"
+      <div v-if="user.dataDelivery === 'READ' || user.dataDelivery === 'WRITE' && user.role !== 'ADMINISTRATOR'"
+        role="button" @click="router.push('/spreadsheets/delivery')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="carbon:delivery" size="20" />
@@ -79,7 +79,8 @@ onBeforeMount(() => {
     </nav>
   </div>
 
-  <div class="fixed bg-gradient-to-tr from-white via-white to-yellow-100 bg-image top-0 bottom-0 left-0 right-0 z-50 hidden max-xl:flex items-center justify-center bg-white"
+  <div
+    class="fixed bg-gradient-to-tr from-white via-white to-yellow-100 bg-image top-0 bottom-0 left-0 right-0 z-50 hidden max-xl:flex items-center justify-center bg-white"
     v-if="isOpen">
     <Icon name="material-symbols:close" class="absolute duration-200 cursor-pointer hover:text-orange-400 top-2 right-4"
       size="40" @click="editMenu" />
@@ -111,8 +112,8 @@ onBeforeMount(() => {
         </div>
         <h1>Выкуп Клиента</h1>
       </div>
-      <div v-if="user.dataDelivery === 'READ' || user.dataDelivery === 'WRITE' && user.role !== 'ADMINISTRATOR'" role="button"
-        @click="router.push('/spreadsheets/delivery')" tabindex="0"
+      <div v-if="user.dataDelivery === 'READ' || user.dataDelivery === 'WRITE' && user.role !== 'ADMINISTRATOR'"
+        role="button" @click="router.push('/spreadsheets/delivery')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="carbon:delivery" size="20" />
@@ -133,15 +134,19 @@ onBeforeMount(() => {
       </div>
     </nav>
   </div>
-  
-  <div v-else class="py-1 px-3 absolute z-40 max-xl:right-0 flex items-center max-sm:gap-3 justify-between duration-200 w-full bg-gradient-to-br from-purple-700 to-orange-400 backdrop-blur-2xl text-white">
+
+  <div v-else
+    :class="{ 'absolute': route.fullPath.includes('+') || route.fullPath === '/spreadsheets/our-ransom' || route.fullPath === '/spreadsheets/client-ransom' }"
+    class="py-1 px-3 fixed z-40 max-xl:right-0 flex items-center max-sm:gap-3 justify-between duration-200 w-full bg-gradient-to-br from-purple-700 to-orange-400 backdrop-blur-2xl text-white">
     <div class="flex items-center gap-1">
       <Icon @click="editMenu" size="40" name="material-symbols-light:menu"
         class="hover:text-orange-300 duration-200 cursor-pointer" />
       <h1 class="font-medium">{{ user.username }}</h1>
     </div>
-    <h1 class="text-lg font-medium max-sm:text-base" v-if="route.meta.name === 'Товары из'">{{ route.meta.name }} {{ route.params.pvz }} </h1>
-    <h1 class="text-lg font-medium max-sm:text-base" v-else-if="route.meta.name === 'Товары по телефону'">{{ route.meta.name }} {{ route.params.fromName }} </h1>
+    <h1 class="text-lg font-medium max-sm:text-base" v-if="route.meta.name === 'Товары из'">{{ route.meta.name }} {{
+      route.params.pvz }} </h1>
+    <h1 class="text-lg font-medium max-sm:text-base" v-else-if="route.meta.name === 'Товары по телефону'">{{
+      route.meta.name }}</h1>
     <h1 class="text-lg font-medium max-sm:text-base" v-else>{{ route.meta.name }}</h1>
   </div>
 </template>

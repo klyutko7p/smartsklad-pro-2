@@ -119,7 +119,7 @@ export const useRansomStore = defineStore("ransom", () => {
                 if (data.data.value === undefined) {
                     toast.success("Запись успешно создана!")
                 } else {
-                    toast.error("Произошла ошибка")
+                    toast.error("Произошла ошибка при создании записи")
                 }
             } else {
                 toast.error("Некорректный формат записи номера телефона (+7)")
@@ -288,6 +288,7 @@ export const useRansomStore = defineStore("ransom", () => {
             // } else {
             //     toast.error("Неправильный формат записи телефона!")
             // }
+
             let data = await useFetch('/api/ransom/edit-row', {
                 method: 'POST',
                 headers: {
@@ -295,8 +296,12 @@ export const useRansomStore = defineStore("ransom", () => {
                 },
                 body: JSON.stringify({ row: row, flag: flag }),
             })
-            toast.success("Запись успешно обновлена!")
 
+            if (data.data.value === undefined) {
+                toast.success("Запись успешно обновлена!")
+            } else {
+                toast.error("Произошла ошибка при обновлении записи!")
+            }
 
         } catch (error) {
             if (error instanceof Error) {

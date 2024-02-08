@@ -151,9 +151,6 @@ let showOthersVariants = ref(false)
           totalRows }}</span> </h1>
         <h1 class="text-xl" v-if="user.role === 'PVZ'">Товаров к выдаче: <span class="text-secondary-color font-bold">{{
           totalRows }}</span> </h1>
-          <UIActionButton @click="router.push(`/spreadsheets/client-ransom/${pvzLink}`)">
-            Вернуться обратно
-        </UIActionButton>
       </div>
       <div class="flex items-center gap-5" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
         <UIActionButton @click="toggleShowDeletedRows">

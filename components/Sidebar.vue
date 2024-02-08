@@ -55,14 +55,19 @@ onBeforeMount(() => {
         </div>
         <h1>Выкуп Клиента</h1>
       </div>
-      <div v-if="user.dataDelivery === 'READ' || user.dataDelivery === 'WRITE' || user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/spreadsheets/delivery')" tabindex="0"
+      <div v-if="user.dataDelivery === 'READ' || user.dataDelivery === 'WRITE' || user.role !== 'ADMINISTRATOR'"
+        role="button" @click="router.push('/spreadsheets/delivery')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="carbon:delivery" size="20" />
         </div>
         <h1>Доставка</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/users')" tabindex="0"
+      <div class="px-3 pt-3 font-bold">
+        <h1>Настройки доступа</h1>
+      </div>
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
+        @click="router.push('/admin/users')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
@@ -74,21 +79,24 @@ onBeforeMount(() => {
         </div>
         <h1>Пользователи</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/pvz')" tabindex="0"
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
+        @click="router.push('/admin/pvz')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="tabler:reorder" size="20" />
         </div>
         <h1>Пункты выдачи заказов (ПВЗ)</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/sorting-centers')" tabindex="0"
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
+        @click="router.push('/admin/sorting-centers')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="material-symbols-light:box-sharp" size="20" />
         </div>
         <h1>Сортировочные центры (СЦ)</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/order-accounts')" tabindex="0"
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
+        @click="router.push('/admin/order-accounts')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="material-symbols:deployed-code-account-outline-rounded" size="20" />
@@ -143,14 +151,19 @@ onBeforeMount(() => {
         </div>
         <h1>Выкуп Клиента</h1>
       </div>
-      <div v-if="user.dataDelivery === 'READ' || user.dataDelivery === 'WRITE' || user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/spreadsheets/delivery')" tabindex="0"
+      <div v-if="user.dataDelivery === 'READ' || user.dataDelivery === 'WRITE' || user.role !== 'ADMINISTRATOR'"
+        role="button" @click="router.push('/spreadsheets/delivery')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="carbon:delivery" size="20" />
         </div>
         <h1>Доставка</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/users')" tabindex="0"
+      <div class="px-3 pt-3 font-bold">
+        <h1>Настройки доступа</h1>
+      </div>
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
+        @click="router.push('/admin/users')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
@@ -162,21 +175,24 @@ onBeforeMount(() => {
         </div>
         <h1>Пользователи</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/pvz')" tabindex="0"
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
+        @click="router.push('/admin/pvz')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="tabler:reorder" size="20" />
         </div>
         <h1>Пункты выдачи заказов (ПВЗ)</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/sorting-centers')" tabindex="0"
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
+        @click="router.push('/admin/sorting-centers')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="material-symbols-light:box-sharp" size="20" />
         </div>
         <h1>Сортировочные центры (СЦ)</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/order-accounts')" tabindex="0"
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
+        @click="router.push('/admin/order-accounts')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="material-symbols:deployed-code-account-outline-rounded" size="20" />
@@ -197,14 +213,20 @@ onBeforeMount(() => {
       </div>
     </nav>
   </div>
-  <div v-else class="py-1 px-3 absolute z-40 max-xl:right-0 flex items-center max-sm:gap-3 justify-between duration-200 w-full bg-gradient-to-br from-purple-700 to-orange-400 backdrop-blur-2xl text-white">
+
+  <div v-else
+    :class="{ 'absolute': route.fullPath.includes('+') || route.fullPath === '/spreadsheets/our-ransom' || route.fullPath === '/spreadsheets/client-ransom' }"
+    class="py-1 px-3 fixed z-40 max-xl:right-0 flex items-center max-sm:gap-3 justify-between duration-200 w-full bg-gradient-to-br from-purple-700 to-orange-400 backdrop-blur-2xl text-white">
     <div class="flex items-center gap-1">
       <Icon @click="editMenu" size="40" name="material-symbols-light:menu"
-        class="hover:text-orange-300 duration-200 cursor-pointer" />
+        class="hover:opacity-50 duration-200 cursor-pointer" />
       <h1 class="font-medium">{{ user.username }}</h1>
     </div>
-    <h1 class="text-lg font-medium max-sm:text-base" v-if="route.meta.name === 'Товары из'">{{ route.meta.name }} {{ route.params.pvz }} </h1>
-    <h1 class="text-lg font-medium max-sm:text-base" v-else-if="route.meta.name === 'Товары по телефону'">{{ route.meta.name }} {{ route.params.fromName }} </h1>
-    <h1 class="text-lg font-medium max-sm:text-base" v-else>{{ route.meta.name }}</h1>
+    <h1 class="text-lg font-medium max-sm:text-sm" v-if="route.meta.name === 'Товары из'">{{ route.meta.name }} {{
+      route.params.pvz }} </h1>
+    <h1 class="text-lg font-medium max-sm:text-sm" v-else-if="route.meta.name === 'Товары по телефону'">{{
+      route.meta.name }}</h1>
+    <h1 class="text-lg font-medium max-sm:text-sm" v-else>{{ route.meta.name }}</h1>
+    <Icon @click="router.go(-1)" name="material-symbols:arrow-back-rounded" size="32" class="cursor-pointer hover:opacity-50 duration-200" />
   </div>
 </template>

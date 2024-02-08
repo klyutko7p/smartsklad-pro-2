@@ -30,7 +30,7 @@ function exportToExcel() {
     <table id="theTable" class="w-full border-x-2 border-gray-50 text-sm text-left rtl:text-right text-gray-500">
       <thead class="text-xs sticky top-0 z-30 text-gray-700 uppercase text-center">
         <tr>
-          <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
+          <th scope="col" class="border-2">
             номер
           </th>
           <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
@@ -80,7 +80,7 @@ function exportToExcel() {
       </thead>
       <tbody>
         <tr class="bg-white border-b text-center text-sm" v-for="(row, index) in rows" :key="index">
-          <td class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
+          <td class="border-2">
             {{ index + 1 }}
           </td>
           <td class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">

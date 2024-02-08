@@ -152,9 +152,6 @@ let showOthersVariants = ref(false)
                 <h1 class="text-xl" v-if="user.role === 'PVZ'">Товаров к выдаче: <span
                         class="text-secondary-color font-bold">{{
                             totalRows }}</span> </h1>
-                <UIActionButton @click="router.push(`/spreadsheets/our-ransom/${pvzLink}`)">
-                    Вернуться обратно
-                </UIActionButton>
             </div>
 
             <div class="flex items-center gap-5" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">

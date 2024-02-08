@@ -20,6 +20,9 @@ onMounted(() => {
   }
 });
 
+function signOut() {
+  storeUsers.signOut();
+}
 
 definePageMeta({
   layout: false,
@@ -37,7 +40,8 @@ definePageMeta({
         <div class="py-5">
           <h1 class="text-xl mt-10 mb-10">Приветствуем, {{ user.username }}!</h1>
           <div>
-            <h1 class="font-bold text-6xl max-[400px]:text-4xl max-md:text-center text-secondary-color mb-5">DAROM.PRO</h1>
+            <h1 class="font-bold text-6xl max-[400px]:text-4xl max-md:text-center text-secondary-color mb-5">DAROM.PRO
+            </h1>
             <div role="button" @click="router.push('/spreadsheets/our-ransom/info')" tabindex="0"
               class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none"
               v-if="user.dataOurRansom === 'READ' || user.dataOurRansom === 'WRITE'">
@@ -71,6 +75,9 @@ definePageMeta({
                 <Icon name="carbon:delivery" size="20" />
               </div>
               <h1>Доставка</h1>
+            </div>
+            <div class="px-3 pt-3 mb-2 font-bold">
+              <h1>Настройки доступа</h1>
             </div>
             <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
               @click="router.push('/admin/users')" tabindex="0"
@@ -109,6 +116,18 @@ definePageMeta({
               </div>
               <h1>Аккаунты заказа</h1>
             </div>
+          </div>
+          <div role="button" tabindex="0" @click="signOut()"
+            class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
+            <div class="grid place-items-center mr-4">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
+                class="h-5 w-5">
+                <path fill-rule="evenodd"
+                  d="M12 2.25a.75.75 0 01.75.75v9a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM6.166 5.106a.75.75 0 010 1.06 8.25 8.25 0 1011.668 0 .75.75 0 111.06-1.06c3.808 3.807 3.808 9.98 0 13.788-3.807 3.808-9.98 3.808-13.788 0-3.808-3.807-3.808-9.98 0-13.788a.75.75 0 011.06 0z"
+                  clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            Выйти
           </div>
         </div>
       </NuxtLayout>

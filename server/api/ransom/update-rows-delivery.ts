@@ -66,12 +66,16 @@ export default defineEventHandler(async (event) => {
                 break;
             case 'paid':
                 updateField = 'paid';
+                break;
             case 'additionally':
                 updateField = 'additionally'
+                break;
             case 'additionally1':
                 updateField = 'additionally'
+                break;
             case 'additionally2':
                 updateField = 'additionally'
+                break;
             case 'additionally3':
                 updateField = 'additionally'
                 break;

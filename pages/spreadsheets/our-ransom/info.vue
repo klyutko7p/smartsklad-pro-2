@@ -67,7 +67,7 @@ definePageMeta({
         <div class="py-5" v-if="!isLoading">
           <div class="flex flex-col gap-5 mt-10">
             <div class="flex items-start gap-5 max-sm:flex-col">
-              <h1 class="font-bold text-xl max-sm:text-lg">Список доступных ПВЗ (Наш Выкуп):</h1>
+              <h1 class="font-bold text-xl max-sm:text-lg">Список доступных ПВЗ</h1>
               <UIActionButton v-if="(user.role === 'ADMIN' || user.role === 'ADMINISTRATOR') || user.role === 'SORTIROVKA'"
                 @click="router.push('/spreadsheets/our-ransom')">Все товары</UIActionButton>
             </div>
@@ -97,7 +97,7 @@ definePageMeta({
         <div class="py-5" v-if="!isLoading">
           <div class="flex flex-col gap-5 mt-10">
             <div class="flex items-start gap-5 max-sm:flex-col">
-              <h1 class="font-bold text-xl max-sm:text-lg">Список доступных ПВЗ (Наш Выкуп):</h1>
+              <h1 class="font-bold text-xl max-sm:text-lg">Список доступных ПВЗ</h1>
               <UIActionButton v-if="(user.role === 'ADMIN' || user.role === 'ADMINISTRATOR') || user.role === 'SORTIROVKA'"
                 @click="router.push('/spreadsheets/our-ransom')">Все товары</UIActionButton>
             </div>
