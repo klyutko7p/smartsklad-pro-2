@@ -110,22 +110,12 @@ const nextPage = () => {
 const toggleShowDeletedRows = () => {
   showDeletedRows.value = !showDeletedRows.value;
   updateCurrentPageData();
-  // if (!isPrimaryView.value) {
-  //   updateRowsByFromName();
-  // }
 };
 
 onMounted(() => {
   updateCurrentPageData()
 })
 
-
-function updateRowsByFromName() {
-  updateCurrentPageData();
-  returnRows.value = returnRows.value?.filter((element, index) => {
-    return returnRows.value?.findIndex(i => i.name === element.name && i.fromName === element.fromName) === index;
-  })
-}
 
 </script>
 <template>

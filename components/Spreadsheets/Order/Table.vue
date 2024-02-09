@@ -37,6 +37,9 @@ function exportToExcel() {
             ячейка
           </th>
           <th scope="col" class="border-2" v-if="link?.startsWith('3')">
+            имя
+          </th>
+          <th scope="col" class="border-2" v-if="link?.startsWith('3')">
             название
           </th>
           <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
@@ -72,7 +75,7 @@ function exportToExcel() {
           <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             выдан клиенту
           </th>
-          <th scope="col" class="border-2">
+          <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             дополнительно
           </th>
           <th scope="col" class="border-2">создан (время)</th>
@@ -85,6 +88,9 @@ function exportToExcel() {
           </td>
           <td class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             {{ row.cell }}
+          </td>
+          <td class="px-2 border-2" v-if="link?.startsWith('3')">
+            {{ row.name }}
           </td>
           <td class="px-2 border-2" v-if="link?.startsWith('3')">
             {{ row.nameOfAction }}
@@ -141,7 +147,7 @@ function exportToExcel() {
               {{ row.issued ? storeUsers.getNormalizedDate(row.issued) : "" }}
             </h1>
           </td>
-          <td class="border-2">
+          <td class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             {{ row.additionally ? row.additionally : "Пусто" }}
           </td>
           <td class="px-6 py-4 border-2">

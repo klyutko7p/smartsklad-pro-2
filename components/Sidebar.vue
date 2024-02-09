@@ -75,7 +75,8 @@ function formatPhoneNumber(phoneNumber: string) {
         </div>
         <h1>Выкуп Клиента</h1>
       </div>
-      <div v-if="user.dataDelivery === 'READ' || user.dataDelivery === 'WRITE' || user.role !== 'ADMINISTRATOR'"
+      <div
+        v-if="(user.dataDelivery === 'READ' || user.dataDelivery === 'WRITE') && (user.role === 'ADMIN' || user.role === 'OPT')"
         role="button" @click="router.push('/spreadsheets/delivery')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
@@ -83,7 +84,16 @@ function formatPhoneNumber(phoneNumber: string) {
         </div>
         <h1>Доставка</h1>
       </div>
-      <div class="px-3 pt-3 font-bold">
+      <div
+        v-if="user.dataDelivery === 'READ' || user.dataDelivery === 'WRITE' && user.role === 'ADMIN' && user.username !== 'Светлана'"
+        role="button" @click="router.push('/admin/balance')" tabindex="0"
+        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
+        <div class="grid place-items-center mr-4">
+          <Icon name="mdi:wallet-bifold" size="20" />
+        </div>
+        <h1>Баланс</h1>
+      </div>
+      <div class="px-3 pt-3 font-bold" v-if="user.role !== 'USER'">
         <h1>Настройки доступа</h1>
       </div>
       <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
@@ -105,7 +115,7 @@ function formatPhoneNumber(phoneNumber: string) {
         <div class="grid place-items-center mr-4">
           <Icon name="tabler:reorder" size="20" />
         </div>
-        <h1>Пункты выдачи заказов (ПВЗ)</h1>
+        <h1>Пункты выдачи заказов </h1>
       </div>
       <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
         @click="router.push('/admin/sorting-centers')" tabindex="0"
@@ -113,7 +123,23 @@ function formatPhoneNumber(phoneNumber: string) {
         <div class="grid place-items-center mr-4">
           <Icon name="material-symbols-light:box-sharp" size="20" />
         </div>
-        <h1>Сортировочные центры (СЦ)</h1>
+        <h1>Сортировочные центры </h1>
+      </div>
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
+        @click="router.push('/admin/pvz-delivery')" tabindex="0"
+        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
+        <div class="grid place-items-center mr-4">
+          <Icon name="solar:delivery-broken" size="20" />
+        </div>
+        <h1>Пункты выдачи заказов (Доставка)</h1>
+      </div>
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
+        @click="router.push('/admin/sorting-centers-delivery')" tabindex="0"
+        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
+        <div class="grid place-items-center mr-4">
+          <Icon name="streamline:shipping-box-2-box-package-label-delivery-shipment-shipping-3d" size="20" />
+        </div>
+        <h1>Сортировочные центры (Доставка)</h1>
       </div>
       <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
         @click="router.push('/admin/order-accounts')" tabindex="0"
@@ -179,7 +205,15 @@ function formatPhoneNumber(phoneNumber: string) {
         </div>
         <h1>Доставка</h1>
       </div>
-      <div class="px-3 pt-3 font-bold">
+      <div v-if="user.dataDelivery === 'READ' || user.dataDelivery === 'WRITE'" role="button"
+        @click="router.push('/admin/balance')" tabindex="0"
+        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
+        <div class="grid place-items-center mr-4">
+          <Icon name="mdi:wallet-bifold" size="20" />
+        </div>
+        <h1>Баланс</h1>
+      </div>
+      <div class="px-3 pt-3 font-bold" v-if="user.role !== 'USER'">
         <h1>Настройки доступа</h1>
       </div>
       <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
@@ -201,7 +235,7 @@ function formatPhoneNumber(phoneNumber: string) {
         <div class="grid place-items-center mr-4">
           <Icon name="tabler:reorder" size="20" />
         </div>
-        <h1>Пункты выдачи заказов (ПВЗ)</h1>
+        <h1>Пункты выдачи заказов</h1>
       </div>
       <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
         @click="router.push('/admin/sorting-centers')" tabindex="0"
@@ -209,7 +243,23 @@ function formatPhoneNumber(phoneNumber: string) {
         <div class="grid place-items-center mr-4">
           <Icon name="material-symbols-light:box-sharp" size="20" />
         </div>
-        <h1>Сортировочные центры (СЦ)</h1>
+        <h1>Сортировочные центры</h1>
+      </div>
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
+        @click="router.push('/admin/pvz-delivery')" tabindex="0"
+        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
+        <div class="grid place-items-center mr-4">
+          <Icon name="solar:delivery-broken" size="20" />
+        </div>
+        <h1>Пункты выдачи заказов (Доставка)</h1>
+      </div>
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
+        @click="router.push('/admin/sorting-centers-delivery')" tabindex="0"
+        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
+        <div class="grid place-items-center mr-4">
+          <Icon name="streamline:shipping-box-2-box-package-label-delivery-shipment-shipping-3d" size="20" />
+        </div>
+        <h1>Сортировочные центры (Доставка)</h1>
       </div>
       <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
         @click="router.push('/admin/order-accounts')" tabindex="0"
@@ -247,11 +297,11 @@ function formatPhoneNumber(phoneNumber: string) {
         route.params.pvz }} (Наш Выкуп) </h1>
     <h1 class="text-lg font-medium max-sm:text-sm"
       v-else-if="route.fullPath.includes('/client-ransom') && route.params.pvz && !route.params.fromName">
-      Товары из {{ route.meta.name }} {{ route.params.pvz }} (Выкуп Клиента) 
+      Товары из {{ route.meta.name }} {{ route.params.pvz }} (Выкуп Клиента)
     </h1>
     <h1 class="text-lg font-medium max-sm:text-sm"
       v-else-if="route.fullPath.includes('/client-ransom') && route.params.pvz && route.params.fromName">
-      Товары по телефону: {{ formatPhoneNumber(route.params.fromName) }} (Выкуп Клиента) 
+      Товары по телефону: {{ formatPhoneNumber(route.params.fromName) }} (Выкуп Клиента)
     </h1>
     <h1 class="text-lg font-medium max-sm:text-sm"
       v-else-if="route.fullPath.includes('/our-ransom') && route.params.pvz && route.params.fromName">
@@ -259,5 +309,5 @@ function formatPhoneNumber(phoneNumber: string) {
     <h1 class="text-lg font-medium max-sm:text-sm" v-else>{{ route.meta.name }}</h1>
     <Icon @click="router.go(-1)" name="material-symbols:arrow-back-rounded" size="32"
       class="cursor-pointer hover:opacity-50 duration-200" />
-</div>
+  </div>
 </template>

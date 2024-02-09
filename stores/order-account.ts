@@ -5,21 +5,29 @@ const toast = useToast()
 
 export const useOrderAccountStore = defineStore("order-accounts", () => {
 
+    let cachedOrderAccounts: any = null;
+
     async function getOrderAccounts() {
-        try {
-            let { data }: Data = await useFetch('/api/order-accounts/get-oa', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-            return data.value;
-        } catch (error) {
-            if (error instanceof Error) {
-                toast.error(error.message);
-            }
+        if (cachedOrderAccounts) {
+            return cachedOrderAccounts;
+        } else {
+            try {
+                let { data }: any = await useFetch('/api/order-accounts/get-oa', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                cachedOrderAccounts = data.value;
+                return cachedOrderAccounts;
+            } catch (error) {
+                if (error instanceof Error) {
+                    toast.error(error.message);
+                }
+            } 
         }
     }
+
 
     async function createOrderAccount(name: string) {
         try {

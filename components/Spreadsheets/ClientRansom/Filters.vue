@@ -358,7 +358,7 @@ let dateFilter = ref('issued')
             </select>
           </div>
         </div>
-        <div class="rid grid-cols-1">
+        <div class="grid grid-cols-1">
           <div class="grid grid-cols-2 my-2" v-if="dateFilter === 'issued'">
             <h1>От Даты:</h1>
             <input

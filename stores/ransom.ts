@@ -104,7 +104,7 @@ export const useRansomStore = defineStore("ransom", () => {
                     row.clientLink3 = ''
                 }
 
-                row.amountFromClient3 = row.purchaseOfGoods * row.percentClient / 100;
+                row.amountFromClient3 = Math.ceil(row.purchaseOfGoods * row.percentClient / 100);
                 row.profit3 = row.amountFromClient3;
             }
 
@@ -249,16 +249,9 @@ export const useRansomStore = defineStore("ransom", () => {
                     row.clientLink2 = ''
                 }
 
-                if (row.additionally === 'Отказ клиент') {
-                    row.amountFromClient2 = 200
-                    row.profit2 = 200
-                } else if (row.additionally === 'Отказ брак') {
-                    row.amountFromClient2 = 0
-                    row.profit2 = 0
-                } else {
-                    row.amountFromClient2 = row.priceProgram * row.percentClient / 100;
-                    row.profit2 = row.amountFromClient2 + row.prepayment;
-                }
+                row.amountFromClient2 = Math.ceil(Math.ceil((row.priceProgram * row.percentClient / 100) - row.prepayment) / 10) * 10;
+                row.profit2 = row.amountFromClient2 + row.prepayment;
+
             } else if (flag === 'Delivery') {
                 if (row.percentClient === undefined) row.percentClient = 2;
                 if (row.purchaseOfGoods === undefined) row.purchaseOfGoods = 0;
@@ -273,7 +266,7 @@ export const useRansomStore = defineStore("ransom", () => {
                     row.clientLink3 = ''
                 }
 
-                row.amountFromClient3 = row.purchaseOfGoods * row.percentClient / 100;
+                row.amountFromClient3 = Math.ceil(row.purchaseOfGoods * row.percentClient / 100);
                 row.profit3 = row.amountFromClient3;
             }
             // if (row.fromName.includes('+7')) {

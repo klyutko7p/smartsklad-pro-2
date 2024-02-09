@@ -181,7 +181,7 @@ let showOthersVariants = ref(false)
         </div>
     </div>
 
-    <div class="fixed top-24 z-40 left-1/2 translate-x-[-50%] translate-y-[-50%]" v-if="getAllSum > 0">
+    <div class="fixed top-16 z-40 left-1/2 translate-x-[-50%] translate-y-[-50%]" v-if="getAllSum > 0">
         <h1 class="text-base backdrop-blur-xl p-2 rounded-xl border-2 text-secondary-color font-bold">К оплате: {{
             getAllSum }} </h1>
     </div>
@@ -198,17 +198,24 @@ let showOthersVariants = ref(false)
         </UIActionButton>
         <UIActionButton v-if="user.deliveredPVZ1 === 'WRITE'" @click="updateDeliveryRows('PVZ')">Доставить на пвз
         </UIActionButton>
-        <UIActionButton v-if="user.issued1 === 'WRITE' && showButton" @click="updateDeliveryRows('issued')">Выдать клиенту
+        <UIActionButton v-if="user.issued1 === 'WRITE' && showButton" @click="showOthersVariants = !showOthersVariants">
+            Выдать клиенту
         </UIActionButton>
-        <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally')">Оплачено онлайн
-        </UIActionButton>
-        <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally1')">Отказ клиент
-        </UIActionButton>
-        <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally2')">Отказ брак
-        </UIActionButton>
+        <div v-if="showOthersVariants" class="flex flex-col gap-3">
+            <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally3')">Оплата
+                наличными
+            </UIActionButton>
+            <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally')">Оплата
+                онлайн
+            </UIActionButton>
+            <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally1')">Отказ клиент
+            </UIActionButton>
+            <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally2')">Отказ брак
+            </UIActionButton>
+        </div>
     </div>
 
-    <div class="fixed z-40 flex flex-col gap-3 top-44 left-1/2 translate-x-[-50%] translate-y-[-50%]"
+    <div class="fixed z-40 flex flex-col gap-3 left-1/2 translate-x-[-50%] translate-y-[-50%]"
         v-if="user.dataOurRansom === 'WRITE' && checkedRows.length > 0 && user.role === 'PVZ'">
         <UIActionButton v-if="user.issued1 === 'WRITE' && showButton" @click="showOthersVariants = !showOthersVariants">
             Выдать
@@ -218,7 +225,7 @@ let showOthersVariants = ref(false)
             <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally3')">Оплата
                 наличными
             </UIActionButton>
-            <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally')">Оплачено
+            <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally')">Оплата
                 онлайн
             </UIActionButton>
             <UIActionButton v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally1')">Отказ клиент
@@ -335,7 +342,7 @@ let showOthersVariants = ref(false)
                             name="material-symbols:edit" size="32" />
                     </td>
                     <th scope="row" class="border-2 font-medium underline text-secondary-color whitespace-nowrap">
-                        <NuxtLink target="_blank" class="cursor-pointer hover:text-orange-200 duration-200"
+                        <NuxtLink class="cursor-pointer hover:text-orange-200 duration-200"
                             :to="`/spreadsheets/record/1/${row.id}`">
                             {{ row.id }}
                         </NuxtLink>
@@ -410,10 +417,18 @@ let showOthersVariants = ref(false)
                     </td>
 
                     <td class="px-1 py-4 border-2" v-if="(user.profit1 === 'READ' || user.profit1 === 'WRITE') &&
-                        (row.additionally !== 'Отказ клиент' && row.additionally !== 'Отказ брак')">
+                        (row.additionally !== 'Отказ клиент' && row.additionally !== 'Отказ брак') && !row.prepayment">
                         {{ row.percentClient !== 0 ? Math.ceil(row.amountFromClient1 / 10) * 10 - row.priceSite +
                             row.deliveredKGT : row.deliveredKGT }}
                     </td>
+
+                    <td class="px-1 py-4 border-2" v-if="(user.profit1 === 'READ' || user.profit1 === 'WRITE') &&
+                        (row.additionally !== 'Отказ клиент' && row.additionally !== 'Отказ брак') && row.prepayment">
+                        {{ row.percentClient !== 0 ? (row.priceSite * row.percentClient / 100) + row.deliveredKGT :
+                            row.deliveredKGT }}
+                    </td>
+
+
                     <td class="px-1 py-4 border-2" v-if="(user.profit1 === 'READ' || user.profit1 === 'WRITE') &&
                         (row.additionally === 'Отказ клиент' || row.additionally === 'Отказ брак')">
                         {{ row.profit1 }}

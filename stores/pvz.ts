@@ -5,21 +5,29 @@ const toast = useToast()
 
 export const usePVZStore = defineStore("pvz", () => {
 
+    let cachedPVZ: any = null;
+
     async function getPVZ() {
-        try {
-            let { data }: Data = await useFetch('/api/pvz/get-pvz', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-            return data.value;
-        } catch (error) {
-            if (error instanceof Error) {
-                toast.error(error.message);
+        if (cachedPVZ) {
+            return cachedPVZ;
+        } else {
+            try {
+                let { data }: any = await useFetch('/api/pvz/get-pvz', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                cachedPVZ = data.value;
+                return cachedPVZ;
+            } catch (error) {
+                if (error instanceof Error) {
+                    toast.error(error.message);
+                }
             }
         }
     }
+
 
     async function createPVZ(name: string) {
         try {

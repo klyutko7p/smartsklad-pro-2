@@ -166,6 +166,17 @@ model SortingCenter {
   name String
 }
 
+model PVZDelivery {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model SortingCenterDelivery {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+
 model OrderAccount {
   id   Int    @id @default(autoincrement())
   name String

@@ -312,7 +312,7 @@ let showOthersVariants = ref(false)
               name="material-symbols:edit" size="32" />
           </td>
           <th scope="row" class="border-2 font-medium underline text-secondary-color whitespace-nowrap">
-            <NuxtLink target="_blank" class="cursor-pointer hover:text-orange-200 duration-200"
+            <NuxtLink class="cursor-pointer hover:text-orange-200 duration-200"
               :to="`/spreadsheets/record/2/${row.id}`">
               {{ row.id }}
             </NuxtLink>
@@ -352,7 +352,7 @@ let showOthersVariants = ref(false)
             {{ row.deliveredKGT }}
           </td>
           <td class="border-2" v-if="user.amountFromClient2 === 'READ' || user.amountFromClient2 === 'WRITE'">
-            {{ Math.ceil(row.amountFromClient2 / 10) * 10 }}
+            {{ row.amountFromClient2 }}
           </td>
           <td class="border-2" v-if="user.dispatchPVZ2 === 'READ' || user.dispatchPVZ2 === 'WRITE'">
             {{ row.dispatchPVZ }}
@@ -381,7 +381,7 @@ let showOthersVariants = ref(false)
 
           <td class="border-2" v-if="(user.profit2 === 'READ' || user.profit2 === 'WRITE') &&
             (row.additionally !== 'Отказ клиент' && row.additionally !== 'Отказ брак')">
-            {{ Math.ceil(row.priceProgram * row.percentClient / 100) }}
+            {{ row.profit2 }}
           </td>
           <td class="border-2" v-if="(user.profit2 === 'READ' || user.profit2 === 'WRITE') &&
             (row.additionally === 'Отказ клиент' || row.additionally === 'Отказ брак')">

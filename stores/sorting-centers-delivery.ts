@@ -3,7 +3,7 @@ import { useToast } from "vue-toastification";
 
 const toast = useToast()
 
-export const useSortingCentersStore = defineStore("sorting-centers", () => {
+export const useSortingCentersDeliveryStore = defineStore("sorting-centers-delivery", () => {
 
     let cachedSortingCenters: any = null;
     async function getSortingCenters() {
@@ -11,7 +11,7 @@ export const useSortingCentersStore = defineStore("sorting-centers", () => {
             return cachedSortingCenters;
         } else {
             try {
-                let { data }: any = await useFetch('/api/sorting-centers/get-sc', {
+                let { data }: any = await useFetch('/api/sorting-centers-delivery/get-sc-delivery', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ export const useSortingCentersStore = defineStore("sorting-centers", () => {
             if (name === '') {
                 toast.warning("Название Сортировочного Центра не должно быть пустым")
             } else {
-                let data = await useFetch('/api/sorting-centers/create-sc', {
+                let data = await useFetch('/api/sorting-centers-delivery/create-sc-delivery', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ export const useSortingCentersStore = defineStore("sorting-centers", () => {
 
     async function updateSortingCenters(sortingCenter: SortingCenter) {
         try {
-            let data = await useFetch('/api/sorting-centers/edit-sc', {
+            let data = await useFetch('/api/sorting-centers-delivery/edit-sc-delivery', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ export const useSortingCentersStore = defineStore("sorting-centers", () => {
 
     async function deleteSortingCenter(id: number) {
         try {
-            let data = await useFetch('/api/sorting-centers/delete-sc', {
+            let data = await useFetch('/api/sorting-centers-delivery/delete-sc-delivery', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

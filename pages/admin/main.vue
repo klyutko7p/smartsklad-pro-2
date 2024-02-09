@@ -68,7 +68,8 @@ definePageMeta({
               </div>
               <h1>Выкуп Клиента</h1>
             </div>
-            <div v-if="user.dataDelivery === 'READ' || user.dataDelivery === 'WRITE' || user.role !== 'ADMINISTRATOR'"
+            <div
+              v-if="(user.dataDelivery === 'READ' || user.dataDelivery === 'WRITE') && (user.role === 'ADMIN' || user.role === 'OPT')"
               role="button" @click="router.push('/spreadsheets/delivery')" tabindex="0"
               class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
               <div class="grid place-items-center mr-4">
@@ -76,7 +77,16 @@ definePageMeta({
               </div>
               <h1>Доставка</h1>
             </div>
-            <div class="px-3 pt-3 mb-2 font-bold">
+            <div
+              v-if="user.dataDelivery === 'READ' || user.dataDelivery === 'WRITE' && user.role === 'ADMIN' && user.username !== 'Светлана'"
+              role="button" @click="router.push('/admin/balance')" tabindex="0"
+              class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
+              <div class="grid place-items-center mr-4">
+                <Icon name="mdi:wallet-bifold" size="20" />
+              </div>
+              <h1>Баланс</h1>
+            </div>
+            <div class="px-3 pt-3 mb-2 font-bold" v-if="user.role !== 'USER'">
               <h1>Настройки доступа</h1>
             </div>
             <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
@@ -98,7 +108,7 @@ definePageMeta({
               <div class="grid place-items-center mr-4">
                 <Icon name="tabler:reorder" size="20" />
               </div>
-              <h1>Пункты выдачи заказов (ПВЗ)</h1>
+              <h1>Пункты выдачи заказов</h1>
             </div>
             <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
               @click="router.push('/admin/sorting-centers')" tabindex="0"
@@ -106,7 +116,23 @@ definePageMeta({
               <div class="grid place-items-center mr-4">
                 <Icon name="material-symbols-light:box-sharp" size="20" />
               </div>
-              <h1>Сортировочные центры (СЦ)</h1>
+              <h1>Сортировочные центры</h1>
+            </div>
+            <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
+              @click="router.push('/admin/pvz-delivery')" tabindex="0"
+              class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
+              <div class="grid place-items-center mr-4">
+                <Icon name="solar:delivery-broken" size="20" />
+              </div>
+              <h1>Пункты выдачи заказов (Доставка)</h1>
+            </div>
+            <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
+              @click="router.push('/admin/sorting-centers-delivery')" tabindex="0"
+              class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
+              <div class="grid place-items-center mr-4">
+                <Icon name="streamline:shipping-box-2-box-package-label-delivery-shipment-shipping-3d" size="20" />
+              </div>
+              <h1>Сортировочные центры (Доставка)</h1>
             </div>
             <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
               @click="router.push('/admin/order-accounts')" tabindex="0"
