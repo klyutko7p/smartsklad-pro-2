@@ -15,6 +15,9 @@ const emit = defineEmits([
 
 function updateDeliveryRows(flag: string) {
   emit("updateDeliveryRows", { idArray: checkedRows.value, flag: flag });
+  checkedRows.value = []
+  allSum.value = []
+  getAllSum.value = 0
 }
 
 function openModal(row: IDelivery) {
@@ -23,6 +26,9 @@ function openModal(row: IDelivery) {
 
 function createCopyRow() {
   emit("createCopyRow", checkedRows.value[0]);
+  checkedRows.value = []
+  allSum.value = []
+  getAllSum.value = 0
 }
 
 function deleteRow(id: number) {
@@ -31,6 +37,9 @@ function deleteRow(id: number) {
 
 function deleteSelectedRows() {
   emit("deleteSelectedRows", checkedRows.value);
+  checkedRows.value = []
+  allSum.value = []
+  getAllSum.value = 0
 }
 
 const props = defineProps({

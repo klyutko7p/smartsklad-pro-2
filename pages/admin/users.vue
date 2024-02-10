@@ -25,8 +25,8 @@ const fields = [
   "доставлено на СЦ (выкуп клиента)",
   "доставлено на ПВЗ (наш выкуп)",
   "доставлено на ПВЗ (выкуп клиента)",
-  "дополнительная стоимость (наш выкуп)",
-  "дополнительная стоимость (выкуп клиента)",
+  "дополнительный доход (наш выкуп)",
+  "дополнительный доход (выкуп клиента)",
   "отправка в ПВЗ (наш выкуп)",
   "отправка в ПВЗ (выкуп клиента)",
   "отправка в ПВЗ (доставка)",
@@ -280,7 +280,7 @@ const selectedPVZs = ref<string[]>([]);
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">дополнительная стоимость<br> (Наш выкуп)</label>
+              <label for="cell">дополнительный доход<br> (Наш выкуп)</label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.deliveredKGT1">
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -289,7 +289,7 @@ const selectedPVZs = ref<string[]>([]);
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Дополнительная стоимость<br> (Выкуп клиента)</label>
+              <label for="cell">дополнительный доход<br> (Выкуп клиента)</label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.deliveredKGT2">
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>

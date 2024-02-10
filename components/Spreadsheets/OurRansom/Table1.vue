@@ -15,6 +15,8 @@ const emit = defineEmits([
 function updateDeliveryRows(flag: string) {
     emit("updateDeliveryRows", { idArray: checkedRows.value, flag: flag });
     checkedRows.value = []
+    allSum.value = []
+    getAllSum.value = 0
 }
 
 function openModal(row: IOurRansom) {
@@ -24,6 +26,8 @@ function openModal(row: IOurRansom) {
 function createCopyRow() {
     emit("createCopyRow", checkedRows.value[0]);
     checkedRows.value = []
+    allSum.value = []
+    getAllSum.value = 0
 }
 
 function deleteRow(id: number) {
@@ -33,6 +37,8 @@ function deleteRow(id: number) {
 function deleteSelectedRows() {
     emit("deleteSelectedRows", checkedRows.value);
     checkedRows.value = []
+    allSum.value = []
+    getAllSum.value = 0
 }
 
 
@@ -60,6 +66,7 @@ interface RowData {
     amount: number;
     issued: Date | null | string | number;
     deliveredPVZ: Date | null | string | number;
+    orderPVZ: Date | null | string | number;
 }
 
 const allSum: Ref<RowData[]> = ref([]);
@@ -68,6 +75,7 @@ const checkedRows: Ref<number[]> = ref([]);
 const getAllSum: Ref<number> = ref(0);
 const showButton: Ref<boolean> = ref(true);
 const showButtonPVZ: Ref<boolean> = ref(true);
+const showButtonSC: Ref<boolean> = ref(true);
 
 const isChecked = (rowId: number): boolean => {
     return checkedRows.value.includes(rowId);
@@ -79,11 +87,12 @@ const handleCheckboxChange = (row: IOurRansom): void => {
         allSum.value = allSum.value.filter((obj) => obj.rowId !== row.id);
     } else {
         checkedRows.value.push(row.id);
-        allSum.value.push({ rowId: row.id, amount: Math.ceil(row.amountFromClient1 / 10) * 10, issued: row.issued, deliveredPVZ: row.deliveredPVZ });
+        allSum.value.push({ rowId: row.id, amount: Math.ceil(row.amountFromClient1 / 10) * 10, issued: row.issued, deliveredPVZ: row.deliveredPVZ, orderPVZ: row.orderPVZ });
     }
     getAllSum.value = allSum.value.filter((obj) => obj.issued === null).reduce((sum, obj) => sum + obj.amount, 0);
     showButton.value = allSum.value.every(obj => obj.issued === null);
     showButtonPVZ.value = allSum.value.every(obj => obj.deliveredPVZ === null);
+    showButtonSC.value = allSum.value.every(obj => obj.orderPVZ === null);
 };
 
 const showDeletedRows = ref(false);
@@ -194,9 +203,11 @@ let showOthersVariants = ref(false)
         <UIActionButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR' && user.dataOurRansom === 'WRITE'"
             @click="deleteSelectedRows">Удалить
             выделенные записи</UIActionButton>
-        <UIActionButton v-if="user.deliveredSC1 === 'WRITE'" @click="updateDeliveryRows('SC')">Доставить на сц
+        <UIActionButton v-if="user.deliveredSC1 === 'WRITE' && showButtonSC" @click="updateDeliveryRows('SC')">Доставить на
+            сц
         </UIActionButton>
-        <UIActionButton v-if="user.deliveredPVZ1 === 'WRITE'" @click="updateDeliveryRows('PVZ')">Доставить на пвз
+        <UIActionButton v-if="user.deliveredPVZ1 === 'WRITE' && showButtonPVZ" @click="updateDeliveryRows('PVZ')">Доставить
+            на пвз
         </UIActionButton>
         <UIActionButton v-if="user.issued1 === 'WRITE' && showButton" @click="showOthersVariants = !showOthersVariants">
             Выдать клиенту
@@ -278,7 +289,7 @@ let showOthersVariants = ref(false)
                         процент с клиента (%)
                     </th>
                     <th scope="col" class="border-2" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
-                        Дополнительная стоимость
+                        дополнительный доход
                     </th>
                     <th scope="col" class="border-2"
                         v-if="user.amountFromClient1 === 'READ' || user.amountFromClient1 === 'WRITE'">

@@ -55,6 +55,8 @@ function enableReceivedItems() {
   copyRows.value = rows.value;
 }
 
+let phoneNumber = ref('')
+
 onMounted(async () => {
   isLoading.value = true;
   user.value = await storeUsers.getUser();
@@ -69,12 +71,16 @@ onMounted(async () => {
 
   if (rows.value) {
     copyRows.value = [...rows.value];
+    phoneNumber.value = copyRows.value[0].fromName
   } 
   disableReceivedItems()
   isLoading.value = false;
 });
 
-const token = Cookies.get("token");
+function getNumber(phoneNumberData: string) {
+  return phoneNumberData.slice(-4)
+}
+
 </script>
 
 <template>
@@ -86,6 +92,9 @@ const token = Cookies.get("token");
       <div class="max-lg:p-3">
         <h1 class="text-2xl overflow-auto">
           Информация о заказе: <span class="uppercase">{{ route.params.link }}</span>
+        </h1>
+        <h1 class="text-xl">
+          Телефон: {{ getNumber(phoneNumber) }} 
         </h1>
         <h1 class="text-xl" v-if="!link.startsWith('3')">
           Оставшаяся сумма к оплате: {{ Math.ceil(getAmountToBePaid("NONE") / 10) * 10 }} руб.

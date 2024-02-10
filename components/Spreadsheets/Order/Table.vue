@@ -42,11 +42,17 @@ function exportToExcel() {
           <th scope="col" class="border-2" v-if="link?.startsWith('3')">
             название
           </th>
-          <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
+          <th scope="col" class="border-2" v-if="link?.startsWith('1')">
             товар (ссылка)
           </th>
-          <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
+          <th scope="col" class="border-2" v-if="link?.startsWith('2')">
+            маркетплейс
+          </th>
+          <th scope="col" class="border-2" v-if="link?.startsWith('1')">
             название товара
+          </th>
+          <th scope="col" class="border-2" v-if="link?.startsWith('2')">
+            количество товаров
           </th>
           <th scope="col" class="border-2" v-if="link?.startsWith('3')">
             сумма выкупа товара
@@ -70,10 +76,10 @@ function exportToExcel() {
             оплачено
           </th>
           <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
-            доставлено на пвз
+            готов к выдаче
           </th>
           <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
-            выдан клиенту
+            выдано
           </th>
           <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             дополнительно
@@ -95,11 +101,15 @@ function exportToExcel() {
           <td class="px-2 border-2" v-if="link?.startsWith('3')">
             {{ row.nameOfAction }}
           </td>
-          <td v-if="link?.startsWith('1') || link?.startsWith('2')"
+          <td v-if="link?.startsWith('1')"
             class="underline border-2 text-secondary-color whitespace-nowrap overflow-hidden max-w-[100px]">
             <a :href="row.productLink" target="_blank" class="hover:text-orange-200 duration-200">
               {{ row.productLink}}
             </a>
+          </td>
+          <td v-if="link?.startsWith('2')"
+            class="border-2 whitespace-nowrap overflow-hidden max-w-[100px]">
+              {{ row.productLink}}
           </td>
           <td v-if="link?.startsWith('1') || link?.startsWith('2')" class="border-2">
             {{ row.productName }}
@@ -128,8 +138,8 @@ function exportToExcel() {
             </h1>
           </td>
           <td class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
-            <h1 class="font-bold text-green-500">
-              {{ row.deliveredSC ? storeUsers.getNormalizedDate(row.deliveredSC) : "" }}
+            <h1 class="font-medium text-gray-400 text-xs">
+              {{ row.deliveredSC ? storeUsers.getNormalizedDate(row.deliveredSC) : "Товар в пути" }}
             </h1>
           </td>
           <td class="border-2" v-if="link?.startsWith('3')">

@@ -39,23 +39,11 @@ function updateCurrentPageData() {
 
 watch([currentPage, totalRows, props.rows], updateCurrentPageData)
 
-
 const toggleShowDeletedRows = () => {
   showDeletedRows.value = !showDeletedRows.value;
   updateCurrentPageData();
   updateRowsByFromName();
 };
-
-
-onMounted(() => {
-
-  updateRowsByFromName();
-
-  if (props.user.role === 'SORTIROVKA') {
-    perPage.value = totalRows.value;
-  }
-
-})
 
 function updateRowsByFromName() {
   updateCurrentPageData();
