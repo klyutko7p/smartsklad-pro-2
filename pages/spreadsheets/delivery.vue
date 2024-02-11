@@ -144,15 +144,7 @@ scheduleDeleteIssuedRows();
 const filteredRows = ref<Array<IDelivery>>();
 
 function handleFilteredRows(filteredRowsData: IDelivery[]) {
-  if (user.value.visiblePVZ === 'ВСЕ' && user.value.visibleSC === 'ВСЕ') {
-    filteredRows.value = filteredRowsData;
-  } else if (user.value.visiblePVZ === 'ВСЕ' && user.value.visibleSC !== 'ВСЕ') {
-    filteredRows.value = filteredRowsData.filter((row) => row.orderPVZ === user.value.visibleSC);
-  } else if (user.value.visiblePVZ !== 'ВСЕ' && user.value.visibleSC === 'ВСЕ') {
-    filteredRows.value = filteredRowsData.filter((row) => row.dispatchPVZ === user.value.visiblePVZ);
-  } else if (user.value.visiblePVZ !== 'ВСЕ' && user.value.visibleSC !== 'ВСЕ') {
-    filteredRows.value = filteredRowsData.filter((row) => row.dispatchPVZ === user.value.visiblePVZ && row.orderPVZ === user.value.visibleSC);
-  }
+  filteredRows.value = filteredRowsData;
 }
 
 onMounted(async () => {
@@ -352,12 +344,10 @@ function getFromNameFromName() {
     </div>
     <div v-else>
       <NuxtLayout name="user">
-        <div v-if="!isLoading" class="mt-3">
+        <div v-if="!isLoading" class="mt-14">
           <div>
             <SpreadsheetsDeliveryFilters v-if="rows" @filtered-rows="handleFilteredRows" :rows="rows" />
             <div class="mt-5 flex items-center gap-3" v-if="user.dataDelivery === 'WRITE'">
-              <UIMainButton @click="deleteIssuedRows" v-if="user.role === 'ADMIN' || user.username === 'admin1'">Удалить
-                оплаченное</UIMainButton>
               <UIMainButton v-if="user.role === 'ADMIN' || user.username === 'ОПТ'" @click="openModal">Создать новую
                 запись</UIMainButton>
             </div>
@@ -402,16 +392,9 @@ function getFromNameFromName() {
                 </div>
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.nameOfAction === 'READ' || user.nameOfAction === 'WRITE'">
-                <label for="nameOfAction">Название</label>
-                <input :disabled="user.nameOfAction === 'READ'"
-                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.nameOfAction" type="text" />
-              </div>
-
               <div class="grid grid-cols-2 mb-5"
                 v-if="user.purchaseOfGoods === 'READ' || user.purchaseOfGoods === 'WRITE'">
-                <label for="purchaseOfGoods">Стоимость выкупа <br> товара</label>
+                <label for="purchaseOfGoods">Стоимость товаров <br> сортировки</label>
                 <input :disabled="user.purchaseOfGoods === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.purchaseOfGoods" type="text" />
@@ -422,6 +405,21 @@ function getFromNameFromName() {
                 <input :disabled="user.percentClient3 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.percentClient" placeholder="По умолчанию: 2" type="number" />
+              </div>
+
+              <div class="grid grid-cols-2 mb-5"
+                v-if="user.purchaseOfGoods === 'READ' || user.purchaseOfGoods === 'WRITE'">
+                <label for="purchaseOfGoods">Стоимость товаров <br> доставки</label>
+                <input :disabled="user.purchaseOfGoods === 'READ'"
+                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                  v-model="rowData.purchaseOfGoods2" type="text" />
+              </div>
+
+              <div class="grid grid-cols-2 mb-5" v-if="user.percentClient3 === 'READ' || user.percentClient3 === 'WRITE'">
+                <label for="percentClient1">Процент с клиента</label>
+                <input :disabled="user.percentClient3 === 'READ'"
+                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                  v-model="rowData.percentClient2" placeholder="По умолчанию: 2" type="number" />
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.dispatchPVZ3 === 'READ' || user.dispatchPVZ3 === 'WRITE'">
