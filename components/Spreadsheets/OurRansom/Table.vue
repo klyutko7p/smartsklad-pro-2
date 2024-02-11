@@ -54,6 +54,11 @@ function updateRowsByFromName() {
 
 let searchQuery = ref('')
 
+onMounted(() => {
+  updateCurrentPageData();
+  updateRowsByFromName();
+})
+
 function formatPhoneNumber(phoneNumber: string) {
   if (!phoneNumber) {
     return 'Номер телефона не указан';
