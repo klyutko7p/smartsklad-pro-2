@@ -3,8 +3,8 @@ import Cookies from "js-cookie";
 
 const storeUsers = useUsersStore();
 const storeRansom = useRansomStore();
-const storePVZ = usePVZStore();
-const storeSortingCenters = useSortingCentersStore();
+const storePVZ = usePVZDeliveryStore();
+const storeSortingCenters = useSortingCentersDeliveryStore();
 
 const router = useRouter();
 
