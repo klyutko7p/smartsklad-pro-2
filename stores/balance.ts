@@ -6,20 +6,21 @@ const toast = useToast()
 
 export const useBalanceStore = defineStore("balance", () => {
 
-    async function createBalanceRow(row: IBalance, username: string, flag: string) {
+    async function createBalanceRow(row: IBalance, username: string) {
 
         try {
             if (row.sum === undefined) row.sum = '0';
             if (row.pvz === undefined) row.pvz = '';
 
             row.createdUser = username;
+            row.receivedUser = ''
 
             let data = await useFetch('/api/balance/create-row', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ row: row, flag: flag }),
+                body: JSON.stringify({ row: row }),
             });
             if (data.data.value === undefined) {
                 toast.success("Запись успешно создана!")
@@ -35,14 +36,14 @@ export const useBalanceStore = defineStore("balance", () => {
         }
     }
 
-    async function getBalanceRows(flag: string) {
+    async function getBalanceRows() {
         try {
-            let { data }: any = await useFetch('/api/ransom/get-rows', {
+            let { data }: any = await useFetch('/api/balance/get-rows', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ flag: flag })
+                body: JSON.stringify({})
             })
             return data.value;
         } catch (error) {
@@ -54,12 +55,12 @@ export const useBalanceStore = defineStore("balance", () => {
 
     async function updateBalanceRow(row: IBalance, username: string) {
         try {
-                if (row.sum === undefined) row.sum = '0';
-                if (row.pvz === undefined) row.pvz = '';
+            if (row.sum === undefined) row.sum = '0';
+            if (row.pvz === undefined) row.pvz = '';
 
-                row.createdUser = username;
+            
 
-            let data = await useFetch('/api/ransom/edit-row', {
+            let data = await useFetch('/api/balance/edit-row', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -81,14 +82,14 @@ export const useBalanceStore = defineStore("balance", () => {
         }
     }
 
-    async function updateDeliveryStatus(row: IBalance, flag: string) {
+    async function updateDeliveryStatus(row: IBalance, flag: string, username: string) {
         try {
-            let data = await useFetch('/api/ransom/update-delivery', {
+            let data = await useFetch('/api/balance/update-delivery', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ row: row, flag: flag }),
+                body: JSON.stringify({ row: row, flag: flag, username: username }),
             })
             if (data.data.value === undefined) {
                 toast.success("Статус успешно обновлен!")

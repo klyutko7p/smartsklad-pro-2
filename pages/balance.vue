@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 const storeUsers = useUsersStore();
 const storePVZ = usePVZStore();
 const storeRansom = useRansomStore();
+const storeBalance = useBalanceStore();
 const router = useRouter();
 
 let user = ref({} as User);
@@ -13,6 +14,7 @@ let clientRansomRows = ref<Array<IClientRansom>>();
 let deliveryRansomRows = ref<Array<IDelivery>>();
 const token = Cookies.get("token");
 let isLoading = ref(false);
+let rows = ref<Array<IBalance>>()
 
 onBeforeMount(async () => {
   isLoading.value = true;
@@ -22,6 +24,7 @@ onBeforeMount(async () => {
   ourRansomRows.value = await storeRansom.getRansomRows("OurRansom");
   clientRansomRows.value = await storeRansom.getRansomRows("ClientRansom");
   deliveryRansomRows.value = await storeRansom.getRansomRows("Delivery");
+  rows.value = await storeBalance.getBalanceRows();
 
   getAllSum();
 
@@ -61,8 +64,8 @@ function calculateValue(curValue: any) {
   if (!curValue.prepayment) {
     return curValue.additionally !== "Отказ клиент"
       ? Math.ceil(curValue.amountFromClient1 / 10) * 10 -
-          curValue.priceSite +
-          curValue.deliveredKGT
+      curValue.priceSite +
+      curValue.deliveredKGT
       : 200;
   } else {
     return curValue.additionally !== "Отказ клиент"
@@ -450,12 +453,28 @@ function closeModal() {
 
 async function createRow() {
   isLoading.value = true;
-  await storeRansom.createRansomRow(rowData.value, user.value.username, "Delivery");
-  filteredRows.value = await storeRansom.getRansomRows("Delivery");
-  rows.value = await storeRansom.getRansomRows("Delivery");
+  await storeBalance.createBalanceRow(rowData.value, user.value.username);
+  rows.value = await storeBalance.getBalanceRows();
   closeModal();
   isLoading.value = false;
 }
+
+async function updateDeliveryRow(obj: any) {
+  isLoading.value = true;
+  let answer = confirm("Вы точно хотите изменить статус?");
+  if (answer) await storeBalance.updateDeliveryStatus(obj.row, obj.flag, user.value.username);
+  rows.value = await storeBalance.getBalanceRows();
+  isLoading.value = false;
+}
+
+async function updateRow() {
+  isLoading.value = true;
+  await storeBalance.updateBalanceRow(rowData.value, user.value.username);
+  rows.value = await storeBalance.getBalanceRows();
+  closeModal();
+  isLoading.value = false;
+}
+
 </script>
 
 <template>
@@ -470,32 +489,21 @@ async function createRow() {
           <div>
             <div class="flex items-center gap-3 mt-14 max-xl:mt-0">
               <h1 class="text-xl font-bold">Фильтры</h1>
-              <Icon
-                @click="showFilters = !showFilters"
-                class="cursor-pointer duration-200 hover:text-secondary-color"
-                name="solar:filters-line-duotone"
-                size="24"
-              />
+              <Icon @click="showFilters = !showFilters" class="cursor-pointer duration-200 hover:text-secondary-color"
+                name="solar:filters-line-duotone" size="24" />
             </div>
 
-            <div
-              v-if="showFilters"
-              class="border-2 border-gray-300 p-3 mt-3 border-dashed"
-            >
+            <div v-if="showFilters" class="border-2 border-gray-300 p-3 mt-3 border-dashed">
               <div class="grid grid-cols-2 max-xl:grid-cols-2 max-md:grid-cols-1">
                 <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
                   <h1>Показать для ПВЗ:</h1>
                   <select
                     class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                    v-model="selectedPVZ"
-                  >
+                    v-model="selectedPVZ">
                     <option value="Все ПВЗ" selected>Все ПВЗ</option>
-                    <option
-                      v-for="pvzValue in pvz?.filter(
-                        (pvzData) => pvzData.name !== 'НаДом'
-                      )"
-                      :value="pvzValue.name"
-                    >
+                    <option v-for="pvzValue in pvz?.filter(
+                      (pvzData) => pvzData.name !== 'НаДом'
+                    )" :value="pvzValue.name">
                       {{ pvzValue.name }}
                     </option>
                   </select>
@@ -504,18 +512,11 @@ async function createRow() {
                   <h1>Тип транзакции:</h1>
                   <select
                     class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                    v-model="selectedTypeOfTransaction"
-                  >
-                    <option
-                      v-if="user.role !== 'ADMINISTRATOR' && user.role !== 'PVZ'"
-                      value="Доход"
-                    >
+                    v-model="selectedTypeOfTransaction">
+                    <option v-if="user.role !== 'ADMINISTRATOR' && user.role !== 'PVZ'" value="Доход">
                       Доход
                     </option>
-                    <option
-                      v-if="user.role !== 'ADMINISTRATOR' && user.role !== 'PVZ'"
-                      value="Заказано"
-                    >
+                    <option v-if="user.role !== 'ADMINISTRATOR' && user.role !== 'PVZ'" value="Заказано">
                       Заказано
                     </option>
                     <option value="Баланс наличные">Баланс наличные</option>
@@ -529,17 +530,13 @@ async function createRow() {
                     <h1>От Даты:</h1>
                     <input
                       class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                      type="date"
-                      v-model="startingDate"
-                    />
+                      type="date" v-model="startingDate" />
                   </div>
                   <div class="grid grid-cols-2 my-2">
                     <h1>До Даты:</h1>
                     <input
                       class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                      type="date"
-                      v-model="endDate"
-                    />
+                      type="date" v-model="endDate" />
                   </div>
                 </div>
               </div>
@@ -549,10 +546,7 @@ async function createRow() {
             </div>
 
             <div class="grid grid-cols-3 max-xl:grid-cols-1 max-sm:grid-cols-1">
-              <div
-                class="text-center text-2xl mt-10"
-                v-if="selectedTypeOfTransaction !== 'Заказано'"
-              >
+              <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
                 <h1>Баланс "Наш Выкуп"</h1>
                 <h1 class="font-bold text-secondary-color text-4xl mt-3">
                   {{ formatNumber(Math.ceil(sum1)) }} ₽
@@ -564,10 +558,7 @@ async function createRow() {
                   {{ formatNumber(Math.ceil(allSum)) }} ₽
                 </h1>
               </div>
-              <div
-                class="text-center text-2xl mt-10"
-                v-if="selectedTypeOfTransaction !== 'Заказано'"
-              >
+              <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
                 <h1>Баланс "Выкуп Клиента"</h1>
                 <h1 class="font-bold text-secondary-color text-4xl mt-3">
                   {{ formatNumber(Math.ceil(sum2)) }} ₽
@@ -575,9 +566,10 @@ async function createRow() {
               </div>
             </div>
           </div>
-          <UIMainButton class="mt-10" @click="openModal"
-            >Заявка на вывод средств</UIMainButton
-          >
+
+          <UIMainButton class="mt-24" @click="openModal">Заявка на вывод средств</UIMainButton>
+          <BalanceTable @update-delivery-row="updateDeliveryRow" :rows="rows" :user="user" 
+            @open-modal="openModal" />
 
           <UIModal v-show="isOpen" @close-modal="closeModal">
             <template v-slot:header>
@@ -589,10 +581,8 @@ async function createRow() {
             <div class="text-black">
               <div class="grid grid-cols-2 mb-5">
                 <label for="dispatchPVZ1">ПВЗ</label>
-                <select
-                  class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
-                  v-model="rowData.pvz"
-                >
+                <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
+                  v-model="rowData.pvz">
                   <option v-for="pvzData in pvz" :value="pvzData.name">
                     {{ pvzData.name }}
                   </option>
@@ -603,9 +593,7 @@ async function createRow() {
                 <label for="name">Сумма</label>
                 <input
                   class="bg-transparent w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.sum"
-                  type="text"
-                />
+                  v-model="rowData.sum" type="text" />
               </div>
             </div>
 
@@ -628,35 +616,23 @@ async function createRow() {
           <div>
             <div class="flex items-center gap-3 mt-14 max-xl:mt-0">
               <h1 class="text-xl font-bold">Фильтры</h1>
-              <Icon
-                @click="showFilters = !showFilters"
-                class="cursor-pointer duration-200 hover:text-secondary-color"
-                name="solar:filters-line-duotone"
-                size="24"
-              />
+              <Icon @click="showFilters = !showFilters" class="cursor-pointer duration-200 hover:text-secondary-color"
+                name="solar:filters-line-duotone" size="24" />
             </div>
 
-            <div
-              v-if="showFilters"
-              class="border-2 border-gray-300 p-3 mt-3 border-dashed"
-            >
+            <div v-if="showFilters" class="border-2 border-gray-300 p-3 mt-3 border-dashed">
               <div class="grid grid-cols-2 max-xl:grid-cols-2 max-md:grid-cols-1">
                 <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
                   <h1>Показать для ПВЗ:</h1>
                   <select
                     class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                    v-model="selectedPVZ"
-                  >
+                    v-model="selectedPVZ">
                     <option v-if="user.role !== 'PVZ'" value="Все ПВЗ" selected>
                       Все ПВЗ
                     </option>
-                    <option
-                      v-if="user.role !== 'PVZ'"
-                      v-for="pvzValue in pvz?.filter(
-                        (pvzData) => pvzData.name !== 'НаДом'
-                      )"
-                      :value="pvzValue.name"
-                    >
+                    <option v-if="user.role !== 'PVZ'" v-for="pvzValue in pvz?.filter(
+                      (pvzData) => pvzData.name !== 'НаДом'
+                    )" :value="pvzValue.name">
                       {{ pvzValue.name }}
                     </option>
                     <option v-if="user.role === 'PVZ'" :value="user.visiblePVZ">
@@ -668,18 +644,11 @@ async function createRow() {
                   <h1>Тип транзакции:</h1>
                   <select
                     class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                    v-model="selectedTypeOfTransaction"
-                  >
-                    <option
-                      v-if="user.role !== 'ADMINISTRATOR' && user.role !== 'PVZ'"
-                      value="Доход"
-                    >
+                    v-model="selectedTypeOfTransaction">
+                    <option v-if="user.role !== 'ADMINISTRATOR' && user.role !== 'PVZ'" value="Доход">
                       Доход
                     </option>
-                    <option
-                      v-if="user.role !== 'ADMINISTRATOR' && user.role !== 'PVZ'"
-                      value="Заказано"
-                    >
+                    <option v-if="user.role !== 'ADMINISTRATOR' && user.role !== 'PVZ'" value="Заказано">
                       Заказано
                     </option>
                     <option value="Баланс наличные">Баланс наличные</option>
@@ -693,17 +662,13 @@ async function createRow() {
                     <h1>От Даты:</h1>
                     <input
                       class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                      type="date"
-                      v-model="startingDate"
-                    />
+                      type="date" v-model="startingDate" />
                   </div>
                   <div class="grid grid-cols-2 my-2">
                     <h1>До Даты:</h1>
                     <input
                       class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                      type="date"
-                      v-model="endDate"
-                    />
+                      type="date" v-model="endDate" />
                   </div>
                 </div>
               </div>
@@ -713,10 +678,7 @@ async function createRow() {
             </div>
 
             <div class="grid grid-cols-3 max-xl:grid-cols-1 max-sm:grid-cols-1">
-              <div
-                class="text-center text-2xl mt-10"
-                v-if="selectedTypeOfTransaction !== 'Заказано'"
-              >
+              <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
                 <h1>Баланс "Наш Выкуп"</h1>
                 <h1 class="font-bold text-secondary-color text-4xl mt-3">
                   {{ formatNumber(Math.ceil(sum1)) }} ₽
@@ -728,10 +690,7 @@ async function createRow() {
                   {{ formatNumber(Math.ceil(allSum)) }} ₽
                 </h1>
               </div>
-              <div
-                class="text-center text-2xl mt-10"
-                v-if="selectedTypeOfTransaction !== 'Заказано'"
-              >
+              <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
                 <h1>Баланс "Выкуп Клиента"</h1>
                 <h1 class="font-bold text-secondary-color text-4xl mt-3">
                   {{ formatNumber(Math.ceil(sum2)) }} ₽
