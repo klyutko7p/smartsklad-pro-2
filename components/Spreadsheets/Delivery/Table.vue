@@ -169,16 +169,16 @@ onMounted(() => {
   </div>
 
   <div class="fixed z-40 flex flex-col gap-3 top-64 left-1/2 translate-x-[-50%] translate-y-[-50%]"
-    v-if="user.dataOurRansom === 'WRITE' && checkedRows.length > 0 && user.role !== 'PVZ'">
+    v-if="user.dataDelivery === 'WRITE' && checkedRows.length > 0 && user.role !== 'PVZ'">
     <UIActionButton
-      v-if="user.dataOurRansom === 'WRITE' && (user.role === 'ADMIN' || user.role === 'ADMINISTRATOR') && checkedRows.length === 1"
+      v-if="user.dataDelivery === 'WRITE' && (user.role === 'ADMIN' || user.username === 'ОПТ') && checkedRows.length === 1"
       @click="createCopyRow">Скопировать запись</UIActionButton>
-    <UIActionButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR' && user.dataOurRansom === 'WRITE'"
+    <UIActionButton v-if="user.role === 'ADMIN' && user.dataDelivery === 'WRITE'"
       @click="deleteSelectedRows">Удалить
       выделенные записи</UIActionButton>
-    <UIActionButton v-if="user.deliveredSC1 === 'WRITE'" @click="updateDeliveryRows('sorted')">Отсортировано
+    <UIActionButton v-if="user.sorted === 'WRITE'" @click="updateDeliveryRows('sorted')">Отсортировано
     </UIActionButton>
-    <UIActionButton v-if="user.deliveredSC1 === 'WRITE'" @click="updateDeliveryRows('paid')">Оплачено
+    <UIActionButton v-if="user.paid === 'WRITE'" @click="updateDeliveryRows('paid')">Оплачено
     </UIActionButton>
   </div>
 
@@ -234,14 +234,14 @@ onMounted(() => {
           <th scope="col" class="border-2" v-if="user.profit3 === 'READ' || user.profit3 === 'WRITE'">
             прибыль (доход)
           </th>
-          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">создан (время)
+          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.username === 'ОПТ'">создан (время)
           </th>
-          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">изменен (время)
+          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.username === 'ОПТ'">изменен (время)
           </th>
-          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">удален (время)
+          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.username === 'ОПТ'">удален (время)
           </th>
-          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">создан</th>
-          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">изменен</th>
+          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.username === 'ОПТ'">создан</th>
+          <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.username === 'ОПТ'">изменен</th>
           <th scope="col" class="exclude-row border-2" v-if="user.dataDelivery === 'WRITE' && user.role === 'ADMIN'">
             удаление
           </th>
@@ -256,7 +256,7 @@ onMounted(() => {
             <input type="checkbox" :value="row.id" :checked="isChecked(row.id)" @change="handleCheckboxChange(row)" />
           </td>
           <td class="border-2"
-            v-if="user.dataDelivery === 'WRITE' && user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
+            v-if="user.dataDelivery === 'WRITE' && user.role === 'ADMIN'">
             <Icon @click="openModal(row)" class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
               name="material-symbols:edit" size="32" />
           </td>
@@ -316,26 +316,26 @@ onMounted(() => {
           <td class="border-2" v-if="user.additionally3 === 'READ' || user.additionally3 === 'WRITE'">
             {{ row.additionally ? row.additionally : "Пусто" }}
           </td>
-          <td class="border-2" v-if="user.profit3 === 'READ' || user.profit3 === 'WRITE'">
+          <td class="border-2" v-if="user.profit3 === 'READ' || user.profit3 === 'WRITE' && user.username !== 'ОПТ'">
             {{ row.profit3 }}
           </td>
-          <td class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
+          <td class="border-2" v-if="user.role === 'ADMIN' || user.username === 'ОПТ'">
             {{ storeUsers.getNormalizedDate(row.created_at) }}
           </td>
-          <td class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
+          <td class="border-2" v-if="user.role === 'ADMIN' || user.username === 'ОПТ'">
             {{ storeUsers.getNormalizedDate(row.updated_at) }}
           </td>
-          <td class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
+          <td class="border-2" v-if="user.role === 'ADMIN' || user.username === 'ОПТ'">
             {{ storeUsers.getNormalizedDate(row.deleted) }}
           </td>
-          <td class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
+          <td class="border-2" v-if="user.role === 'ADMIN' || user.username === 'ОПТ'">
             {{ row.createdUser }}
           </td>
-          <td class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
+          <td class="border-2" v-if="user.role === 'ADMIN' || user.username === 'ОПТ'">
             {{ row.updatedUser }}
           </td>
           <td class="border-2"
-            v-if="user.dataDelivery === 'WRITE' && user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
+            v-if="user.dataDelivery === 'WRITE' && user.role === 'ADMIN'">
             <Icon @click="deleteRow(row.id)" class="text-red-600 cursor-pointer hover:text-red-300 duration-200"
               name="material-symbols:playlist-remove-rounded" size="32" />
           </td>
