@@ -30,7 +30,6 @@ const fields = [
   "отправка в ПВЗ (наш выкуп)",
   "отправка в ПВЗ (выкуп клиента)",
   "отправка в ПВЗ (доставка)",
-  "название (доставка)",
   "отсортировано (доставка)",
   "оплачено (доставка)",
   "имя (доставка)",
@@ -318,15 +317,6 @@ const selectedPVZs = ref<string[]>([]);
             <div class="grid grid-cols-2 mb-5">
               <label for="cell">Отправка в ПВЗ <br> (Доставка)</label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.dispatchPVZ3">
-                <option value="NONE">NONE</option>
-                <option value="READ">READ</option>
-                <option value="WRITE">WRITE</option>
-              </select>
-            </div>
-
-            <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Название <br> (Доставка)</label>
-              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.nameOfAction">
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
                 <option value="WRITE">WRITE</option>

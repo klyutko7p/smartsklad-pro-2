@@ -95,9 +95,6 @@ defineProps({
             {{ userData.dispatchPVZ3 }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.nameOfAction }}
-          </td>
-          <td class="px-6 py-4 border-2">
             {{ userData.sorted }}
           </td>
           <td class="px-6 py-4 border-2">
