@@ -441,31 +441,7 @@ function getFromNameFromName() {
                     </option>
                   </select>
                 </div>
-  
-                <div class="grid grid-cols-2 mb-5" v-if="user.sorted === 'READ' || user.sorted === 'WRITE'">
-                  <label for="deliveredSC1">Отсортировано</label>
-                  <input :disabled="user.sorted === 'READ'"
-                    class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                    v-model="rowData.sorted" type="datetime-local" />
-                </div>
-  
-                <div class="grid grid-cols-2 mb-5" v-if="user.paid === 'READ' || user.paid === 'WRITE'">
-                  <label for="deliveredPVZ1">Оплачено</label>
-                  <input :disabled="user.paid === 'READ'"
-                    class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                    v-model="rowData.paid" type="datetime-local" />
-                </div>
-  
-                <div class="grid grid-cols-2 mb-5" v-if="user.additionally3 === 'READ' || user.additionally3 === 'WRITE'">
-                  <label for="additionally1">Дополнительно</label>
-                  <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
-                    v-model="rowData.additionally" :disabled="user.additionally3 === 'READ'">
-                    <option value="">Отменить</option>
-                    <option value="Оплачено онлайн">Оплачено онлайн</option>
-                    <option value="Отказ клиент">Отказ клиент</option>
-                    <option value="Отказ брак">Отказ брак</option>
-                  </select>
-                </div>
+                
               </div>
   
               <div class="flex items-center justify-center gap-3 mt-10" v-if="rowData.id">

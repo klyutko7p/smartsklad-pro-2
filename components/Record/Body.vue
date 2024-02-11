@@ -17,12 +17,13 @@ function updateDeliveryRow(row: IOurRansom | IClientRansom, flag: string) {
 }
 
 onMounted(() => {
-  if (props.user.visiblePVZ === 'ВСЕ') {
+
+  if (props.user.visiblePVZ === 'ВСЕ' || props.user.username === 'ОПТ') {
     toast.success('Нужный доступ подтвержден')
   } else if (props.user.visiblePVZ !== props.row.dispatchPVZ) {
     toast.error("Это товар не Вашего ПВЗ!")
     router.push('/spreadsheets/our-ransom')
-  }
+  } 
 })
 
 function formatPhoneNumber(phoneNumber: string) {

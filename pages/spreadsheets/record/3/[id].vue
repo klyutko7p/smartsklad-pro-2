@@ -63,7 +63,7 @@ const token = Cookies.get("token");
     <div v-else>
       <NuxtLayout name="user">
         <div class="mt-5" v-if="!isLoading">
-          <RecordBody :likn="link" :user="user" :row="row" @update-delivery-row="updateDeliveryRow" />
+          <RecordBody :link="link" :user="user" :row="row" @update-delivery-row="updateDeliveryRow" />
           <RecordQR
             class="mt-10"
             :row="row"
