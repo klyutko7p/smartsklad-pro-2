@@ -59,7 +59,7 @@ const filterRows = () => {
       (!selectedFromName.value || row.fromName === selectedFromName.value) &&
       (!selectedNameOfAction.value || row.nameOfAction === selectedNameOfAction.value) &&
       (!selectedName.value || row.name === selectedName.value) &&
-      (!selectedPurchaseOfGoods.value || row.purchaseOfGoods === selectedPurchaseOfGoods.value) &&
+      (!selectedPurchaseOfGoods.value || row.purchaseOfGoods == selectedPurchaseOfGoods.value) &&
       (!selectedDispatchPVZ.value || row.dispatchPVZ === selectedDispatchPVZ.value) &&
       (!selectedOrderPVZ.value || row.orderPVZ === selectedOrderPVZ.value) &&
       (!selectedAdditionally.value || row.additionally === selectedAdditionally.value) &&
@@ -69,6 +69,8 @@ const filterRows = () => {
       (!endDate2.value || new Date(row.sorted) <= new Date(endDate2.value))
     );
   });
+  console.log(filteredRows.value);
+  console.log(selectedPurchaseOfGoods.value);
   emit("filtered-rows", filteredRows.value);
 };
 
@@ -81,6 +83,7 @@ function clearFields() {
   selectedFromName.value = "";
   selectedName.value = "";
   selectedAdditionally.value = "";
+  selectedPurchaseOfGoods.value = "";
   startingDate.value = "";
   endDate.value = "";
   startingDate2.value = "";
@@ -96,6 +99,7 @@ watch(
     selectedDispatchPVZ,
     selectedOrderPVZ,
     selectedAdditionally,
+    selectedPurchaseOfGoods,
     startingDate,
     endDate,
     startingDate2,
@@ -243,7 +247,7 @@ let dateFilter = ref('paid')
           <h1>Стоимость выкупа: </h1>
           <input type="text"
             class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-            v-model="selectedNameOfAction" list="uniquePurchaseOfGoods">
+            v-model="selectedPurchaseOfGoods" list="uniquePurchaseOfGoods">
           <datalist id="uniquePurchaseOfGoods" class="">
             <option v-for="value in uniquePurchaseOfGoods" :value="value">{{ value }}</option>
           </datalist>
