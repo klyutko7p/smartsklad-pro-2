@@ -156,6 +156,16 @@ model Delivery {
   updatedUser       String
 }
 
+model Balance {
+  id           Int       @id @default(autoincrement())
+  pvz          String?
+  sum          String?
+  issued       DateTime?
+  received     DateTime?
+  createdUser  String
+  receivedUser String
+}
+
 model PVZ {
   id   Int    @id @default(autoincrement())
   name String
@@ -167,15 +177,16 @@ model SortingCenter {
 }
 
 model PVZDelivery {
-  id   Int    @id @default(autoincrement())
-  name String
+  id      Int     @id @default(autoincrement())
+  name    String
+  address String?
 }
 
 model SortingCenterDelivery {
-  id   Int    @id @default(autoincrement())
-  name String
+  id      Int     @id @default(autoincrement())
+  name    String
+  address String?
 }
-
 
 model OrderAccount {
   id   Int    @id @default(autoincrement())

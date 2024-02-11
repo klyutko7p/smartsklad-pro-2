@@ -294,31 +294,6 @@ function getUnoccupiedCellsAndPVZ() {
     }
   });
 
-  // let resultArray: any[] =
-  //   [
-  //     { cell: 1, dispatchPVZ: 'ПВЗ_1' },
-  //     { cell: 2, dispatchPVZ: 'ПВЗ_1' },
-  //     { cell: 3, dispatchPVZ: 'ПВЗ_1' },
-  //     { cell: 4, dispatchPVZ: 'ПВЗ_1' },
-  //     { cell: 5, dispatchPVZ: 'ПВЗ_1' },
-  //     { cell: 6, dispatchPVZ: 'ПВЗ_1' },
-  //     { cell: 7, dispatchPVZ: 'ПВЗ_1' },
-  //     { cell: 8, dispatchPVZ: 'ПВЗ_1' },
-  //     { cell: 9, dispatchPVZ: 'ПВЗ_1' },
-  //     { cell: 10, dispatchPVZ: 'ПВЗ_1' },
-  //     { cell: 1, dispatchPVZ: 'ПВЗ_2' },
-  //     { cell: 2, dispatchPVZ: 'ПВЗ_2' },
-  //     { cell: 3, dispatchPVZ: 'ПВЗ_2' },
-  //     { cell: 4, dispatchPVZ: 'ПВЗ_2' },
-  //     { cell: 5, dispatchPVZ: 'ПВЗ_2' },
-  //     { cell: 6, dispatchPVZ: 'ПВЗ_2' },
-  //     { cell: 7, dispatchPVZ: 'ПВЗ_2' },
-  //     { cell: 8, dispatchPVZ: 'ПВЗ_2' },
-  //     { cell: 9, dispatchPVZ: 'ПВЗ_2' },
-  //     { cell: 10, dispatchPVZ: 'ПВЗ_2' },
-  //     { cell: 10, dispatchPVZ: 'ПВЗ_3' },
-  //   ]
-
   return result;
 }
 

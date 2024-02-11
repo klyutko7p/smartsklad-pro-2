@@ -4,16 +4,18 @@ const prisma = new PrismaClient();
 
 interface IRequestBody {
     name: string;
+    address: string;
 }
 
 
 export default defineEventHandler(async (event) => {
     try {
-        const { name } = await readBody<IRequestBody>(event);
+        const { name, address } = await readBody<IRequestBody>(event);
 
         const pvz = await prisma.pVZDelivery.create({
             data: {
                 name: name,
+                address: address,
             },
         });
     } catch (error) {

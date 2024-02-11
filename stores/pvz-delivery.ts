@@ -29,7 +29,7 @@ export const usePVZDeliveryStore = defineStore("pvz-delivery", () => {
     }
 
 
-    async function createPVZ(name: string) {
+    async function createPVZ(name: string, address: string) {
         try {
             if (name === '') {
                 toast.warning("Название ПВЗ не должно быть пустым")
@@ -39,7 +39,7 @@ export const usePVZDeliveryStore = defineStore("pvz-delivery", () => {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ name: name }),
+                    body: JSON.stringify({ name: name, address: address }),
                 });
                 toast.success("ПВЗ успешно добавлено!")
             }

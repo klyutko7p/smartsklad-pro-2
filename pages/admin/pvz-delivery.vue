@@ -5,14 +5,14 @@ const storeUsers = useUsersStore();
 const storePVZDelivery = usePVZDeliveryStore();
 const router = useRouter();
 
-const fields = ["название пвз", "изменение", "удаление"];
+const fields = ["название пвз", "адрес", "изменение", "удаление"];
 
 let pvz = ref<Array<PVZ>>();
 let pvzData = ref({} as PVZ);
 
-async function createPVZ(name: string) {
+async function createPVZ(obj: any) {
   isLoading.value = true;
-  await storePVZDelivery.createPVZ(name);
+  await storePVZDelivery.createPVZ(obj.name, obj.address);
   pvz.value = await storePVZDelivery.getPVZ();
   isLoading.value = false;
 }
@@ -74,14 +74,14 @@ definePageMeta({
   <div v-if="token && user.role === 'ADMIN'">
     <NuxtLayout name="admin">
       <div v-if="!isLoading">
-        <AdminDataTable
+        <AdminDataTable2
           :fields="fields"
           :rows="pvz"
           @delete-row="deletePVZ"
           @open-modal="openModal"
         />
 
-        <AdminDataCreate :title="'ПВЗ'" @create-data="createPVZ" />
+        <AdminDataCreate2 :title="'ПВЗ'" @create-data="createPVZ" />
 
         <UIModal v-show="isOpen" @close-modal="closeModal">
           <template v-slot:header>
@@ -95,6 +95,14 @@ definePageMeta({
               <input
                 class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"
                 v-model="pvzData.name"
+                type="text"
+              />
+            </div>
+            <div class="grid grid-cols-2 mb-5">
+              <label for="address">Адрес ПВЗ</label>
+              <input
+                class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"
+                v-model="pvzData.address"
                 type="text"
               />
             </div>

@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 
 interface IRequestBody {
     name: string;
+    address: string;
 }
 
 
@@ -14,6 +15,7 @@ export default defineEventHandler(async (event) => {
         const sortingCenter = await prisma.sortingCenterDelivery.create({
             data: {
                 name: name,
+                address: address,
             },
         });
     } catch (error) {

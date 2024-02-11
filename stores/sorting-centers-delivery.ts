@@ -27,7 +27,7 @@ export const useSortingCentersDeliveryStore = defineStore("sorting-centers-deliv
         }
     }
 
-    async function createSortingCenter(name: string) {
+    async function createSortingCenter(name: string, address: string) {
         try {
             if (name === '') {
                 toast.warning("Название Сортировочного Центра не должно быть пустым")
@@ -37,7 +37,7 @@ export const useSortingCentersDeliveryStore = defineStore("sorting-centers-deliv
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ name: name }),
+                    body: JSON.stringify({ name: name, address: address }),
                 });
                 toast.success("Сортировочный Центр успешно добавлен!")
             }

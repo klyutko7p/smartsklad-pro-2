@@ -5,14 +5,14 @@ const storeUsers = useUsersStore();
 const storeSortingCentersDelivery = useSortingCentersDeliveryStore();
 const router = useRouter();
 
-const fields = ["название СЦ", "изменение", "удаление"];
+const fields = ["название СЦ", "адрес", "изменение", "удаление"];
 
 let sortingCenters = ref<Array<SortingCenter>>();
 let sortingCentersData = ref({} as SortingCenter);
 
-async function createSortingCenter(name: string) {
+async function createSortingCenter(obj: any) {
   isLoading.value = true;
-  await storeSortingCentersDelivery.createSortingCenter(name);
+  await storeSortingCentersDelivery.createSortingCenter(obj.name, obj.address);
   sortingCenters.value = await storeSortingCentersDelivery.getSortingCenters();
   isLoading.value = false;
 }
@@ -74,14 +74,14 @@ definePageMeta({
   <div v-if="token && user.role === 'ADMIN'">
     <NuxtLayout name="admin">
       <div v-if="!isLoading">
-        <AdminDataTable
+        <AdminDataTable2
           :fields="fields"
           :rows="sortingCenters"
           @delete-row="deleteSortingCenter"
           @open-modal="openModal"
         />
 
-        <AdminDataCreate :title="'Сортировочный Центр'" @create-data="createSortingCenter" />
+        <AdminDataCreate2 :title="'Сортировочный Центр'" @create-data="createSortingCenter" />
 
         <UIModal v-show="isOpen" @close-modal="closeModal">
           <template v-slot:header>
@@ -95,6 +95,14 @@ definePageMeta({
               <input
                 class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"
                 v-model="sortingCentersData.name"
+                type="text"
+              />
+            </div>
+            <div class="grid grid-cols-2 mb-5">
+              <label for="name">Адрес</label>
+              <input
+                class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"
+                v-model="sortingCentersData.address"
                 type="text"
               />
             </div>

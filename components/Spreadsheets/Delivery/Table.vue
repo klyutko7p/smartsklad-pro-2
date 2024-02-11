@@ -13,6 +13,10 @@ const emit = defineEmits([
   "createCopyRow",
 ]);
 
+function updateDeliveryRow(row: IDelivery, flag: string) {
+  emit("updateDeliveryRow", { row: row, flag: flag });
+}
+
 function updateDeliveryRows(flag: string) {
   emit("updateDeliveryRows", { idArray: checkedRows.value, flag: flag });
   checkedRows.value = []
@@ -294,11 +298,17 @@ onMounted(() => {
             {{ row.orderPVZ }}
           </td>
           <td class="border-2" v-if="user.sorted === 'READ' || user.sorted === 'WRITE'">
+            <Icon @click="updateDeliveryRow(row, 'sorted')" v-if="!row.sorted && user.sorted === 'WRITE'"
+              class="text-green-500 cursor-pointer hover:text-green-300 duration-200"
+              name="mdi:checkbox-multiple-marked-circle" size="32" />
             <h1 class="font-bold text-green-500">
               {{ row.sorted ? storeUsers.getNormalizedDate(row.sorted) : "" }}
             </h1>
           </td>
           <td class="border-2" v-if="user.paid === 'READ' || user.paid === 'WRITE'">
+            <Icon @click="updateDeliveryRow(row, 'paid')" v-if="!row.paid && user.paid === 'WRITE'"
+              class="text-green-500 cursor-pointer hover:text-green-300 duration-200"
+              name="mdi:checkbox-multiple-marked-circle" size="32" />
             <h1 class="font-bold text-green-500">
               {{ row.paid ? storeUsers.getNormalizedDate(row.paid) : "" }}
             </h1>

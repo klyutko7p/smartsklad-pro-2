@@ -24,6 +24,10 @@ onBeforeMount(async () => {
     deliveryRansomRows.value = await storeRansom.getRansomRows("Delivery");
 
     getAllSum();
+
+    if (user.value.role === 'PVZ') {
+        selectedPVZ.value = user.value.visiblePVZ;
+    }
     isLoading.value = false;
 });
 
@@ -38,12 +42,8 @@ definePageMeta({
     name: "Баланс",
 });
 
-let showOurRansomRows = ref(false);
-let showClientRansomRows = ref(false);
-
 let copyArrayOurRansom = ref<Array<IOurRansom>>();
 let copyArrayClientRansom = ref<Array<IClientRansom>>();
-let copyArrayDelivery = ref<Array<IDelivery>>();
 
 let sum1 = ref(0);
 let sum2 = ref(0);
@@ -52,17 +52,10 @@ let allSum = ref(0);
 let showFilters = ref(false);
 
 let selectedPVZ = ref("Все ПВЗ");
-let selectedTypeOfTransaction = ref("Доход");
+let selectedTypeOfTransaction = ref("Баланс наличные");
 
 const startingDate = ref<Date | string | null>(null);
 const endDate = ref<Date | string | null>(null);
-let typesOfTransactions = ref([
-    "Доход",
-    "Стоимость сайт",
-    "Сумма с клиента+предоплата наличные",
-    "Сумма с клиента+предоплата онлайн",
-    "Сумма с клиента+предоплата всего",
-]);
 
 function calculateValue(curValue: any) {
     if (!curValue.prepayment) {
@@ -90,11 +83,11 @@ function reduceArray(array: any, flag: string) {
             array = array.filter((row: any) => row.additionally !== "Отказ брак");
             return array.reduce((ac: any, curValue: any) => ac + curValue.profit3, 0);
         }
-    } else if (selectedTypeOfTransaction.value === "Стоимость сайт") {
+    } else if (selectedTypeOfTransaction.value === "Заказано") {
         if (flag === "OurRansom") {
             return array.reduce((ac: any, curValue: any) => ac + curValue.priceSite, 0);
         }
-    } else if (selectedTypeOfTransaction.value === "Сумма с клиента+предоплата наличные") {
+    } else if (selectedTypeOfTransaction.value === "Баланс наличные") {
         if (flag === "OurRansom") {
             array = array.filter((row: any) => row.additionally !== "Отказ брак");
             return array.reduce((ac: any, curValue: any) => ac + (Math.ceil(curValue.amountFromClient1 / 10) * 10 + curValue.prepayment), 0);
@@ -105,7 +98,7 @@ function reduceArray(array: any, flag: string) {
             array = array.filter((row: any) => row.additionally !== "Отказ брак");
             return array.reduce((ac: any, curValue: any) => ac + (curValue.amountFromClient3), 0);
         }
-    } else if (selectedTypeOfTransaction.value === "Сумма с клиента+предоплата онлайн") {
+    } else if (selectedTypeOfTransaction.value === "Баланс безнал") {
         if (flag === "OurRansom") {
             array = array.filter((row: any) => row.additionally !== "Отказ брак");
             return array.reduce((ac: any, curValue: any) => ac + (Math.ceil(curValue.amountFromClient1 / 10) * 10 + curValue.prepayment), 0);
@@ -151,19 +144,9 @@ function getAllSum() {
                 )
                 .sort((a, b) => new Date(b.issued) - new Date(a.issued));
 
-            copyArrayDelivery.value = deliveryRansomRows.value
-                ?.filter(
-                    (row) =>
-                        row.paid !== null &&
-                        (!startingDate.value || new Date(row.paid) >= new Date(startingDate.value)) &&
-                        (!endDate.value || new Date(row.paid) <= new Date(endDate.value))
-                )
-                .sort((a, b) => new Date(b.paid) - new Date(a.paid));
-
             sum1.value = reduceArray(copyArrayOurRansom.value, "OurRansom");
             sum2.value = reduceArray(copyArrayClientRansom.value, "ClientRansom");
-            sum3.value = reduceArray(copyArrayDelivery.value, "Delivery");
-            allSum.value = sum1.value + sum2.value + sum3.value;
+            allSum.value = sum1.value + sum2.value;
         } else {
             copyArrayOurRansom.value = ourRansomRows.value
                 ?.filter(
@@ -185,22 +168,11 @@ function getAllSum() {
                 )
                 .sort((a, b) => new Date(b.issued) - new Date(a.issued));
 
-            copyArrayDelivery.value = deliveryRansomRows.value
-                ?.filter(
-                    (row) =>
-                        row.dispatchPVZ === selectedPVZ.value &&
-                        row.paid !== null &&
-                        (!startingDate.value || new Date(row.paid) >= new Date(startingDate.value)) &&
-                        (!endDate.value || new Date(row.paid) <= new Date(endDate.value))
-                )
-                .sort((a, b) => new Date(b.paid) - new Date(a.paid));
-
             sum1.value = reduceArray(copyArrayOurRansom.value, "OurRansom");
             sum2.value = reduceArray(copyArrayClientRansom.value, "ClientRansom");
-            sum3.value = reduceArray(copyArrayDelivery.value, "Delivery");
-            allSum.value = sum1.value + sum2.value + sum3.value;
+            allSum.value = sum1.value + sum2.value;
         }
-    } else if (selectedTypeOfTransaction.value === "Стоимость сайт") {
+    } else if (selectedTypeOfTransaction.value === "Заказано") {
         if (selectedPVZ.value === "Все ПВЗ") {
             copyArrayOurRansom.value = ourRansomRows.value
                 ?.filter(
@@ -221,7 +193,7 @@ function getAllSum() {
             sum1.value = reduceArray(copyArrayOurRansom.value, "OurRansom");
             allSum.value = sum1.value;
         }
-    } else if (selectedTypeOfTransaction.value === "Сумма с клиента+предоплата наличные") {
+    } else if (selectedTypeOfTransaction.value === "Баланс наличные") {
         if (selectedPVZ.value === "Все ПВЗ") {
             copyArrayOurRansom.value = ourRansomRows.value
                 ?.filter(
@@ -242,20 +214,9 @@ function getAllSum() {
                         row.additionally === "Оплата наличными"
                 ).sort((a, b) => new Date(b.issued) - new Date(a.issued));
 
-            copyArrayDelivery.value = deliveryRansomRows.value
-                ?.filter(
-                    (row) =>
-                        row.paid !== null &&
-                        (!startingDate.value || new Date(row.paid) >= new Date(startingDate.value)) &&
-                        (!endDate.value || new Date(row.paid) <= new Date(endDate.value)) &&
-                        row.additionally === "Оплата наличными" &&
-                        row.dispatchPVZ === selectedPVZ.value
-                ).sort((a, b) => new Date(b.paid) - new Date(a.paid));
-
             sum1.value = reduceArray(copyArrayOurRansom.value, "OurRansom");
             sum2.value = reduceArray(copyArrayClientRansom.value, "ClientRansom");
-            sum3.value = reduceArray(copyArrayDelivery.value, "Delivery");
-            allSum.value = sum1.value + sum2.value + sum3.value
+            allSum.value = sum1.value + sum2.value
         } else {
             copyArrayOurRansom.value = ourRansomRows.value
                 ?.filter(
@@ -278,22 +239,11 @@ function getAllSum() {
                         row.dispatchPVZ === selectedPVZ.value
                 ).sort((a, b) => new Date(b.issued) - new Date(a.issued));
 
-            copyArrayDelivery.value = deliveryRansomRows.value
-                ?.filter(
-                    (row) =>
-                        row.paid !== null &&
-                        (!startingDate.value || new Date(row.paid) >= new Date(startingDate.value)) &&
-                        (!endDate.value || new Date(row.paid) <= new Date(endDate.value)) &&
-                        row.additionally === "Оплата наличными" &&
-                        row.dispatchPVZ === selectedPVZ.value
-                ).sort((a, b) => new Date(b.paid) - new Date(a.paid));
-
             sum1.value = reduceArray(copyArrayOurRansom.value, "OurRansom");
             sum2.value = reduceArray(copyArrayClientRansom.value, "ClientRansom");
-            sum3.value = reduceArray(copyArrayDelivery.value, "Delivery");
-            allSum.value = sum1.value + sum2.value + sum3.value
+            allSum.value = sum1.value + sum2.value
         }
-    } else if (selectedTypeOfTransaction.value === "Сумма с клиента+предоплата онлайн") {
+    } else if (selectedTypeOfTransaction.value === "Баланс безнал") {
         if (selectedPVZ.value === "Все ПВЗ") {
             copyArrayOurRansom.value = ourRansomRows.value
                 ?.filter(
@@ -314,18 +264,8 @@ function getAllSum() {
                         row.additionally === "Оплачено онлайн"
                 ).sort((a, b) => new Date(b.issued) - new Date(a.issued));
 
-            copyArrayDelivery.value = deliveryRansomRows.value
-                ?.filter(
-                    (row) =>
-                        row.paid !== null &&
-                        (!startingDate.value || new Date(row.paid) >= new Date(startingDate.value)) &&
-                        (!endDate.value || new Date(row.paid) <= new Date(endDate.value)) &&
-                        row.additionally === "Оплата онлайн"
-                ).sort((a, b) => new Date(b.paid) - new Date(a.paid));
-
             sum1.value = reduceArray(copyArrayOurRansom.value, "OurRansom");
             sum2.value = reduceArray(copyArrayClientRansom.value, "ClientRansom");
-            sum3.value = reduceArray(copyArrayDelivery.value, "Delivery");
             allSum.value = sum1.value + sum2.value + sum3.value
         } else {
             copyArrayOurRansom.value = ourRansomRows.value
@@ -349,20 +289,9 @@ function getAllSum() {
                         row.dispatchPVZ === selectedPVZ.value
                 ).sort((a, b) => new Date(b.issued) - new Date(a.issued));
 
-            copyArrayDelivery.value = deliveryRansomRows.value
-                ?.filter(
-                    (row) =>
-                        row.paid !== null &&
-                        (!startingDate.value || new Date(row.paid) >= new Date(startingDate.value)) &&
-                        (!endDate.value || new Date(row.paid) <= new Date(endDate.value)) &&
-                        row.additionally === "Оплата онлайн" &&
-                        row.dispatchPVZ === selectedPVZ.value
-                ).sort((a, b) => new Date(b.paid) - new Date(a.paid));
-
             sum1.value = reduceArray(copyArrayOurRansom.value, "OurRansom");
             sum2.value = reduceArray(copyArrayClientRansom.value, "ClientRansom");
-            sum3.value = reduceArray(copyArrayDelivery.value, "Delivery");
-            allSum.value = sum1.value + sum2.value + sum3.value
+            allSum.value = sum1.value + sum2.value
         }
     } else if (selectedTypeOfTransaction.value === "Сумма с клиента+предоплата всего") {
         if (selectedPVZ.value === "Все ПВЗ") {
@@ -383,18 +312,9 @@ function getAllSum() {
                         (!endDate.value || new Date(row.issued) <= new Date(endDate.value))
                 ).sort((a, b) => new Date(b.issued) - new Date(a.issued));
 
-            copyArrayDelivery.value = deliveryRansomRows.value
-                ?.filter(
-                    (row) =>
-                        row.paid !== null &&
-                        (!startingDate.value || new Date(row.paid) >= new Date(startingDate.value)) &&
-                        (!endDate.value || new Date(row.paid) <= new Date(endDate.value))
-                ).sort((a, b) => new Date(b.paid) - new Date(a.paid));
-
             sum1.value = reduceArray(copyArrayOurRansom.value, "OurRansom");
             sum2.value = reduceArray(copyArrayClientRansom.value, "ClientRansom");
-            sum3.value = reduceArray(copyArrayDelivery.value, "Delivery");
-            allSum.value = sum1.value + sum2.value + sum3.value
+            allSum.value = sum1.value + sum2.value
         } else {
             copyArrayOurRansom.value = ourRansomRows.value
                 ?.filter(
@@ -415,19 +335,9 @@ function getAllSum() {
                         row.dispatchPVZ === selectedPVZ.value
                 ).sort((a, b) => new Date(b.issued) - new Date(a.issued));
 
-            copyArrayDelivery.value = deliveryRansomRows.value
-                ?.filter(
-                    (row) =>
-                        row.paid !== null &&
-                        (!startingDate.value || new Date(row.paid) >= new Date(startingDate.value)) &&
-                        (!endDate.value || new Date(row.paid) <= new Date(endDate.value)) &&
-                        row.dispatchPVZ === selectedPVZ.value
-                ).sort((a, b) => new Date(b.paid) - new Date(a.paid));
-
             sum1.value = reduceArray(copyArrayOurRansom.value, "OurRansom");
             sum2.value = reduceArray(copyArrayClientRansom.value, "ClientRansom");
-            sum3.value = reduceArray(copyArrayDelivery.value, "Delivery");
-            allSum.value = sum1.value + sum2.value + sum3.value
+            allSum.value = sum1.value + sum2.value
         }
     }
 }
@@ -443,11 +353,11 @@ function formatNumber(number: number) {
     let remainder = numberString.length % 3;
 
     if (remainder !== 0) {
-        formattedString += numberString.slice(0, remainder) + ".";
+        formattedString += numberString.slice(0, remainder) + " ";
     }
 
     for (let i = remainder; i < numberString.length; i += 3) {
-        formattedString += numberString.slice(i, i + 3) + ".";
+        formattedString += numberString.slice(i, i + 3) + " ";
     }
 
     return formattedString.slice(0, -1);
@@ -457,7 +367,7 @@ watch([selectedPVZ, selectedTypeOfTransaction, startingDate, endDate], getAllSum
 
 function clearFields() {
     selectedPVZ.value = "Все ПВЗ"
-    selectedTypeOfTransaction.value = "Доход"
+    selectedTypeOfTransaction.value = "Баланс наличные"
     startingDate.value = ""
     endDate.value = ""
     getAllSum()
@@ -469,138 +379,178 @@ function clearFields() {
         <Title>Баланс</Title>
     </Head>
 
-    <div v-if="token && user.role === 'ADMIN'">
-        <NuxtLayout name="admin">
-            <div v-if="!isLoading" class="mt-10">
-                <div>
-                    <div class="flex items-center gap-3 mt-14 max-xl:mt-0">
-                        <h1 class="text-xl font-bold">Фильтры</h1>
-                        <Icon @click="showFilters = !showFilters"
-                            class="cursor-pointer duration-200 hover:text-secondary-color" name="solar:filters-line-duotone"
-                            size="24" />
-                    </div>
+    <div v-if="!isLoading">
+        <div v-if="token && user.role === 'ADMIN'">
+            <NuxtLayout name="admin">
+                <div class="mt-10">
+                    <div>
+                        <div class="flex items-center gap-3 mt-14 max-xl:mt-0">
+                            <h1 class="text-xl font-bold">Фильтры</h1>
+                            <Icon @click="showFilters = !showFilters"
+                                class="cursor-pointer duration-200 hover:text-secondary-color"
+                                name="solar:filters-line-duotone" size="24" />
+                        </div>
 
-                    <div v-if="showFilters" class="border-2 border-gray-300 p-3 mt-3 border-dashed">
-                        <div class="grid grid-cols-2 max-xl:grid-cols-2 max-md:grid-cols-1">
-                            <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
-                                <h1>Показать для ПВЗ:</h1>
-                                <select
-                                    class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                                    v-model="selectedPVZ">
-                                    <option value="Все ПВЗ" selected>Все ПВЗ</option>
-                                    <option v-for="pvzValue in pvz" :value="pvzValue.name">
-                                        {{ pvzValue.name }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
-                                <h1>Тип транзакции:</h1>
-                                <select
-                                    class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                                    v-model="selectedTypeOfTransaction">
-                                    <option v-for="type in typesOfTransactions" :value="type">
-                                        {{ type }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="grid grid-cols-1">
-                                <div class="grid grid-cols-2 my-2">
-                                    <h1>От Даты Выдачи:</h1>
-                                    <input
-                                        class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                                        type="date" v-model="startingDate" />
+                        <div v-if="showFilters" class="border-2 border-gray-300 p-3 mt-3 border-dashed">
+                            <div class="grid grid-cols-2 max-xl:grid-cols-2 max-md:grid-cols-1">
+                                <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
+                                    <h1>Показать для ПВЗ:</h1>
+                                    <select
+                                        class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                                        v-model="selectedPVZ">
+                                        <option value="Все ПВЗ" selected>Все ПВЗ</option>
+                                        <option v-for="pvzValue in pvz?.filter((pvzData) => pvzData.name !== 'НаДом')"
+                                            :value="pvzValue.name">
+                                            {{ pvzValue.name }}
+                                        </option>
+                                    </select>
                                 </div>
-                                <div class="grid grid-cols-2 my-2">
-                                    <h1>До Даты Выдачи:</h1>
-                                    <input
-                                        class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                                        type="date" v-model="endDate" />
+                                <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
+                                    <h1>Тип транзакции:</h1>
+                                    <select
+                                        class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                                        v-model="selectedTypeOfTransaction">
+                                        <option v-if="user.role !== 'ADMINISTRATOR' && user.role !== 'PVZ'" value="Доход">
+                                            Доход</option>
+                                        <option v-if="user.role !== 'ADMINISTRATOR' && user.role !== 'PVZ'"
+                                            value="Заказано">Заказано</option>
+                                        <option value="Баланс наличные">Баланс наличные</option>
+                                        <option v-if="user.role !== 'PVZ'" value="Баланс безнал">Баланс безнал</option>
+                                    </select>
+                                </div>
+                                <div class="grid grid-cols-1">
+                                    <div class="grid grid-cols-2 my-2">
+                                        <h1>От Даты:</h1>
+                                        <input
+                                            class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                                            type="date" v-model="startingDate" />
+                                    </div>
+                                    <div class="grid grid-cols-2 my-2">
+                                        <h1>До Даты:</h1>
+                                        <input
+                                            class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                                            type="date" v-model="endDate" />
+                                    </div>
                                 </div>
                             </div>
+                            <div class="flex justify-end">
+                                <UIActionButton @click="clearFields">Очистить фильтры</UIActionButton>
+                            </div>
                         </div>
-                        <div class="flex justify-end">
-                            <UIActionButton @click="clearFields">Очистить фильтры</UIActionButton>
-                        </div>
-                    </div>
 
-                    <div class="grid grid-cols-4 max-xl:grid-cols-2 max-sm:grid-cols-1">
-                        <div class="text-center text-2xl mt-10">
-                            <h1>Общий баланс</h1>
-                            <h1 class="font-bold text-secondary-color text-4xl mt-3">
-                                {{ formatNumber(Math.ceil(allSum)) }} ₽
-                            </h1>
-                        </div>
-                        <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Стоимость сайт'">
-                            <h1>Баланс "Наш Выкуп"</h1>
-                            <h1 class="font-bold text-secondary-color text-4xl mt-3">
-                                {{ formatNumber(Math.ceil(sum1)) }} ₽
-                            </h1>
-                        </div>
-                        <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Стоимость сайт'">
-                            <h1>Баланс "Выкуп Клиента"</h1>
-                            <h1 class="font-bold text-secondary-color text-4xl mt-3">
-                                {{ formatNumber(Math.ceil(sum2)) }} ₽
-                            </h1>
-                        </div>
-                        <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Стоимость сайт'">
-                            <h1>Баланс "Доставка"</h1>
-                            <h1 class="font-bold text-secondary-color text-4xl mt-3">
-                                {{ formatNumber(Math.ceil(sum3)) }} ₽
-                            </h1>
-                        </div>
-                    </div>
-
-                    <!-- <div class="mt-20">
-                        <div class="flex items-center gap-3 mb-5">
-                            <h1 class="font-bold text-2xl">Наш Выкуп</h1>
-                            <Icon @click="showOurRansomRows = !showOurRansomRows" name="ci:show" size="32"
-                                class="cursor-pointer hover:text-secondary-color duration-200" />
-                        </div>
-                        <div class="flex flex-col gap-10" v-if="showOurRansomRows">
-                            <div v-for="row in copyArrayOurRansom"
-                                class="flex items-center gap-5 border-b-2 border-black p-5">
-                                <Icon name="material-symbols:add" size="28"
-                                    class="text-black border-secondary-color border-2 rounded-full" />
-                                <h1 class="font-bold text-2xl text-secondary-color">
-                                    {{
-                                        Math.ceil(row.amountFromClient1 / 10) * 10 -
-                                        row.priceSite +
-                                        row.deliveredKGT
-                                    }}
-                                    ₽
+                        <div class="grid grid-cols-3 max-xl:grid-cols-1 max-sm:grid-cols-1">
+                            <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
+                                <h1>Баланс "Наш Выкуп"</h1>
+                                <h1 class="font-bold text-secondary-color text-4xl mt-3">
+                                    {{ formatNumber(Math.ceil(sum1)) }} ₽
                                 </h1>
-                                <h1 class="text-xl">в {{ storeUsers.getNormalizedDate(row.issued) }}</h1>
                             </div>
-                        </div>
-                        <div class="flex items-center gap-3 mb-5">
-                            <h1 class="font-bold text-2xl">Выкуп клиента</h1>
-                            <Icon @click="showClientRansomRows = !showClientRansomRows" name="ci:show" size="32"
-                                class="cursor-pointer hover:text-secondary-color duration-200" />
-                        </div>
-                        <div class="flex flex-col gap-10" v-if="showClientRansomRows">
-                            <div v-for="row in copyArrayClientRansom"
-                                class="flex items-center gap-3 border-b-2 border-black p-5">
-                                <Icon name="material-symbols:add" size="28" class="text-secondary-color" />
-                                <h1 class="font-bold text-2xl text-secondary-color">
-                                    {{ Math.ceil(row.amountFromClient2 / 10) * 10 }} ₽
+                            <div class="text-center text-2xl mt-10">
+                                <h1>Общий баланс</h1>
+                                <h1 class="font-bold text-secondary-color text-4xl mt-3">
+                                    {{ formatNumber(Math.ceil(allSum)) }} ₽
+                                </h1>
+                            </div>
+                            <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
+                                <h1>Баланс "Выкуп Клиента"</h1>
+                                <h1 class="font-bold text-secondary-color text-4xl mt-3">
+                                    {{ formatNumber(Math.ceil(sum2)) }} ₽
                                 </h1>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
-            </div>
 
-            <div v-else>
-                <UISpinner />
-            </div>
-        </NuxtLayout>
+            </NuxtLayout>
+        </div>
+
+        <div v-else>
+            <NuxtLayout name="user">
+                <div class="mt-10">
+                    <div>
+                        <div class="flex items-center gap-3 mt-14 max-xl:mt-0">
+                            <h1 class="text-xl font-bold">Фильтры</h1>
+                            <Icon @click="showFilters = !showFilters"
+                                class="cursor-pointer duration-200 hover:text-secondary-color"
+                                name="solar:filters-line-duotone" size="24" />
+                        </div>
+
+                        <div v-if="showFilters" class="border-2 border-gray-300 p-3 mt-3 border-dashed">
+                            <div class="grid grid-cols-2 max-xl:grid-cols-2 max-md:grid-cols-1">
+                                <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
+                                    <h1>Показать для ПВЗ:</h1>
+                                    <select
+                                        class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                                        v-model="selectedPVZ">
+                                        <option v-if="user.role !== 'PVZ'" value="Все ПВЗ" selected>Все ПВЗ</option>
+                                        <option v-if="user.role !== 'PVZ'" v-for="pvzValue in pvz?.filter((pvzData) => pvzData.name !== 'НаДом')"
+                                            :value="pvzValue.name">
+                                            {{ pvzValue.name }}
+                                        </option>
+                                        <option v-if="user.role === 'PVZ'" :value="user.visiblePVZ"> {{ user.visiblePVZ }} </option>
+                                    </select>
+                                </div>
+                                <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
+                                    <h1>Тип транзакции:</h1>
+                                    <select
+                                        class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                                        v-model="selectedTypeOfTransaction">
+                                        <option v-if="user.role !== 'ADMINISTRATOR' && user.role !== 'PVZ'" value="Доход">
+                                            Доход</option>
+                                        <option v-if="user.role !== 'ADMINISTRATOR' && user.role !== 'PVZ'"
+                                            value="Заказано">Заказано</option>
+                                        <option value="Баланс наличные">Баланс наличные</option>
+                                        <option v-if="user.role !== 'PVZ'" value="Баланс безнал">Баланс безнал</option>
+                                    </select>
+                                </div>
+                                <div class="grid grid-cols-1">
+                                    <div class="grid grid-cols-2 my-2">
+                                        <h1>От Даты:</h1>
+                                        <input
+                                            class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                                            type="date" v-model="startingDate" />
+                                    </div>
+                                    <div class="grid grid-cols-2 my-2">
+                                        <h1>До Даты:</h1>
+                                        <input
+                                            class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                                            type="date" v-model="endDate" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex justify-end">
+                                <UIActionButton @click="clearFields">Очистить фильтры</UIActionButton>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 max-xl:grid-cols-1 max-sm:grid-cols-1">
+                            <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
+                                <h1>Баланс "Наш Выкуп"</h1>
+                                <h1 class="font-bold text-secondary-color text-4xl mt-3">
+                                    {{ formatNumber(Math.ceil(sum1)) }} ₽
+                                </h1>
+                            </div>
+                            <div class="text-center text-2xl mt-10">
+                                <h1>Общий баланс</h1>
+                                <h1 class="font-bold text-secondary-color text-4xl mt-3">
+                                    {{ formatNumber(Math.ceil(allSum)) }} ₽
+                                </h1>
+                            </div>
+                            <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
+                                <h1>Баланс "Выкуп Клиента"</h1>
+                                <h1 class="font-bold text-secondary-color text-4xl mt-3">
+                                    {{ formatNumber(Math.ceil(sum2)) }} ₽
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </NuxtLayout>
+        </div>
     </div>
 
-    <div v-else-if="user.role === 'USER'">
-        <NuxtLayout name="user">
-            <h1>
-                У вас недостаточно прав на просмотр этой информации. Обратитесь к администратору
-            </h1>
-        </NuxtLayout>
+    <div v-else class="flex items-center justify-center">
+        <UISpinner />
     </div>
 </template>

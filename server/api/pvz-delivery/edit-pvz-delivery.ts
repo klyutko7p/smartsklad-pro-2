@@ -17,6 +17,7 @@ export default defineEventHandler(async (event) => {
             },
             data: {
                 name: pvz.name,
+                address: pvz.address
             },
         })
 

@@ -17,6 +17,7 @@ export default defineEventHandler(async (event) => {
             },
             data: {
                 name: sortingCenter.name,
+                address: sortingCenter.address,
             },
         })
 

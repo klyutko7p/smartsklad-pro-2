@@ -92,7 +92,9 @@ export const useRansomStore = defineStore("ransom", () => {
 
             } else if (flag === 'Delivery') {
                 if (row.percentClient === undefined) row.percentClient = 2;
+                if (row.percentClient2 === undefined) row.percentClient2 = 2;
                 if (row.purchaseOfGoods === undefined) row.purchaseOfGoods = 0;
+                if (row.purchaseOfGoods2 === undefined) row.purchaseOfGoods2 = 0;
                 if (row.nameOfAction === undefined) row.nameOfAction = '';
 
                 row.createdUser = username;
@@ -119,6 +121,7 @@ export const useRansomStore = defineStore("ransom", () => {
                 if (data.data.value === undefined) {
                     toast.success("Запись успешно создана!")
                 } else {
+                    console.log(data.data.value);
                     toast.error("Произошла ошибка при создании записи")
                 }
             } else {
