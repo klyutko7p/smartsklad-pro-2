@@ -331,7 +331,7 @@ function getFromNameFromName() {
               <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>
             <div class="flex items-center justify-center gap-3 mt-10" v-else>
-              <UIMainButton @click="createRow">Создать
+              <UIMainButton :disabled="rowData.fromName === '' || rowData.fromName === null" @click="createRow">Создать
               </UIMainButton>
               <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
             </div>
@@ -474,7 +474,7 @@ function getFromNameFromName() {
                 <UIErrorButton @click="closeModal">Отменить</UIErrorButton>
               </div>
               <div class="flex items-center justify-center gap-3 mt-10" v-else>
-                <UIMainButton @click="createRow">Создать
+                <UIMainButton :disabled="rowData.fromName === '' || rowData.fromName === null" @click="createRow">Создать
                 </UIMainButton>
                 <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
               </div>
