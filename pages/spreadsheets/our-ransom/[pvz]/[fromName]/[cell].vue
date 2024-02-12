@@ -200,8 +200,9 @@ let originallyRows = ref<Array<IOurRansom>>()
 onMounted(async () => {
   isLoading.value = true;
   user.value = await storeUsers.getUser();
-  rows.value = await storeRansom.getRansomRowsByFromName(fromNameString, cellString, "OurRansom");
+  // rows.value = await storeRansom.getRansomRowsByFromName(fromNameString, cellString, "OurRansom");
   originallyRows.value = await storeRansom.getRansomRows("OurRansom");
+  rows.value = originallyRows.value?.filter((row) => row.fromName === fromNameString && row.cell === cellString)
   pvz.value = await storePVZ.getPVZ();
   sortingCenters.value = await storeSortingCenters.getSortingCenters();
   orderAccounts.value = await storeOrderAccounts.getOrderAccounts();

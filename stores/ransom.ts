@@ -23,6 +23,7 @@ function generateLink(phoneNumber: string, flag: string) {
 
 export const useRansomStore = defineStore("ransom", () => {
 
+
     async function createCopyRow(id: number, flag: string) {
         try {
             let data = await useFetch('/api/ransom/create-copy-row', {
@@ -135,15 +136,16 @@ export const useRansomStore = defineStore("ransom", () => {
         }
     }
 
+
     async function getRansomRows(flag: string) {
         try {
-            let { data }: any = await useFetch('/api/ransom/get-rows', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ flag: flag })
-            })
+                let { data }: any = await useFetch('/api/ransom/get-rows', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ flag: flag })
+                });
             return data.value;
         } catch (error) {
             if (error instanceof Error) {
@@ -268,6 +270,8 @@ export const useRansomStore = defineStore("ransom", () => {
                 } else {
                     row.clientLink3 = ''
                 }
+
+                console.log(row);
 
                 row.amountFromClient3 = Math.ceil(row.purchaseOfGoods * row.percentClient / 100);
                 row.profit3 = row.amountFromClient3;

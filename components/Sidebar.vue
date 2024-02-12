@@ -6,6 +6,8 @@ const route = useRoute()
 const storeUsers = useUsersStore();
 let user = ref({} as User);
 let isOpen = ref(false);
+const storeBalance = useBalanceStore();
+let requests = ref<Array<IBalance>>()
 
 function signOut() {
   storeUsers.signOut();
@@ -15,8 +17,9 @@ function editMenu() {
   isOpen.value = !isOpen.value;
 }
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
   user.value = storeUsers.getUser();
+  requests.value = await storeBalance.getBalanceRows();
 });
 
 function formatPhoneNumber(phoneNumber: string) {
@@ -92,6 +95,8 @@ function formatPhoneNumber(phoneNumber: string) {
           <Icon name="mdi:wallet-bifold" size="20" />
         </div>
         <h1>Баланс</h1>
+        <Icon v-if="requests?.filter((row) => row.issued !== null && row.received === null).length > 0"
+          name="pepicons-print:exclamation" size="24" class="text-red-700" />
       </div>
       <div class="px-3 pt-3 font-bold" v-if="user.role !== 'USER'">
         <h1>Настройки доступа</h1>
@@ -108,6 +113,14 @@ function formatPhoneNumber(phoneNumber: string) {
           </svg>
         </div>
         <h1>Пользователи</h1>
+      </div>
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
+        @click="router.push('/admin/marketplaces')" tabindex="0"
+        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
+        <div class="grid place-items-center mr-4">
+          <Icon name="icon-park-outline:market-analysis" size="20" />
+        </div>
+        <h1>Маркетплейсы</h1>
       </div>
       <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
         @click="router.push('/admin/pvz')" tabindex="0"
@@ -213,6 +226,8 @@ function formatPhoneNumber(phoneNumber: string) {
           <Icon name="mdi:wallet-bifold" size="20" />
         </div>
         <h1>Баланс</h1>
+        <Icon v-if="requests?.filter((row) => row.issued !== null && row.received === null).length > 0"
+          name="pepicons-print:exclamation" size="24" class="text-red-700" />
       </div>
       <div class="px-3 pt-3 font-bold" v-if="user.role !== 'USER'">
         <h1>Настройки доступа</h1>
@@ -229,6 +244,14 @@ function formatPhoneNumber(phoneNumber: string) {
           </svg>
         </div>
         <h1>Пользователи</h1>
+      </div>
+      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
+        @click="router.push('/admin/marketplaces')" tabindex="0"
+        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
+        <div class="grid place-items-center mr-4">
+          <Icon name="icon-park-outline:market-analysis" size="20" />
+        </div>
+        <h1>Маркетплейсы</h1>
       </div>
       <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
         @click="router.push('/admin/pvz')" tabindex="0"

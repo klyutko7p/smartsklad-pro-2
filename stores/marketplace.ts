@@ -3,46 +3,45 @@ import { useToast } from "vue-toastification";
 
 const toast = useToast()
 
-export const useOrderAccountStore = defineStore("order-accounts", () => {
+export const useMarketplacesStore = defineStore("marketplaces", () => {
 
-    let cachedOrderAccounts: any = null;
+    let cachedMarketplaces: any = null;
 
-    async function getOrderAccounts() {
-        if (cachedOrderAccounts) {
-            return cachedOrderAccounts;
+    async function getMarketplaces() {
+        if (cachedMarketplaces) {
+            return cachedMarketplaces;
         } else {
             try {
-                let { data }: any = await useFetch('/api/order-accounts/get-oa', {
+                let { data }: any = await useFetch('/api/marketplaces/get-marketplace', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                 })
-                cachedOrderAccounts = data.value;
-                return cachedOrderAccounts;
+                cachedMarketplaces = data.value;
+                return cachedMarketplaces;
             } catch (error) {
                 if (error instanceof Error) {
                     toast.error(error.message);
                 }
-            } 
+            }
         }
     }
 
-
-    async function createOrderAccount(name: string) {
+    async function createMarketPlace(name: string) {
         try {
             if (name === '') {
-                toast.warning("Название Аккаунта Заказа не должно быть пустым")
+                toast.warning("Название маркетплейса не должно быть пустым")
             } else {
-                let data = await useFetch('/api/order-accounts/create-oa', {
+                let data = await useFetch('/api/marketplaces/create-marketplace', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({ name: name }),
                 });
-                cachedOrderAccounts = null;
-                toast.success("Аккаунт Заказа успешно добавлен!")
+                cachedMarketplaces = null; 
+                toast.success("Маркетплейс успешно добавлен!")
             }
         } catch (error) {
             if (error instanceof Error) {
@@ -51,17 +50,17 @@ export const useOrderAccountStore = defineStore("order-accounts", () => {
         }
     }
     
-    async function updateOrderAccount(orderAccount: OrderAccount) {
+    async function updateMarketplace(marketplace: Marketplace) {
         try {
-            let data = await useFetch('/api/order-accounts/edit-oa', {
+            let data = await useFetch('/api/marketplaces/edit-marketplace', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ orderAccount: orderAccount }),
+                body: JSON.stringify({ marketplace: marketplace }),
             })
-            cachedOrderAccounts = null; 
-            toast.success("Аккаунт заказа успешно обновлен!")
+            cachedMarketplaces = null; 
+            toast.success("Маркетплейс успешно обновлен!")
         } catch (error) {
             if (error instanceof Error) {
                 toast.error(error.message);
@@ -69,17 +68,17 @@ export const useOrderAccountStore = defineStore("order-accounts", () => {
         }
     }
     
-    async function deleteOrderAccount(id: number) {
+    async function deleteMarketplace(id: number) {
         try {
-            let data = await useFetch('/api/order-accounts/delete-oa', {
+            let data = await useFetch('/api/marketplaces/delete-marketplace', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ id: id }),
             });
-            cachedOrderAccounts = null; 
-            toast.success("Аккаунт заказа успешно удален!")
+            cachedMarketplaces = null; 
+            toast.success("Маркетплейс успешно удален!")
         } catch (error) {
             if (error instanceof Error) {
                 toast.error(error.message);
@@ -88,5 +87,5 @@ export const useOrderAccountStore = defineStore("order-accounts", () => {
     }
     
 
-    return { getOrderAccounts, createOrderAccount, updateOrderAccount, deleteOrderAccount }
+    return { getMarketplaces, createMarketPlace, updateMarketplace, deleteMarketplace }
 })

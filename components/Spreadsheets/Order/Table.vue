@@ -84,7 +84,7 @@ function exportToExcel() {
           <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             дополнительно
           </th>
-          <th scope="col" class="border-2">создан (время)</th>
+          <th scope="col" class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">создан (время)</th>
         </tr>
       </thead>
       <tbody>
@@ -160,7 +160,7 @@ function exportToExcel() {
           <td class="border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             {{ row.additionally ? row.additionally : "Пусто" }}
           </td>
-          <td class="px-6 py-4 border-2">
+          <td class="px-6 py-4 border-2" v-if="link?.startsWith('1') || link?.startsWith('2')">
             {{ storeUsers.getNormalizedDate(row.created_at) }}
           </td>
         </tr>

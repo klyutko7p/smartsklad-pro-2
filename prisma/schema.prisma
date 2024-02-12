@@ -176,6 +176,11 @@ model SortingCenter {
   name String
 }
 
+model Marketplace {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
 model PVZDelivery {
   id      Int     @id @default(autoincrement())
   name    String

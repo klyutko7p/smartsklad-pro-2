@@ -41,6 +41,7 @@ export const usePVZDeliveryStore = defineStore("pvz-delivery", () => {
                     },
                     body: JSON.stringify({ name: name, address: address }),
                 });
+                cachedPVZ = null; 
                 toast.success("ПВЗ успешно добавлено!")
             }
         } catch (error) {
@@ -49,7 +50,7 @@ export const usePVZDeliveryStore = defineStore("pvz-delivery", () => {
             }
         }
     }
-
+    
     async function updatePVZ(pvz: PVZ) {
         try {
             let data = await useFetch('/api/pvz-delivery/edit-pvz-delivery', {
@@ -59,6 +60,7 @@ export const usePVZDeliveryStore = defineStore("pvz-delivery", () => {
                 },
                 body: JSON.stringify({ pvz: pvz }),
             })
+            cachedPVZ = null; 
             toast.success("ПВЗ успешно обновлено!")
         } catch (error) {
             if (error instanceof Error) {
@@ -66,7 +68,7 @@ export const usePVZDeliveryStore = defineStore("pvz-delivery", () => {
             }
         }
     }
-
+    
     async function deletePVZ(id: number) {
         try {
             let data = await useFetch('/api/pvz-delivery/delete-pvz-delivery', {
@@ -76,6 +78,7 @@ export const usePVZDeliveryStore = defineStore("pvz-delivery", () => {
                 },
                 body: JSON.stringify({ id: id }),
             });
+            cachedPVZ = null; 
             toast.success("ПВЗ успешно удалено!")
         } catch (error) {
             if (error instanceof Error) {
@@ -83,6 +86,7 @@ export const usePVZDeliveryStore = defineStore("pvz-delivery", () => {
             }
         }
     }
+    
 
     return { getPVZ, createPVZ, updatePVZ, deletePVZ }
 })

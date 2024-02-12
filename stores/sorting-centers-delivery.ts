@@ -6,6 +6,7 @@ const toast = useToast()
 export const useSortingCentersDeliveryStore = defineStore("sorting-centers-delivery", () => {
 
     let cachedSortingCenters: any = null;
+    
     async function getSortingCenters() {
         if (cachedSortingCenters) {
             return cachedSortingCenters;
@@ -16,7 +17,7 @@ export const useSortingCentersDeliveryStore = defineStore("sorting-centers-deliv
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                })
+                });
                 cachedSortingCenters = data.value;
                 return cachedSortingCenters;
             } catch (error) {
@@ -26,7 +27,7 @@ export const useSortingCentersDeliveryStore = defineStore("sorting-centers-deliv
             }
         }
     }
-
+    
     async function createSortingCenter(name: string, address: string) {
         try {
             if (name === '') {
@@ -39,6 +40,7 @@ export const useSortingCentersDeliveryStore = defineStore("sorting-centers-deliv
                     },
                     body: JSON.stringify({ name: name, address: address }),
                 });
+                cachedSortingCenters = null; 
                 toast.success("Сортировочный Центр успешно добавлен!")
             }
         } catch (error) {
@@ -47,7 +49,7 @@ export const useSortingCentersDeliveryStore = defineStore("sorting-centers-deliv
             }
         }
     }
-
+    
     async function updateSortingCenters(sortingCenter: SortingCenter) {
         try {
             let data = await useFetch('/api/sorting-centers-delivery/edit-sc-delivery', {
@@ -56,7 +58,8 @@ export const useSortingCentersDeliveryStore = defineStore("sorting-centers-deliv
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ sortingCenter: sortingCenter }),
-            })
+            });
+            cachedSortingCenters = null; 
             toast.success("Сортировочный Центр успешно обновлен!")
         } catch (error) {
             if (error instanceof Error) {
@@ -64,7 +67,7 @@ export const useSortingCentersDeliveryStore = defineStore("sorting-centers-deliv
             }
         }
     }
-
+    
     async function deleteSortingCenter(id: number) {
         try {
             let data = await useFetch('/api/sorting-centers-delivery/delete-sc-delivery', {
@@ -74,6 +77,7 @@ export const useSortingCentersDeliveryStore = defineStore("sorting-centers-deliv
                 },
                 body: JSON.stringify({ id: id }),
             });
+            cachedSortingCenters = null; 
             toast.success("Сортировочный Центр успешно удален!")
         } catch (error) {
             if (error instanceof Error) {
@@ -81,6 +85,7 @@ export const useSortingCentersDeliveryStore = defineStore("sorting-centers-deliv
             }
         }
     }
+    
 
     return { getSortingCenters, createSortingCenter, updateSortingCenters, deleteSortingCenter }
 })

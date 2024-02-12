@@ -4,8 +4,10 @@ import { useUsersStore } from "../stores/users";
 const router = useRouter();
 const route = useRoute()
 const storeUsers = useUsersStore();
+const storeBalance = useBalanceStore();
 let user = ref({} as User);
 let isOpen = ref(false);
+let requests = ref<Array<IBalance>>()
 
 function signOut() {
   storeUsers.signOut();
@@ -15,8 +17,9 @@ function editMenu() {
   isOpen.value = !isOpen.value;
 }
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
   user.value = storeUsers.getUser();
+  requests.value = await storeBalance.getBalanceRows();
 });
 
 function formatPhoneNumber(phoneNumber: string) {
@@ -90,6 +93,7 @@ function formatPhoneNumber(phoneNumber: string) {
           <Icon name="mdi:wallet-bifold" size="20" />
         </div>
         <h1>Баланс</h1>
+        <Icon v-if="requests?.filter((row) => row.pvz === user.visiblePVZ && row.issued === null).length > 0" name="pepicons-print:exclamation" size="24" class="text-red-700" />
       </div>
       <div role="button" tabindex="0" @click="signOut()"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-orange-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
@@ -155,6 +159,7 @@ function formatPhoneNumber(phoneNumber: string) {
           <Icon name="mdi:wallet-bifold" size="20" />
         </div>
         <h1>Баланс</h1>
+        <Icon v-if="requests?.filter((row) => row.pvz === user.visiblePVZ && row.issued === null).length > 0" name="pepicons-print:exclamation" size="24" class="text-red-700" />
       </div>
       <div role="button" tabindex="0" @click="signOut()"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-orange-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">

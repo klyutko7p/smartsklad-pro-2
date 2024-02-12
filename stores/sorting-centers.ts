@@ -6,6 +6,7 @@ const toast = useToast()
 export const useSortingCentersStore = defineStore("sorting-centers", () => {
 
     let cachedSortingCenters: any = null;
+
     async function getSortingCenters() {
         if (cachedSortingCenters) {
             return cachedSortingCenters;
@@ -39,6 +40,7 @@ export const useSortingCentersStore = defineStore("sorting-centers", () => {
                     },
                     body: JSON.stringify({ name: name }),
                 });
+                cachedSortingCenters = null; // Очищаем кеш после успешного создания
                 toast.success("Сортировочный Центр успешно добавлен!")
             }
         } catch (error) {
@@ -57,6 +59,7 @@ export const useSortingCentersStore = defineStore("sorting-centers", () => {
                 },
                 body: JSON.stringify({ sortingCenter: sortingCenter }),
             })
+            cachedSortingCenters = null; // Очищаем кеш после успешного обновления
             toast.success("Сортировочный Центр успешно обновлен!")
         } catch (error) {
             if (error instanceof Error) {
@@ -74,6 +77,7 @@ export const useSortingCentersStore = defineStore("sorting-centers", () => {
                 },
                 body: JSON.stringify({ id: id }),
             });
+            cachedSortingCenters = null; // Очищаем кеш после успешного удаления
             toast.success("Сортировочный Центр успешно удален!")
         } catch (error) {
             if (error instanceof Error) {
@@ -81,6 +85,7 @@ export const useSortingCentersStore = defineStore("sorting-centers", () => {
             }
         }
     }
+
 
     return { getSortingCenters, createSortingCenter, updateSortingCenters, deleteSortingCenter }
 })

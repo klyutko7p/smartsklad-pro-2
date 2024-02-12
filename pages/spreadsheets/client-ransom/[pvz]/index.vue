@@ -10,6 +10,8 @@ const storeUsers = useUsersStore();
 const storeRansom = useRansomStore();
 const storePVZ = usePVZStore();
 const storeSortingCenters = useSortingCentersStore();
+const storeMarketplaces = useMarketplacesStore();
+
 
 const router = useRouter();
 
@@ -20,6 +22,8 @@ let user = ref({} as User);
 let rows = ref<Array<IClientRansom>>();
 let pvz = ref<Array<PVZ>>();
 let sortingCenters = ref<Array<SortingCenter>>();
+let marketplaces = ref<Array<Marketplace>>();
+
 
 let rowData = ref({} as IClientRansom);
 
@@ -192,10 +196,12 @@ let originallyRows = ref<Array<IClientRansom>>()
 onMounted(async () => {
   isLoading.value = true;
   user.value = await storeUsers.getUser();
-  rows.value = await storeRansom.getRansomRowsByPVZ(pvzString, "ClientRansom");
+  // rows.value = await storeRansom.getRansomRowsByPVZ(pvzString, "ClientRansom");
   originallyRows.value = await storeRansom.getRansomRows("ClientRansom");
+  rows.value = originallyRows.value?.filter((row) => row.dispatchPVZ === pvzString)
   pvz.value = await storePVZ.getPVZ();
   sortingCenters.value = await storeSortingCenters.getSortingCenters();
+  marketplaces.value = await storeMarketplaces.getMarketplaces();
 
   if (rows.value) {
     handleFilteredRows(rows.value);
@@ -325,12 +331,7 @@ function getFromNameFromCell() {
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.productLink">
                   <option value="">Пусто</option>
-                  <option value="Ozon">Ozon</option>
-                  <option value="Wildberries">Wildberries</option>
-                  <option value="Яндекс Маркет">Яндекс Маркет</option>
-                  <option value="СДЕК">СДЕК</option>
-                  <option value="Почта">Почта</option>
-                  <option value="DNS">DNS</option>
+                  <option v-for="marketplace in marketplaces" :value="marketplace.name"> {{ marketplace.name }} </option>
                 </select>
               </div>
 
@@ -521,12 +522,7 @@ function getFromNameFromCell() {
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.productLink">
                   <option value="">Пусто</option>
-                  <option value="Ozon">Ozon</option>
-                  <option value="Wildberries">Wildberries</option>
-                  <option value="Яндекс Маркет">Яндекс Маркет</option>
-                  <option value="СДЕК">СДЕК</option>
-                  <option value="Почта">Почта</option>
-                  <option value="DNS">DNS</option>
+                  <option v-for="marketplace in marketplaces" :value="marketplace.name"> {{ marketplace.name }} </option>
                 </select>
               </div>
 

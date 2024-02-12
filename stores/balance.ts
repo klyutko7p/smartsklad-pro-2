@@ -6,14 +6,15 @@ const toast = useToast()
 
 export const useBalanceStore = defineStore("balance", () => {
 
-    async function createBalanceRow(row: IBalance, username: string) {
+    let cachedBalanceRows: IBalance[] | null = null;
 
+    async function createBalanceRow(row: IBalance, username: string) {
         try {
             if (row.sum === undefined) row.sum = '0';
             if (row.pvz === undefined) row.pvz = '';
 
             row.createdUser = username;
-            row.receivedUser = ''
+            row.receivedUser = '';
 
             let data = await useFetch('/api/balance/create-row', {
                 method: 'POST',
@@ -22,13 +23,14 @@ export const useBalanceStore = defineStore("balance", () => {
                 },
                 body: JSON.stringify({ row: row }),
             });
+
             if (data.data.value === undefined) {
-                toast.success("Запись успешно создана!")
+                cachedBalanceRows = null;
+                toast.success("Запись успешно создана!");
             } else {
                 console.log(data.data.value);
-                toast.error("Произошла ошибка при создании записи")
+                toast.error("Произошла ошибка при создании записи");
             }
-
         } catch (error) {
             if (error instanceof Error) {
                 toast.error(error.message);
@@ -38,14 +40,19 @@ export const useBalanceStore = defineStore("balance", () => {
 
     async function getBalanceRows() {
         try {
-            let { data }: any = await useFetch('/api/balance/get-rows', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({})
-            })
-            return data.value;
+            if (cachedBalanceRows) {
+                return cachedBalanceRows;
+            } else {
+                let { data }: any = await useFetch('/api/balance/get-rows', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({})
+                });
+                cachedBalanceRows = data.value;
+                return cachedBalanceRows;
+            }
         } catch (error) {
             if (error instanceof Error) {
                 toast.error(error.message);
@@ -58,22 +65,20 @@ export const useBalanceStore = defineStore("balance", () => {
             if (row.sum === undefined) row.sum = '0';
             if (row.pvz === undefined) row.pvz = '';
 
-            
-
             let data = await useFetch('/api/balance/edit-row', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ row: row }),
-            })
+            });
 
             if (data.data.value === undefined) {
-                toast.success("Запись успешно обновлена!")
+                cachedBalanceRows = null;
+                toast.success("Запись успешно обновлена!");
             } else {
-                toast.error("Произошла ошибка при обновлении записи!")
+                toast.error("Произошла ошибка при обновлении записи!");
             }
-
         } catch (error) {
             if (error instanceof Error) {
                 console.error(error.message)
@@ -90,12 +95,14 @@ export const useBalanceStore = defineStore("balance", () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ row: row, flag: flag, username: username }),
-            })
+            });
+
             if (data.data.value === undefined) {
-                toast.success("Статус успешно обновлен!")
+                cachedBalanceRows = null;
+                toast.success("Статус успешно обновлен!");
             } else {
                 console.log(data.data.value);
-                toast.error("Произошла ошибка")
+                toast.error("Произошла ошибка");
             }
         } catch (error) {
             if (error instanceof Error) {
@@ -104,7 +111,6 @@ export const useBalanceStore = defineStore("balance", () => {
             }
         }
     }
-
 
     return { updateDeliveryStatus, updateBalanceRow, getBalanceRows, createBalanceRow }
 })

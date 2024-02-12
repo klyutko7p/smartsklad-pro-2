@@ -112,7 +112,7 @@ function formatPhoneNumber(phoneNumber: string) {
       class="block w-full bg-transparent mb-5 border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 rounded-2xl focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"
       placeholder="Введите телефон или ячейку..." @input="updateRowsByFromName" />
     <div v-for="row in returnRows">
-      <div @click="router.push(`/spreadsheets/client-ransom/${pvzLink}/${row.fromName}?cell=${row.cell}`)"
+      <div @click="router.push(`/spreadsheets/client-ransom/${pvzLink}/${row.fromName}/${row.cell}`)"
         class="cursor-pointer hover:bg-hover-color duration-300 flex items-center  justify-between p-10 mb-3 border-2">
         <div class="rounded-full border-2 p-3 min-w-[50px] text-center border-secondary-color">
           <h1>{{ row.cell }}</h1>
