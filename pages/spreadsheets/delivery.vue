@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import Cookies from "js-cookie";
+import { useToast } from 'vue-toastification';
+
+const toast = useToast()
 
 const storeUsers = useUsersStore();
 const storeRansom = useRansomStore();
@@ -176,6 +179,19 @@ let isAutoName = ref(true);
 let isAutoFromName = ref(true);
 
 function getNameFromName() {
+  if (rowData.value.fromName.trim().length === 4) {
+    let phoneNum = rowData.value.fromName.trim().toString().slice(-4);
+    let row = rows.value?.filter((row) => row.fromName ? row.fromName.slice(-4) === phoneNum : '');
+
+    if (row && row.length > 0) {
+      if (row.some(r => r.fromName !== row[0].fromName)) {
+        toast.warning("Было найдено несколько номеров. Впишите полный номер");
+      } else {
+        rowData.value.fromName = row[0].fromName;
+      }
+    }
+  }
+
   if (rowData.value.fromName.trim().length === 12 && isAutoFromName.value === true) {
     let rowCell = rows.value?.filter((row) => row.fromName === rowData.value.fromName);
     if (rowCell) {
