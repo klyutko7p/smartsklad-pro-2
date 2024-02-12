@@ -50,7 +50,7 @@ const token = Cookies.get("token");
         <div class="mt-5" v-if="!isLoading">
           <RecordBody :link="link" :user="user" :row="row" @update-delivery-row="updateDeliveryRow" />
           <RecordQR class="mt-10" :row="row"
-            :value="`https://soft-praline-633324.netlify.app/spreadsheets/record/1/${row.id}`" />
+            :value="`https://smartsklad-pro-1.netlify.app/spreadsheets/record/1/${row.id}`" />
         </div>
         <div v-else>
           <UISpinner />
@@ -62,7 +62,7 @@ const token = Cookies.get("token");
         <div class="mt-5" v-if="!isLoading">
           <RecordBody :link="link" :user="user" :row="row" @update-delivery-row="updateDeliveryRow" />
           <RecordQR class="mt-10" :row="row"
-            :value="`https://soft-praline-633324.netlify.app/spreadsheets/record/1/${row.id}`" />
+            :value="`https://smartsklad-pro-1.netlify.app/spreadsheets/record/1/${row.id}`" />
         </div>
         <div v-else>
           <UISpinner />
