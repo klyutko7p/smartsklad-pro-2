@@ -65,7 +65,7 @@ onMounted(() => {
       <tbody>
         <div id="left"></div>
         <tr v-for="row in rows" class="text-center">
-          <td class="border-2" v-if="user.role === 'ADMIN'">
+          <td class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
             <Icon @click="openModal(row)" class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
               name="material-symbols:edit" size="32" />
           </td>
@@ -76,7 +76,7 @@ onMounted(() => {
             {{ row.sum }}
           </th>
           <td class="border-2">
-            <Icon @click="updateDeliveryRow(row, 'issued')" v-if="!row.issued"
+            <Icon @click="updateDeliveryRow(row, 'issued')" v-if="!row.issued && user.role === 'PVZ'"
               class="text-green-500 cursor-pointer hover:text-green-300 duration-200"
               name="mdi:checkbox-multiple-marked-circle" size="32" />
             <h1 class="font-bold text-green-500">
@@ -84,7 +84,8 @@ onMounted(() => {
             </h1>
           </td>
           <td class="border-2">
-            <Icon @click="updateDeliveryRow(row, 'received')" v-if="!row.received"
+            <Icon @click="updateDeliveryRow(row, 'received')"
+              v-if="!row.received && (user.role === 'ADMIN' || user.role === 'ADMINISTRATOR')"
               class="text-green-500 cursor-pointer hover:text-green-300 duration-200"
               name="mdi:checkbox-multiple-marked-circle" size="32" />
             <h1 class="font-bold text-green-500">

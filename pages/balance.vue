@@ -30,6 +30,7 @@ onBeforeMount(async () => {
 
   if (user.value.role === "PVZ") {
     selectedPVZ.value = user.value.visiblePVZ;
+    rows.value = rows.value?.filter((row) => row.pvz === user.value.visiblePVZ)
   }
   isLoading.value = false;
 });
@@ -254,9 +255,10 @@ function getAllSum() {
         )
         .sort((a, b) => new Date(b.issued) - new Date(a.issued));
 
+      let sumOfPVZ = rows.value?.filter((row) => row.received !== null).reduce((acc, value) => acc + +value.sum, 0)
       sum1.value = reduceArray(copyArrayOurRansom.value, "OurRansom");
       sum2.value = reduceArray(copyArrayClientRansom.value, "ClientRansom");
-      allSum.value = sum1.value + sum2.value;
+      allSum.value = sum1.value + sum2.value - sumOfPVZ;
     } else {
       copyArrayOurRansom.value = ourRansomRows.value
         ?.filter(
@@ -282,9 +284,10 @@ function getAllSum() {
         )
         .sort((a, b) => new Date(b.issued) - new Date(a.issued));
 
+      let sumOfPVZ = rows.value?.filter((row) => row.received !== null && row.pvz === selectedPVZ.value).reduce((acc, value) => acc + +value.sum, 0)
       sum1.value = reduceArray(copyArrayOurRansom.value, "OurRansom");
       sum2.value = reduceArray(copyArrayClientRansom.value, "ClientRansom");
-      allSum.value = sum1.value + sum2.value;
+      allSum.value = sum1.value + sum2.value - sumOfPVZ;
     }
   } else if (selectedTypeOfTransaction.value === "Баланс безнал") {
     if (selectedPVZ.value === "Все ПВЗ") {
@@ -456,6 +459,7 @@ async function createRow() {
   await storeBalance.createBalanceRow(rowData.value, user.value.username);
   rows.value = await storeBalance.getBalanceRows();
   closeModal();
+  getAllSum();
   isLoading.value = false;
 }
 
@@ -464,6 +468,7 @@ async function updateDeliveryRow(obj: any) {
   let answer = confirm("Вы точно хотите изменить статус?");
   if (answer) await storeBalance.updateDeliveryStatus(obj.row, obj.flag, user.value.username);
   rows.value = await storeBalance.getBalanceRows();
+  getAllSum();
   isLoading.value = false;
 }
 
@@ -472,6 +477,7 @@ async function updateRow() {
   await storeBalance.updateBalanceRow(rowData.value, user.value.username);
   rows.value = await storeBalance.getBalanceRows();
   closeModal();
+  getAllSum();
   isLoading.value = false;
 }
 
@@ -545,31 +551,30 @@ async function updateRow() {
               </div>
             </div>
 
-            <div class="grid grid-cols-3 max-xl:grid-cols-1 max-sm:grid-cols-1">
-              <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
+            <div class="">
+              <!-- <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
                 <h1>Баланс "Наш Выкуп"</h1>
                 <h1 class="font-bold text-secondary-color text-4xl mt-3">
                   {{ formatNumber(Math.ceil(sum1)) }} ₽
                 </h1>
-              </div>
+              </div> -->
               <div class="text-center text-2xl mt-10">
-                <h1>Общий баланс</h1>
+                <h1>Баланс</h1>
                 <h1 class="font-bold text-secondary-color text-4xl mt-3">
                   {{ formatNumber(Math.ceil(allSum)) }} ₽
                 </h1>
               </div>
-              <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
+              <!-- <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
                 <h1>Баланс "Выкуп Клиента"</h1>
                 <h1 class="font-bold text-secondary-color text-4xl mt-3">
                   {{ formatNumber(Math.ceil(sum2)) }} ₽
                 </h1>
-              </div>
+              </div> -->
             </div>
           </div>
 
-          <UIMainButton class="mt-24" @click="openModal">Заявка на вывод средств</UIMainButton>
-          <BalanceTable @update-delivery-row="updateDeliveryRow" :rows="rows" :user="user" 
-            @open-modal="openModal" />
+          <UIMainButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'" class="mt-24" @click="openModal">Заявка на вывод средств</UIMainButton>
+          <BalanceTable @update-delivery-row="updateDeliveryRow" :rows="rows" :user="user" @open-modal="openModal" />
 
           <UIModal v-show="isOpen" @close-modal="closeModal">
             <template v-slot:header>
@@ -627,17 +632,13 @@ async function updateRow() {
                   <select
                     class="bg-transparent max-w-[150px] px-3 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
                     v-model="selectedPVZ">
-                    <option v-if="user.role !== 'PVZ'" value="Все ПВЗ" selected>
-                      Все ПВЗ
-                    </option>
+                    <option value="Все ПВЗ" selected v-if="user.role !== 'PVZ'">Все ПВЗ</option>
                     <option v-if="user.role !== 'PVZ'" v-for="pvzValue in pvz?.filter(
                       (pvzData) => pvzData.name !== 'НаДом'
                     )" :value="pvzValue.name">
                       {{ pvzValue.name }}
                     </option>
-                    <option v-if="user.role === 'PVZ'" :value="user.visiblePVZ">
-                      {{ user.visiblePVZ }}
-                    </option>
+                    <option v-if="user.role === 'PVZ'" :value="user.visiblePVZ"> {{ user.visiblePVZ }} </option>
                   </select>
                 </div>
                 <div class="grid grid-cols-2 m-3 text-center border-b-2 py-2">
@@ -677,27 +678,66 @@ async function updateRow() {
               </div>
             </div>
 
-            <div class="grid grid-cols-3 max-xl:grid-cols-1 max-sm:grid-cols-1">
-              <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
+            <div class="">
+              <!-- <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
                 <h1>Баланс "Наш Выкуп"</h1>
                 <h1 class="font-bold text-secondary-color text-4xl mt-3">
                   {{ formatNumber(Math.ceil(sum1)) }} ₽
                 </h1>
-              </div>
+              </div> -->
               <div class="text-center text-2xl mt-10">
-                <h1>Общий баланс</h1>
+                <h1>Баланс</h1>
                 <h1 class="font-bold text-secondary-color text-4xl mt-3">
                   {{ formatNumber(Math.ceil(allSum)) }} ₽
                 </h1>
               </div>
-              <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
+              <!-- <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
                 <h1>Баланс "Выкуп Клиента"</h1>
                 <h1 class="font-bold text-secondary-color text-4xl mt-3">
                   {{ formatNumber(Math.ceil(sum2)) }} ₽
                 </h1>
-              </div>
+              </div> -->
             </div>
           </div>
+
+          <UIMainButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'" class="mt-24" @click="openModal">Заявка на вывод средств</UIMainButton>
+          <BalanceTable @update-delivery-row="updateDeliveryRow" :rows="rows" :user="user" @open-modal="openModal" />
+
+          <UIModal v-show="isOpen" @close-modal="closeModal">
+            <template v-slot:header>
+              <div class="custom-header" v-if="rowData.id">
+                Изменение строки с ID - <b> {{ rowData.id }}</b>
+              </div>
+              <div class="custom-header" v-else>Создание новой заявки</div>
+            </template>
+            <div class="text-black">
+              <div class="grid grid-cols-2 mb-5">
+                <label for="dispatchPVZ1">ПВЗ</label>
+                <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
+                  v-model="rowData.pvz">
+                  <option v-for="pvzData in pvz" :value="pvzData.name">
+                    {{ pvzData.name }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="grid grid-cols-2 mb-5">
+                <label for="name">Сумма</label>
+                <input
+                  class="bg-transparent w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                  v-model="rowData.sum" type="text" />
+              </div>
+            </div>
+
+            <div class="flex items-center justify-center gap-3 mt-10" v-if="rowData.id">
+              <UIMainButton @click="updateRow">Сохранить </UIMainButton>
+              <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
+            </div>
+            <div class="flex items-center justify-center gap-3 mt-10" v-else>
+              <UIMainButton @click="createRow">Создать </UIMainButton>
+              <UIErrorButton @click="closeModal">Отменить </UIErrorButton>
+            </div>
+          </UIModal>
         </div>
       </NuxtLayout>
     </div>
