@@ -108,7 +108,7 @@ export default defineEventHandler(async (event) => {
                     profit1: getProfit(flag),
                 },
             });
-        } else if (flagRansom === 'ClientRansom') {
+        } else if (flagRansom === 'ClientRansom' && updateField !== 'additionally') {
             const updateRow = await prisma.clientRansom.updateMany({
                 where: {
                     id: {

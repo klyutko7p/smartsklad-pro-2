@@ -134,9 +134,6 @@ onMounted(() => {
 <template>
   <div class="flex items-center justify-between max-lg:block mt-10">
     <div>
-      <div class="flex items-center max-sm:flex-col max-sm:items-start gap-5 mb-5">
-        <h1 class="text-xl">Товаров в работе: <span class="text-secondary-color font-bold">{{ totalRows }}</span> </h1>
-      </div>
       <div class="flex items-center gap-5">
         <UIActionButton @click="toggleShowDeletedRows">
           {{ showDeletedRows ? 'Скрыть удаленное' : 'Показать удаленное' }}
