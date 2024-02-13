@@ -226,7 +226,7 @@ let showOthersVariants = ref(false)
   <div class="fixed z-40 flex flex-col gap-3 top-44 left-1/2 translate-x-[-50%] translate-y-[-50%]"
     v-if="user.dataClientRansom === 'WRITE' && checkedRows.length > 0 && user.role === 'PVZ'">
     <UIActionButton v-if="user.issued2 === 'WRITE' && showButton" @click="showOthersVariants = !showOthersVariants">Выдать
-      клиенту 
+      клиенту
     </UIActionButton>
     <div v-if="showOthersVariants" class="flex flex-col gap-3">
       <UIActionButton2 v-if="user.additionally2 === 'WRITE'" @click="updateDeliveryRows('additionally3')">Оплата наличными
@@ -317,16 +317,15 @@ let showOthersVariants = ref(false)
         </tr>
       </thead>
       <tbody>
-        <div id="left"></div>
         <tr :class="{ 'bg-orange-100': isChecked(row.id) }" class="border-b text-center text-sm"
           v-for="row in returnRows">
           <td v-if="user.dataClientRansom === 'WRITE'" class="border-2 text-secondary-color">
             <input type="checkbox" :value="row.id" :checked="isChecked(row.id)" @change="handleCheckboxChange(row)" />
           </td>
-          <td class="border-2">
+          <td class="border-2"
+            v-if="user.dataClientRansom === 'WRITE' && (user.role === 'ADMIN' || user.role === 'ADMINISTRATOR')">
             <Icon @click="openModal(row)" class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
-              name="material-symbols:edit" size="32"
-              v-if="user.dataClientRansom === 'WRITE' && (user.role === 'ADMIN' || user.role === 'ADMINISTRATOR')" />
+              name="material-symbols:edit" size="32" />
           </td>
           <th scope="row" class="border-2 font-medium underline text-secondary-color whitespace-nowrap">
             <NuxtLink class="cursor-pointer hover:text-orange-200 duration-200" :to="`/spreadsheets/record/2/${row.id}`">
