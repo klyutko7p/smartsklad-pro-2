@@ -6,6 +6,7 @@ interface IRequestBody {
     idArray: number[];
     flag: string;
     flagRansom: string;
+    username: string;
 }
 
 function getAdditionally(status: string) {
@@ -47,7 +48,7 @@ function getProfit(status: string) {
 
 export default defineEventHandler(async (event) => {
     try {
-        const { idArray, flag, flagRansom } = await readBody<IRequestBody>(event);
+        const { idArray, flag, flagRansom, username } = await readBody<IRequestBody>(event);
 
         let updateField;
 
@@ -92,6 +93,7 @@ export default defineEventHandler(async (event) => {
                 },
                 data: {
                     [updateField]: new Date(),
+                    updatedUser: username,
                 },
             });
         } else if ((flagRansom === 'OurRansom' && updateField === 'additionally')) {
@@ -106,6 +108,7 @@ export default defineEventHandler(async (event) => {
                     issued: new Date(),
                     amountFromClient1: getAmountFromClient(flag),
                     profit1: getProfit(flag),
+                    updatedUser: username,
                 },
             });
         } else if (flagRansom === 'ClientRansom' && updateField !== 'additionally') {
@@ -117,6 +120,7 @@ export default defineEventHandler(async (event) => {
                 },
                 data: {
                     [updateField]: new Date(),
+                    updatedUser: username,
                 },
             });
         } else if ((flagRansom === 'ClientRansom' && updateField === 'additionally')) {
@@ -131,6 +135,7 @@ export default defineEventHandler(async (event) => {
                     issued: new Date(),
                     amountFromClient2: getAmountFromClient(flag),
                     profit2: getProfit(flag),
+                    updatedUser: username,
                 },
             });
         } else if (flagRansom === 'Delivery') {
@@ -142,6 +147,7 @@ export default defineEventHandler(async (event) => {
                 },
                 data: {
                     [updateField]: new Date(),
+                    updatedUser: username,
                 },
             });
         }
