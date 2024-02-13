@@ -39,7 +39,8 @@ onMounted(() => {
     <table id="theTable" class="w-full border-x-2 border-gray-50 text-sm text-left rtl:text-right text-gray-500">
       <thead class="text-xs sticky top-0 z-30 text-gray-700 uppercase text-center bg-gray-50">
         <tr>
-          <th scope="col" class="exclude-row border-2" v-if="user.dataDelivery === 'WRITE' && user.role === 'ADMIN'">
+          <th scope="col" class="exclude-row border-2"
+            v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
             изменение
           </th>
           <th scope="col" class="border-2">
@@ -63,11 +64,11 @@ onMounted(() => {
         </tr>
       </thead>
       <tbody>
-        <div id="left"></div>
         <tr v-for="row in rows" class="text-center">
-          <td class="border-2" v-if="(user.role === 'ADMIN' || user.role === 'ADMINISTRATOR') && !row.issued && !row.received">
+          <td class="border-2">
             <Icon @click="openModal(row)" class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
-              name="material-symbols:edit" size="32" />
+              name="material-symbols:edit" size="32"
+              v-if="(user.role === 'ADMIN' || user.role === 'ADMINISTRATOR') && !row.issued && !row.received" />
           </td>
           <th scope="row" class="border-2">
             {{ row.pvz }}
@@ -98,11 +99,9 @@ onMounted(() => {
           <th scope="row" class="border-2">
             {{ row.receivedUser }}
           </th>
-          <div id="right"></div>
         </tr>
       </tbody>
     </table>
-    <div id="down"></div>
   </div>
 </template>
 

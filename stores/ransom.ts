@@ -224,8 +224,8 @@ export const useRansomStore = defineStore("ransom", () => {
                 }
 
                 if (row.additionally === 'Отказ клиент') {
-                    row.amountFromClient1 = 200
-                    row.profit1 = 200
+                    row.amountFromClient1 = 100
+                    row.profit1 = 100
                 } else if (row.additionally === 'Отказ брак') {
                     row.amountFromClient1 = 0
                     row.profit1 = 0

@@ -24,7 +24,7 @@ function getAmountFromClient(status: string) {
     if (status === 'additionally') {
         return
     } else if (status === 'additionally1') {
-        return 200
+        return 100
     } else if (status === 'additionally2') {
         return 0
     } else if (status === 'additionally3') {
@@ -36,7 +36,7 @@ function getProfit(status: string) {
     if (status === 'additionally') {
         return
     } else if (status === 'additionally1') {
-        return 200
+        return 100
     } else if (status === 'additionally2') {
         return 0
     } else if (status === 'additionally3') {
