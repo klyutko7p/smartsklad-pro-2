@@ -65,9 +65,6 @@ defineProps({
             {{ userData.additionally2 }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.additionally3 }}
-          </td>
-          <td class="px-6 py-4 border-2">
             {{ userData.deliveredSC1 }}
           </td>
           <td class="px-6 py-4 border-2">
@@ -80,37 +77,16 @@ defineProps({
             {{ userData.deliveredPVZ2 }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.deliveredKGT1 }}
-          </td>
-          <td class="px-6 py-4 border-2">
-            {{ userData.deliveredKGT2 }}
-          </td>
-          <td class="px-6 py-4 border-2">
             {{ userData.dispatchPVZ1 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.dispatchPVZ2 }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.dispatchPVZ3 }}
-          </td>
-          <td class="px-6 py-4 border-2">
-            {{ userData.sorted }}
-          </td>
-          <td class="px-6 py-4 border-2">
-            {{ userData.paid }}
-          </td>
-          <td class="px-6 py-4 border-2">
-            {{ userData.name3 }}
-          </td>
-          <td class="px-6 py-4 border-2">
             {{ userData.fromName1 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.fromName2 }}
-          </td>
-          <td class="px-6 py-4 border-2">
-            {{ userData.fromName3 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.issued1 }}
@@ -128,16 +104,10 @@ defineProps({
             {{ userData.orderPVZ2 }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.orderPVZ3 }}
-          </td>
-          <td class="px-6 py-4 border-2">
             {{ userData.percentClient1 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.percentClient2 }}
-          </td>
-          <td class="px-6 py-4 border-2">
-            {{ userData.percentClient3 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.notation1 }}
@@ -147,9 +117,6 @@ defineProps({
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.priceProgram }}
-          </td>
-          <td class="px-6 py-4 border-2">
-            {{ userData.purchaseOfGoods }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.priceSite }}
@@ -179,16 +146,10 @@ defineProps({
             {{ userData.dataClientRansom }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.dataDelivery }}
-          </td>
-          <td class="px-6 py-4 border-2">
             {{ userData.amountFromClient1 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.amountFromClient2 }}
-          </td>
-          <td class="px-6 py-4 border-2">
-            {{ userData.amountFromClient3 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.clientLink1 }}
@@ -197,16 +158,10 @@ defineProps({
             {{ userData.clientLink2 }}
           </td>
           <td class="px-6 py-4 border-2">
-            {{ userData.clientLink3 }}
-          </td>
-          <td class="px-6 py-4 border-2">
             {{ userData.profit1 }}
           </td>
           <td class="px-6 py-4 border-2">
             {{ userData.profit2 }}
-          </td>
-          <td class="px-6 py-4 border-2">
-            {{ userData.profit3 }}
           </td>
         </tr>
       </tbody>

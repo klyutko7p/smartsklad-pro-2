@@ -79,15 +79,6 @@ function formatPhoneNumber(phoneNumber: string) {
         <h1>Выкуп Клиента</h1>
       </div>
       <div
-        v-if="(user.dataDelivery === 'READ' || user.dataDelivery === 'WRITE') && (user.role === 'ADMIN' || user.role === 'OPT')"
-        role="button" @click="router.push('/spreadsheets/delivery')" tabindex="0"
-        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
-        <div class="grid place-items-center mr-4">
-          <Icon name="carbon:delivery" size="20" />
-        </div>
-        <h1>Доставка и сортировка</h1>
-      </div>
-      <div
         v-if="(user.role === 'ADMIN' && user.username !== 'Светлана') || user.role === 'ADMINISTRATOR' || user.role === 'PVZ'"
         role="button" @click="router.push('/balance')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
@@ -137,22 +128,6 @@ function formatPhoneNumber(phoneNumber: string) {
           <Icon name="material-symbols-light:box-sharp" size="20" />
         </div>
         <h1>Сортировочные центры </h1>
-      </div>
-      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
-        @click="router.push('/admin/pvz-delivery')" tabindex="0"
-        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
-        <div class="grid place-items-center mr-4">
-          <Icon name="solar:delivery-broken" size="20" />
-        </div>
-        <h1>Пункты выдачи заказов (Доставка)</h1>
-      </div>
-      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
-        @click="router.push('/admin/sorting-centers-delivery')" tabindex="0"
-        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
-        <div class="grid place-items-center mr-4">
-          <Icon name="streamline:shipping-box-2-box-package-label-delivery-shipment-shipping-3d" size="20" />
-        </div>
-        <h1>Сортировочные центры (Доставка)</h1>
       </div>
       <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
         @click="router.push('/admin/order-accounts')" tabindex="0"
@@ -210,14 +185,6 @@ function formatPhoneNumber(phoneNumber: string) {
         </div>
         <h1>Выкуп Клиента</h1>
       </div>
-      <div v-if="user.dataDelivery === 'READ' || user.dataDelivery === 'WRITE' || user.role !== 'ADMINISTRATOR'"
-        role="button" @click="router.push('/spreadsheets/delivery')" tabindex="0"
-        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
-        <div class="grid place-items-center mr-4">
-          <Icon name="carbon:delivery" size="20" />
-        </div>
-        <h1>Доставка и сортировка</h1>
-      </div>
       <div
         v-if="(user.role === 'ADMIN' && user.username !== 'Светлана') || user.role === 'ADMINISTRATOR' || user.role === 'PVZ'"
         role="button" @click="router.push('/balance')" tabindex="0"
@@ -268,22 +235,6 @@ function formatPhoneNumber(phoneNumber: string) {
           <Icon name="material-symbols-light:box-sharp" size="20" />
         </div>
         <h1>Сортировочные центры</h1>
-      </div>
-      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
-        @click="router.push('/admin/pvz-delivery')" tabindex="0"
-        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
-        <div class="grid place-items-center mr-4">
-          <Icon name="solar:delivery-broken" size="20" />
-        </div>
-        <h1>Пункты выдачи заказов (Доставка)</h1>
-      </div>
-      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
-        @click="router.push('/admin/sorting-centers-delivery')" tabindex="0"
-        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
-        <div class="grid place-items-center mr-4">
-          <Icon name="streamline:shipping-box-2-box-package-label-delivery-shipment-shipping-3d" size="20" />
-        </div>
-        <h1>Сортировочные центры (Доставка)</h1>
       </div>
       <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
         @click="router.push('/admin/order-accounts')" tabindex="0"

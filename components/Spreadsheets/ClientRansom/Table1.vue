@@ -278,9 +278,6 @@ let showOthersVariants = ref(false)
           <th scope="col" class="border-2" v-if="user.percentClient2 === 'READ' || user.percentClient2 === 'WRITE'">
             процент с клиента (%)
           </th>
-          <th scope="col" class="border-2" v-if="user.deliveredKGT2 === 'READ' || user.deliveredKGT2 === 'WRITE'">
-            дополнительный доход
-          </th>
           <th scope="col" class="border-2" v-if="user.amountFromClient2 === 'READ' || user.amountFromClient2 === 'WRITE'">
             сумма с клиента
           </th>
@@ -363,9 +360,6 @@ let showOthersVariants = ref(false)
           </td>
           <td class="border-2" v-if="user.percentClient2 === 'READ' || user.percentClient2 === 'WRITE'">
             {{ row.percentClient }}
-          </td>
-          <td class="border-2" v-if="user.deliveredKGT2 === 'READ' || user.deliveredKGT2 === 'WRITE'">
-            {{ row.deliveredKGT }}
           </td>
           <td class="border-2" v-if="user.amountFromClient2 === 'READ' || user.amountFromClient2 === 'WRITE'">
             {{ row.amountFromClient2 }}

@@ -422,13 +422,6 @@ function getFromNameFromCell() {
                   v-model="rowData.percentClient" placeholder="По умолчанию: 10" type="number" />
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
-                <label for="deliveredKGT1" class="max-sm:text-sm">Дополнительный доход</label>
-                <input :disabled="user.deliveredKGT1 === 'READ'"
-                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.deliveredKGT" placeholder="По умолчанию: 0" type="number" />
-              </div>
-
               <div class="grid grid-cols-2 mb-5" v-if="user.orderPVZ1 === 'READ' || user.orderPVZ1 === 'WRITE'">
                 <label for="orderPVZ1" class="max-sm:text-sm">Заказано на СЦ</label>
                 <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
@@ -620,13 +613,6 @@ function getFromNameFromCell() {
                 <input :disabled="user.percentClient1 === 'READ'"
                   class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 text-sm sm:leading-6 disabled:text-gray-400"
                   v-model="rowData.percentClient" placeholder="По умолчанию: 10" type="number" />
-              </div>
-
-              <div class="grid grid-cols-2 mb-5" v-if="user.deliveredKGT1 === 'READ' || user.deliveredKGT1 === 'WRITE'">
-                <label for="deliveredKGT1" class="max-sm:text-sm">Дополнительный доход</label>
-                <input :disabled="user.deliveredKGT1 === 'READ'"
-                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.deliveredKGT" placeholder="По умолчанию: 0" type="number" />
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.orderPVZ1 === 'READ' || user.orderPVZ1 === 'WRITE'">

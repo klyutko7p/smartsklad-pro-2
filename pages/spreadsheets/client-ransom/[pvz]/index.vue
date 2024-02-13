@@ -299,6 +299,19 @@ function getFromNameFromCell() {
             </template>
             <div class="text-black">
 
+              <div class="grid grid-cols-2 mb-5" v-if="user.fromName2 === 'READ' || user.fromName2 === 'WRITE'">
+                <label for="fromName" class="max-sm:text-sm">Телефон <sup>*</sup></label>
+                <div>
+                  <input :disabled="user.fromName2 === 'READ'"
+                    class="bg-transparent w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                    v-model="rowData.fromName" @input="getCellFromName" type="text" />
+                  <div class="flex gap-3 items-center justify-center mt-1">
+                    <h1 class="max-sm:text-sm">АВТО</h1>
+                    <input type="checkbox" v-model="isAutoFromName" />
+                  </div>
+                </div>
+              </div>
+
               <div class="grid grid-cols-2 mb-5" v-if="user.cell2 === 'READ' || user.cell2 === 'WRITE'">
                 <label for="cell" class="max-sm:text-sm">Ячейка</label>
                 <div>
@@ -312,17 +325,14 @@ function getFromNameFromCell() {
                 </div>
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.fromName2 === 'READ' || user.fromName2 === 'WRITE'">
-                <label for="fromName" class="max-sm:text-sm">Телефон <sup>*</sup></label>
-                <div>
-                  <input :disabled="user.fromName2 === 'READ'"
-                    class="bg-transparent w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                    v-model="rowData.fromName" @input="getCellFromName" type="text" />
-                  <div class="flex gap-3 items-center justify-center mt-1">
-                    <h1 class="max-sm:text-sm">АВТО</h1>
-                    <input type="checkbox" v-model="isAutoFromName" />
-                  </div>
-                </div>
+              <div class="grid grid-cols-2 mb-5" v-if="user.dispatchPVZ2 === 'READ' || user.dispatchPVZ2 === 'WRITE'">
+                <label for="dispatchPVZ1" class="max-sm:text-sm">Отправка в ПВЗ</label>
+                <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
+                  v-model="rowData.dispatchPVZ" :disabled="user.dispatchPVZ1 === 'READ'">
+                  <option v-for="pvzData in pvz" :value="pvzData.name">
+                    {{ pvzData.name }}
+                  </option>
+                </select>
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.productLink2 === 'READ' || user.productLink2 === 'WRITE'">
@@ -363,24 +373,7 @@ function getFromNameFromCell() {
                   v-model="rowData.percentClient" placeholder="По умолчанию: 10" type="number" />
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.deliveredKGT2 === 'READ' || user.deliveredKGT2 === 'WRITE'">
-                <label for="deliveredKGT1" class="max-sm:text-sm">Дополнительный доход</label>
-                <input :disabled="user.deliveredKGT2 === 'READ'"
-                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.deliveredKGT" placeholder="По умолчанию: 0" type="number" />
-              </div>
-
-              <div class="grid grid-cols-2 mb-5" v-if="user.dispatchPVZ2 === 'READ' || user.dispatchPVZ2 === 'WRITE'">
-                <label for="dispatchPVZ1" class="max-sm:text-sm">Отправка в ПВЗ</label>
-                <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
-                  v-model="rowData.dispatchPVZ" :disabled="user.dispatchPVZ1 === 'READ'">
-                  <option v-for="pvzData in pvz" :value="pvzData.name">
-                    {{ pvzData.name }}
-                  </option>
-                </select>
-              </div>
-
-              <div class="grid grid-cols-2 mb-5" v-if="user.orderPVZ2 === 'READ' || user.orderPVZ2 === 'WRITE'">
+                            <div class="grid grid-cols-2 mb-5" v-if="user.orderPVZ2 === 'READ' || user.orderPVZ2 === 'WRITE'">
                 <label for="orderPVZ1" class="max-sm:text-sm">Заказано на СЦ</label>
                 <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
                   v-model="rowData.orderPVZ" :disabled="user.orderPVZ1 === 'READ'">
@@ -389,7 +382,7 @@ function getFromNameFromCell() {
                   </option>
                 </select>
               </div>
-              
+
 
               <h1 @click="showAddFields = !showAddFields"
                 class="cursor-pointer hover:opacity-50 text-secondary-color font-bold duration-200 mb-5">Показать ещё
@@ -490,6 +483,19 @@ function getFromNameFromCell() {
             </template>
             <div class="text-black">
 
+              <div class="grid grid-cols-2 mb-5" v-if="user.fromName2 === 'READ' || user.fromName2 === 'WRITE'">
+                <label for="fromName" class="max-sm:text-sm">Телефон <sup>*</sup></label>
+                <div>
+                  <input :disabled="user.fromName2 === 'READ'"
+                    class="bg-transparent w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
+                    v-model="rowData.fromName" @input="getCellFromName" type="text" />
+                  <div class="flex gap-3 items-center justify-center mt-1">
+                    <h1 class="max-sm:text-sm">АВТО</h1>
+                    <input type="checkbox" v-model="isAutoFromName" />
+                  </div>
+                </div>
+              </div>
+
               <div class="grid grid-cols-2 mb-5" v-if="user.cell2 === 'READ' || user.cell2 === 'WRITE'">
                 <label for="cell" class="max-sm:text-sm">Ячейка</label>
                 <div>
@@ -503,17 +509,14 @@ function getFromNameFromCell() {
                 </div>
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.fromName2 === 'READ' || user.fromName2 === 'WRITE'">
-                <label for="fromName" class="max-sm:text-sm">Телефон <sup>*</sup></label>
-                <div>
-                  <input :disabled="user.fromName2 === 'READ'"
-                    class="bg-transparent w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                    v-model="rowData.fromName" @input="getCellFromName" type="text" />
-                  <div class="flex gap-3 items-center justify-center mt-1">
-                    <h1 class="max-sm:text-sm">АВТО</h1>
-                    <input type="checkbox" v-model="isAutoFromName" />
-                  </div>
-                </div>
+              <div class="grid grid-cols-2 mb-5" v-if="user.dispatchPVZ2 === 'READ' || user.dispatchPVZ2 === 'WRITE'">
+                <label for="dispatchPVZ1" class="max-sm:text-sm">Отправка в ПВЗ</label>
+                <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
+                  v-model="rowData.dispatchPVZ" :disabled="user.dispatchPVZ1 === 'READ'">
+                  <option v-for="pvzData in pvz" :value="pvzData.name">
+                    {{ pvzData.name }}
+                  </option>
+                </select>
               </div>
 
               <div class="grid grid-cols-2 mb-5" v-if="user.productLink2 === 'READ' || user.productLink2 === 'WRITE'">
@@ -554,24 +557,7 @@ function getFromNameFromCell() {
                   v-model="rowData.percentClient" placeholder="По умолчанию: 10" type="number" />
               </div>
 
-              <div class="grid grid-cols-2 mb-5" v-if="user.deliveredKGT2 === 'READ' || user.deliveredKGT2 === 'WRITE'">
-                <label for="deliveredKGT1" class="max-sm:text-sm">Дополнительный доход</label>
-                <input :disabled="user.deliveredKGT2 === 'READ'"
-                  class="bg-transparent rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                  v-model="rowData.deliveredKGT" placeholder="По умолчанию: 0" type="number" />
-              </div>
-
-              <div class="grid grid-cols-2 mb-5" v-if="user.dispatchPVZ2 === 'READ' || user.dispatchPVZ2 === 'WRITE'">
-                <label for="dispatchPVZ1" class="max-sm:text-sm">Отправка в ПВЗ</label>
-                <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
-                  v-model="rowData.dispatchPVZ" :disabled="user.dispatchPVZ1 === 'READ'">
-                  <option v-for="pvzData in pvz" :value="pvzData.name">
-                    {{ pvzData.name }}
-                  </option>
-                </select>
-              </div>
-
-              <div class="grid grid-cols-2 mb-5" v-if="user.orderPVZ2 === 'READ' || user.orderPVZ2 === 'WRITE'">
+                            <div class="grid grid-cols-2 mb-5" v-if="user.orderPVZ2 === 'READ' || user.orderPVZ2 === 'WRITE'">
                 <label for="orderPVZ1" class="max-sm:text-sm">Заказано на СЦ</label>
                 <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base disabled:text-gray-400"
                   v-model="rowData.orderPVZ" :disabled="user.orderPVZ1 === 'READ'">
@@ -580,7 +566,7 @@ function getFromNameFromCell() {
                   </option>
                 </select>
               </div>
-              
+
 
               <h1 @click="showAddFields = !showAddFields"
                 class="cursor-pointer hover:opacity-50 text-secondary-color font-bold duration-200 mb-5">Показать ещё
