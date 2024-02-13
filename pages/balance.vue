@@ -460,6 +460,10 @@ async function createRow() {
   rows.value = await storeBalance.getBalanceRows();
   closeModal();
   getAllSum();
+  if (user.value.role === "PVZ") {
+    selectedPVZ.value = user.value.visiblePVZ;
+    rows.value = rows.value?.filter((row) => row.pvz === user.value.visiblePVZ)
+  }
   isLoading.value = false;
 }
 
@@ -469,6 +473,10 @@ async function updateDeliveryRow(obj: any) {
   if (answer) await storeBalance.updateDeliveryStatus(obj.row, obj.flag, user.value.username);
   rows.value = await storeBalance.getBalanceRows();
   getAllSum();
+  if (user.value.role === "PVZ") {
+    selectedPVZ.value = user.value.visiblePVZ;
+    rows.value = rows.value?.filter((row) => row.pvz === user.value.visiblePVZ)
+  }
   isLoading.value = false;
 }
 
@@ -478,6 +486,10 @@ async function updateRow() {
   rows.value = await storeBalance.getBalanceRows();
   closeModal();
   getAllSum();
+  if (user.value.role === "PVZ") {
+    selectedPVZ.value = user.value.visiblePVZ;
+    rows.value = rows.value?.filter((row) => row.pvz === user.value.visiblePVZ)
+  }
   isLoading.value = false;
 }
 
