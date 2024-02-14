@@ -61,13 +61,7 @@ async function exportToExcel() {
     perPage.value = await 100;
 }
 
-interface RowData {
-    rowId: number;
-    amount: number;
-    issued: Date | null | string | number;
-    deliveredPVZ: Date | null | string | number;
-    orderPVZ: Date | null | string | number;
-}
+
 
 const allSum: Ref<RowData[]> = ref([]);
 const checkedRows: Ref<number[]> = ref([]);
@@ -81,17 +75,26 @@ const isChecked = (rowId: number): boolean => {
     return checkedRows.value.includes(rowId);
 };
 
+interface RowData {
+    rowId: number;
+    amount: number;
+    issued: Date | null | string | number;
+    deliveredPVZ: Date | null | string | number;
+    deliveredSC: Date | null | string | number;
+    orderPVZ: Date | null | string | number;
+}
+
 const handleCheckboxChange = (row: IOurRansom): void => {
     if (isChecked(row.id)) {
         checkedRows.value = checkedRows.value.filter((id) => id !== row.id);
         allSum.value = allSum.value.filter((obj) => obj.rowId !== row.id);
     } else {
         checkedRows.value.push(row.id);
-        allSum.value.push({ rowId: row.id, amount: Math.ceil(row.amountFromClient1 / 10) * 10, issued: row.issued, deliveredPVZ: row.deliveredPVZ, orderPVZ: row.orderPVZ });
+        allSum.value.push({ rowId: row.id, amount: Math.ceil(row.amountFromClient1 / 10) * 10, issued: row.issued, deliveredPVZ: row.deliveredPVZ, orderPVZ: row.orderPVZ, deliveredSC: row.deliveredSC });
     }
     getAllSum.value = allSum.value.filter((obj) => obj.issued === null).reduce((sum, obj) => sum + obj.amount, 0);
     showButton.value = allSum.value.every(obj => obj.issued === null);
-    showButtonPVZ.value = allSum.value.every(obj => obj.deliveredPVZ === null);
+    showButtonPVZ.value = allSum.value.every(obj => obj.deliveredPVZ === null && obj.deliveredSC !== null);
     showButtonSC.value = allSum.value.every(obj => obj.orderPVZ === null);
 };
 
@@ -212,6 +215,7 @@ let showOthersVariants = ref(false)
         <UIActionButton v-if="user.issued1 === 'WRITE' && showButton" @click="showOthersVariants = !showOthersVariants">
             Выдать клиенту
         </UIActionButton>
+
         <div v-if="showOthersVariants" class="flex flex-col gap-3">
             <UIActionButton2 v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally3')">Оплата
                 наличными
@@ -391,7 +395,7 @@ let showOthersVariants = ref(false)
                         {{ row.percentClient }}
                     </td>
                     <td class="border-2" v-if="user.amountFromClient1 === 'READ' || user.amountFromClient1 === 'WRITE'">
-                        {{ Math.ceil(row.amountFromClient1 / 10) * 10 }}
+                        {{ row.amountFromClient1 }}
                     </td>
                     <td class="px-2 py-4 border-2" v-if="user.dispatchPVZ1 === 'READ' || user.dispatchPVZ1 === 'WRITE'">
                         {{ row.dispatchPVZ }}
@@ -423,7 +427,7 @@ let showOthersVariants = ref(false)
 
                     <td class="px-1 py-4 border-2" v-if="(user.profit1 === 'READ' || user.profit1 === 'WRITE') &&
                         (row.additionally !== 'Отказ клиент' && row.additionally !== 'Отказ брак') && !row.prepayment">
-                        {{ row.percentClient !== 0 ? Math.ceil(row.amountFromClient1 / 10) * 10 - row.priceSite +
+                        {{ row.percentClient !== 0 ? row.amountFromClient1 - row.priceSite +
                             row.deliveredKGT : row.deliveredKGT }}
                     </td>
 

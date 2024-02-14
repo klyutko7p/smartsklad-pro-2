@@ -67,14 +67,11 @@ const endDate = ref<Date | string | null>(null);
 function calculateValue(curValue: any) {
   if (!curValue.prepayment) {
     return curValue.additionally !== "Отказ клиент"
-      ? Math.ceil(curValue.amountFromClient1 / 10) * 10 -
-      curValue.priceSite +
-      curValue.deliveredKGT
-      : 200;
+      ? curValue.amountFromClient1 - curValue.priceSite + curValue.deliveredKGT : 100;
   } else {
     return curValue.additionally !== "Отказ клиент"
       ? (curValue.priceSite * curValue.percentClient) / 100 + curValue.deliveredKGT
-      : 200;
+      : 100;
   }
 }
 
@@ -96,10 +93,11 @@ function reduceArray(array: any, flag: string) {
     }
   } else if (selectedTypeOfTransaction.value === "Баланс наличные") {
     if (flag === "OurRansom") {
+      console.log(array);
       array = array.filter((row: any) => row.additionally !== "Отказ брак");
       return array.reduce(
         (ac: any, curValue: any) =>
-          ac + (Math.ceil(curValue.amountFromClient1 / 10) * 10 + curValue.prepayment),
+          ac + (curValue.amountFromClient1 + curValue.prepayment),
         0
       );
     } else if (flag === "ClientRansom") {
@@ -118,7 +116,7 @@ function reduceArray(array: any, flag: string) {
       array = array.filter((row: any) => row.additionally !== "Отказ брак");
       return array.reduce(
         (ac: any, curValue: any) =>
-          ac + (Math.ceil(curValue.amountFromClient1 / 10) * 10 + curValue.prepayment),
+          ac + Math.ceil(curValue.amountFromClient1 + curValue.prepayment),
         0
       );
     } else if (flag === "ClientRansom") {
@@ -137,7 +135,7 @@ function reduceArray(array: any, flag: string) {
       array = array.filter((row: any) => row.additionally !== "Отказ брак");
       return array.reduce(
         (ac: any, curValue: any) =>
-          ac + (Math.ceil(curValue.amountFromClient1 / 10) * 10 + curValue.prepayment),
+          ac + (curValue.amountFromClient1 + curValue.prepayment),
         0
       );
     } else if (flag === "ClientRansom") {
@@ -243,7 +241,7 @@ function getAllSum() {
             (!startingDate.value ||
               new Date(row.issued) >= new Date(startingDate.value)) &&
             (!endDate.value || new Date(row.issued) <= new Date(endDate.value)) &&
-            row.additionally === "Оплата наличными"
+            (row.additionally === "Оплата наличными" || row.additionally === "Отказ клиент")
         )
         .sort((a, b) => new Date(b.issued) - new Date(a.issued));
 
@@ -254,7 +252,7 @@ function getAllSum() {
             (!startingDate.value ||
               new Date(row.issued) >= new Date(startingDate.value)) &&
             (!endDate.value || new Date(row.issued) <= new Date(endDate.value)) &&
-            row.additionally === "Оплата наличными"
+            (row.additionally === "Оплата наличными" || row.additionally === "Отказ клиент")
         )
         .sort((a, b) => new Date(b.issued) - new Date(a.issued));
 
@@ -270,7 +268,7 @@ function getAllSum() {
             (!startingDate.value ||
               new Date(row.issued) >= new Date(startingDate.value)) &&
             (!endDate.value || new Date(row.issued) <= new Date(endDate.value)) &&
-            row.additionally === "Оплата наличными" &&
+            (row.additionally === "Оплата наличными" || row.additionally === "Отказ клиент") &&
             row.dispatchPVZ === selectedPVZ.value
         )
         .sort((a, b) => new Date(b.issued) - new Date(a.issued));
@@ -282,7 +280,7 @@ function getAllSum() {
             (!startingDate.value ||
               new Date(row.issued) >= new Date(startingDate.value)) &&
             (!endDate.value || new Date(row.issued) <= new Date(endDate.value)) &&
-            row.additionally === "Оплата наличными" &&
+            (row.additionally === "Оплата наличными" || row.additionally === "Отказ клиент") &&
             row.dispatchPVZ === selectedPVZ.value
         )
         .sort((a, b) => new Date(b.issued) - new Date(a.issued));
@@ -592,7 +590,8 @@ async function updateRow() {
             </div>
           </div>
 
-          <UIMainButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'" class="mt-24" @click="openModal">Заявка на вывод средств</UIMainButton>
+          <UIMainButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'" class="mt-24" @click="openModal">
+            Заявка на вывод средств</UIMainButton>
           <BalanceTable @update-delivery-row="updateDeliveryRow" :rows="rows" :user="user" @open-modal="openModal" />
 
           <UIModal v-show="isOpen" @close-modal="closeModal">
@@ -719,7 +718,8 @@ async function updateRow() {
             </div>
           </div>
 
-          <UIMainButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'" class="mt-24" @click="openModal">Заявка на вывод средств</UIMainButton>
+          <UIMainButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'" class="mt-24" @click="openModal">
+            Заявка на вывод средств</UIMainButton>
           <BalanceTable @update-delivery-row="updateDeliveryRow" :rows="rows" :user="user" @open-modal="openModal" />
 
           <UIModal v-show="isOpen" @close-modal="closeModal">
