@@ -44,7 +44,7 @@ const fields = [
   "товар (ссылка) (наш выкуп)",
   "товар (ссылка) (выкуп клиента)",
   "название товара (наш выкуп)",
-  "название товара (выкуп клиента)",
+  "количество товаров (выкуп клиента)",
   "данные (Наш выкуп)",
   "данные (Выкуп клиента)",
   "сумма с клиента (Наш выкуп)",
@@ -156,7 +156,7 @@ const selectedPVZs = ref<string[]>([]);
                 <option value="ADMINISTRATOR">ADMINISTRATOR</option>
               </select>
             </div>
-
+            
             <div class="flex items-center justify-centers gap-3 mb-5 flex-wrap text-center max-sm:flex-col">
               <label v-for="(pvzData, index) in pvz" :key="index">
                 <input type="checkbox" :value="pvzData.name" v-model="userData.PVZ" />
@@ -168,8 +168,7 @@ const selectedPVZs = ref<string[]>([]);
               <label for="cell">Сортировочный центр</label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.visibleSC">
                 <option value="ВСЕ">ВСЕ</option>
-                <option v-for="sortingCenter in sortingCenters" :value="sortingCenter.name">{{ sortingCenter.name }}
-                </option>
+                <option v-for="sortingCenter in sortingCenters" :value="sortingCenter.name">{{ sortingCenter.name }}</option>
               </select>
             </div>
 
@@ -220,6 +219,15 @@ const selectedPVZs = ref<string[]>([]);
             </div>
 
             <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Дополнительно <br> (Доставка)</label>
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.additionally3">
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
               <label for="cell">Доставлено на СЦ <br> (Наш выкуп)</label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.deliveredSC1">
                 <option value="NONE">NONE</option>
@@ -256,6 +264,24 @@ const selectedPVZs = ref<string[]>([]);
             </div>
 
             <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Дополнительный доход<br> (Наш выкуп)</label>
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.deliveredKGT1">
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Дополнительный доход<br> (Выкуп клиента)</label>
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.deliveredKGT2">
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
               <label for="cell">Отправка в ПВЗ <br> (Наш выкуп)</label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.dispatchPVZ1">
                 <option value="NONE">NONE</option>
@@ -274,6 +300,42 @@ const selectedPVZs = ref<string[]>([]);
             </div>
 
             <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Отправка в ПВЗ <br> (Доставка)</label>
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.dispatchPVZ3">
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Отсортировано <br> (Доставка)</label>
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.sorted">
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Оплачено <br> (Доставка)</label>
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.paid">
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Имя <br> (Доставка)</label>
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.name3">
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
               <label for="cell">Телефон <br> (Наш выкуп)</label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.fromName1">
                 <option value="NONE">NONE</option>
@@ -285,6 +347,15 @@ const selectedPVZs = ref<string[]>([]);
             <div class="grid grid-cols-2 mb-5">
               <label for="cell">Телефон <br> (Выкуп клиента)</label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.fromName2">
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Телефон <br> (Доставка)</label>
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.fromName3">
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
                 <option value="WRITE">WRITE</option>
@@ -337,6 +408,15 @@ const selectedPVZs = ref<string[]>([]);
             </div>
 
             <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Заказано на СЦ <br> (Доставка)</label>
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.orderPVZ3">
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
               <label for="cell">Процент с клиента <br> (Наш выкуп)</label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.percentClient1">
                 <option value="NONE">NONE</option>
@@ -348,6 +428,15 @@ const selectedPVZs = ref<string[]>([]);
             <div class="grid grid-cols-2 mb-5">
               <label for="cell">Процент с клиента <br> (Выкуп клиента)</label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.percentClient2">
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Процент с клиента <br> (Доставка)</label>
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.percentClient3">
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
                 <option value="WRITE">WRITE</option>
@@ -375,6 +464,15 @@ const selectedPVZs = ref<string[]>([]);
             <div class="grid grid-cols-2 mb-5">
               <label for="cell">Стоимость выкупа товара <br> (Выкуп клиента) </label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.priceProgram">
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Стоимость выкупа товара <br> (Доставка) </label>
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.purchaseOfGoods">
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
                 <option value="WRITE">WRITE</option>
@@ -436,7 +534,7 @@ const selectedPVZs = ref<string[]>([]);
             </div>
 
             <div class="grid grid-cols-2 mb-5">
-              <label for="cell">Название товара <br> (Выкуп клиента)</label>
+              <label for="cell">Количество товаров <br> (Выкуп клиента)</label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.productName2">
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
@@ -465,6 +563,16 @@ const selectedPVZs = ref<string[]>([]);
             </div>
 
             <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Данные <br /> (Доставка)</label>
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.dataDelivery">
+                <option value="NONE">NONE
+                </option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
               <label for="cell">Сумма с клиента <br> (Наш выкуп)</label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.amountFromClient1">
                 <option value="NONE">NONE</option>
@@ -476,6 +584,15 @@ const selectedPVZs = ref<string[]>([]);
             <div class="grid grid-cols-2 mb-5">
               <label for="cell">Сумма с клиента <br> (Выкуп клиента)</label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.amountFromClient2">
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Сумма с клиента <br> (Доставка)</label>
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.amountFromClient3">
                 <option value="NONE">NONE</option>
                 <option value="READ">READ</option>
                 <option value="WRITE">WRITE</option>
@@ -500,6 +617,15 @@ const selectedPVZs = ref<string[]>([]);
               </select>
             </div>
 
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Ссылка для клиента <br> (Доставка)<br></label>
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.clientLink3">
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
+
             <div v class="grid grid-cols-2 mb-5">
               <label for="cell">Прибыль (доход) <br> (Наш выкуп)</label>
               <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.profit1">
@@ -517,7 +643,17 @@ const selectedPVZs = ref<string[]>([]);
                 <option value="WRITE">WRITE</option>
               </select>
             </div>
+
+            <div class="grid grid-cols-2 mb-5">
+              <label for="cell">Прибыль (доход) <br> (Доставка)</label>
+              <select class="py-1 px-2 border-2 bg-transparent rounded-lg text-base" v-model="userData.profit3">
+                <option value="NONE">NONE</option>
+                <option value="READ">READ</option>
+                <option value="WRITE">WRITE</option>
+              </select>
+            </div>
           </div>
+
           <div class="flex items-center justify-center gap-3 mt-10">
             <UIMainButton @click="updateUser">Сохранить</UIMainButton>
             <UIErrorButton @click="closeModal">Отменить</UIErrorButton>
