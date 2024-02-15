@@ -13,11 +13,8 @@ let user = ref({} as User);
 let row = ref({} as IOurRansom);
 
 async function updateDeliveryRow(obj: any) {
-  isLoading.value = true;
-  let answer = confirm("Вы точно хотите изменить статус доставки?");
-  if (answer) await storeRansom.updateDeliveryStatus(obj.row, obj.flag, "OurRansom");
+  await storeRansom.updateDeliveryStatus(obj.row, obj.flag, "OurRansom", user.value.username);
   row.value = await storeRansom.getRansomRow(id, "OurRansom");
-  isLoading.value = false;
 }
 
 onMounted(async () => {
@@ -34,7 +31,7 @@ definePageMeta({
 onMounted(() => {
   if (!token) {
     router.push("/auth/login");
-  } 
+  }
 });
 
 const token = Cookies.get("token");
@@ -48,9 +45,9 @@ const token = Cookies.get("token");
     <div v-if="user.role === 'ADMIN'">
       <NuxtLayout name="admin">
         <div class="mt-5" v-if="!isLoading">
-          <RecordBody :link="link" :user="user" :row="row" @update-delivery-row="updateDeliveryRow" />
-          <RecordQR class="mt-10" :row="row"
-            :value="`https://smartsklad-pro-1.netlify.app/spreadsheets/record/1/${row.id}`" />
+          <RecordBody :link="link" :user="user" :row="row"
+            :value="`https://smartsklad-pro-1.netlify.app/spreadsheets/record/1/${row.id}`"
+            @update-delivery-row="updateDeliveryRow" />
         </div>
         <div v-else>
           <UISpinner />
@@ -60,9 +57,9 @@ const token = Cookies.get("token");
     <div v-else>
       <NuxtLayout name="user">
         <div class="mt-5" v-if="!isLoading">
-          <RecordBody :link="link" :user="user" :row="row" @update-delivery-row="updateDeliveryRow" />
-          <RecordQR class="mt-10" :row="row"
-            :value="`https://smartsklad-pro-1.netlify.app/spreadsheets/record/1/${row.id}`" />
+          <RecordBody :link="link" :user="user" :row="row"
+            :value="`https://smartsklad-pro-1.netlify.app/spreadsheets/record/1/${row.id}`"
+            @update-delivery-row="updateDeliveryRow" />
         </div>
         <div v-else>
           <UISpinner />
