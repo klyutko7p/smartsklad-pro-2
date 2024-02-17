@@ -88,7 +88,7 @@ export const useRansomStore = defineStore("ransom", () => {
                     row.clientLink2 = ''
                 }
 
-                row.amountFromClient2 = row.priceProgram * row.percentClient / 100 - row.prepayment;
+                row.amountFromClient2 = Math.ceil((row.priceProgram * row.percentClient / 100) - row.prepayment);
                 row.profit2 = row.amountFromClient2 + row.prepayment;
 
             } else if (flag === 'Delivery') {
@@ -254,7 +254,7 @@ export const useRansomStore = defineStore("ransom", () => {
                     row.clientLink2 = ''
                 }
 
-                row.amountFromClient2 = Math.ceil(Math.ceil((row.priceProgram * row.percentClient / 100) - row.prepayment) / 10) * 10;
+                row.amountFromClient2 = Math.ceil((row.priceProgram * row.percentClient / 100) - row.prepayment);
                 row.profit2 = row.amountFromClient2 + row.prepayment;
 
             } else if (flag === 'Delivery') {
@@ -270,8 +270,6 @@ export const useRansomStore = defineStore("ransom", () => {
                 } else {
                     row.clientLink3 = ''
                 }
-
-                console.log(row);
 
                 row.amountFromClient3 = Math.ceil(row.purchaseOfGoods * row.percentClient / 100);
                 row.profit3 = row.amountFromClient3;
