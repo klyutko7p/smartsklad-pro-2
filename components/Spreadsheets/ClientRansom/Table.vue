@@ -46,6 +46,8 @@ const toggleShowDeletedRows = () => {
   updateRowsByFromName();
 };
 
+let fullURL = ref('')
+let fullArrayURL = ref<string[]>()
 
 onMounted(async () => {
 
@@ -53,6 +55,11 @@ onMounted(async () => {
 
   if (props.user.role === 'SORTIROVKA') {
     perPage.value = totalRows.value;
+  }
+
+  if (process.browser) {
+    fullURL.value = window.location.href
+    fullArrayURL.value = fullURL.value.split('/')
   }
 
   await storeRansom.getSumOfRejection()
@@ -113,7 +120,7 @@ function convertToURL(inputString: string) {
     const recordID = parts[parts.length - 2];
     const entryID = parts[parts.length - 1];
 
-    const url = `https://smartsklad-pro-2.netlify.app/spreadsheets/record/${recordID}/${entryID}`;
+    const url = `${fullArrayURL.value[0] + '//' + fullArrayURL.value[2] + '/spreadsheets/record/'}${recordID}/${entryID}`;
 
     return url;
   } else if (inputString.includes('.')) {
@@ -122,7 +129,7 @@ function convertToURL(inputString: string) {
     const recordID = parts[parts.length - 2];
     const entryID = parts[parts.length - 1];
 
-    const url = `https://smartsklad-pro-2.netlify.app/spreadsheets/record/${recordID}/${entryID}`;
+    const url = `${fullArrayURL.value[0] + '//' + fullArrayURL.value[2] + '/spreadsheets/record/'}${recordID}/${entryID}`;
 
     return url;
   }

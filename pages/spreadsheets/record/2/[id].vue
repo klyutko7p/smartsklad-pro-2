@@ -17,12 +17,20 @@ async function updateDeliveryRow(obj: any) {
   row.value = await storeRansom.getRansomRow(id, "ClientRansom");
 }
 
+let fullURL = ref('')
+
 onMounted(async () => {
   isLoading.value = true;
   user.value = await storeUsers.getUser();
-  row.value = await storeRansom.getRansomRow(id, "ClientRansom");
+  row.value = await storeRansom.getRansomRow(id, "OurRansom");
+
+  if (process.browser) {
+    fullURL.value = window.location.href
+  }
+
   isLoading.value = false;
 });
+
 
 definePageMeta({
   layout: false,
@@ -46,7 +54,7 @@ const token = Cookies.get("token");
       <NuxtLayout name="admin">
         <div class="mt-5" v-if="!isLoading">
           <RecordBody :link="link" :user="user" :row="row"
-            :value="`https://smartsklad-pro-2.netlify.app/spreadsheets/record/2/${row.id}`"
+          :value="fullURL"
             @update-delivery-row="updateDeliveryRow" />
         </div>
         <div v-else>
@@ -58,7 +66,7 @@ const token = Cookies.get("token");
       <NuxtLayout name="user">
         <div class="mt-5" v-if="!isLoading">
           <RecordBody :link="link" :user="user" :row="row"
-            :value="`https://smartsklad-pro-2.netlify.app/spreadsheets/record/2/${row.id}`"
+          :value="fullURL"
             @update-delivery-row="updateDeliveryRow" />
         </div>
         <div v-else>
