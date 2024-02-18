@@ -18,6 +18,7 @@ let deliveryRansomRows = ref<Array<IDelivery>>();
 const token = Cookies.get("token");
 let isLoading = ref(false);
 let rows = ref<Array<IBalance>>()
+let sumOfReject = ref<any>()
 
 onBeforeMount(async () => {
   isLoading.value = true;
@@ -28,6 +29,7 @@ onBeforeMount(async () => {
   clientRansomRows.value = await storeRansom.getRansomRows("ClientRansom");
   deliveryRansomRows.value = await storeRansom.getRansomRows("Delivery");
   rows.value = await storeBalance.getBalanceRows();
+  sumOfReject.value = await storeRansom.getSumOfRejection()
 
   getAllSum();
 
@@ -67,11 +69,11 @@ const endDate = ref<Date | string | null>(null);
 function calculateValue(curValue: any) {
   if (!curValue.prepayment) {
     return curValue.additionally !== "Отказ клиент"
-      ? curValue.amountFromClient1 - curValue.priceSite + curValue.deliveredKGT : 100;
+      ? curValue.amountFromClient1 - curValue.priceSite + curValue.deliveredKGT : sumOfReject.value.value;
   } else {
     return curValue.additionally !== "Отказ клиент"
       ? (curValue.priceSite * curValue.percentClient) / 100 + curValue.deliveredKGT
-      : 100;
+      : sumOfReject.value.value;
   }
 }
 
@@ -210,7 +212,8 @@ function getAllSum() {
       copyArrayOurRansom.value = ourRansomRows.value
         ?.filter(
           (row) =>
-            row.issued !== null &&
+            row.issued === null &&
+            row.deleted === null &&
             (!startingDate.value ||
               new Date(row.issued) >= new Date(startingDate.value)) &&
             (!endDate.value || new Date(row.issued) <= new Date(endDate.value))
@@ -223,7 +226,8 @@ function getAllSum() {
         ?.filter(
           (row) =>
             row.dispatchPVZ === selectedPVZ.value &&
-            row.issued !== null &&
+            row.issued === null &&
+            row.deleted === null &&
             (!startingDate.value ||
               new Date(row.issued) >= new Date(startingDate.value)) &&
             (!endDate.value || new Date(row.issued) <= new Date(endDate.value))
@@ -338,58 +342,6 @@ function getAllSum() {
               new Date(row.issued) >= new Date(startingDate.value)) &&
             (!endDate.value || new Date(row.issued) <= new Date(endDate.value)) &&
             row.additionally === "Оплачено онлайн" &&
-            row.dispatchPVZ === selectedPVZ.value
-        )
-        .sort((a, b) => new Date(b.issued) - new Date(a.issued));
-
-      sum1.value = reduceArray(copyArrayOurRansom.value, "OurRansom");
-      sum2.value = reduceArray(copyArrayClientRansom.value, "ClientRansom");
-      allSum.value = sum1.value + sum2.value;
-    }
-  } else if (selectedTypeOfTransaction.value === "Сумма с клиента+предоплата всего") {
-    if (selectedPVZ.value === "Все ПВЗ") {
-      copyArrayOurRansom.value = ourRansomRows.value
-        ?.filter(
-          (row) =>
-            row.issued !== null &&
-            (!startingDate.value ||
-              new Date(row.issued) >= new Date(startingDate.value)) &&
-            (!endDate.value || new Date(row.issued) <= new Date(endDate.value))
-        )
-        .sort((a, b) => new Date(b.issued) - new Date(a.issued));
-
-      copyArrayClientRansom.value = clientRansomRows.value
-        ?.filter(
-          (row) =>
-            row.issued !== null &&
-            (!startingDate.value ||
-              new Date(row.issued) >= new Date(startingDate.value)) &&
-            (!endDate.value || new Date(row.issued) <= new Date(endDate.value))
-        )
-        .sort((a, b) => new Date(b.issued) - new Date(a.issued));
-
-      sum1.value = reduceArray(copyArrayOurRansom.value, "OurRansom");
-      sum2.value = reduceArray(copyArrayClientRansom.value, "ClientRansom");
-      allSum.value = sum1.value + sum2.value;
-    } else {
-      copyArrayOurRansom.value = ourRansomRows.value
-        ?.filter(
-          (row) =>
-            row.issued !== null &&
-            (!startingDate.value ||
-              new Date(row.issued) >= new Date(startingDate.value)) &&
-            (!endDate.value || new Date(row.issued) <= new Date(endDate.value)) &&
-            row.dispatchPVZ === selectedPVZ.value
-        )
-        .sort((a, b) => new Date(b.issued) - new Date(a.issued));
-
-      copyArrayClientRansom.value = clientRansomRows.value
-        ?.filter(
-          (row) =>
-            row.issued !== null &&
-            (!startingDate.value ||
-              new Date(row.issued) >= new Date(startingDate.value)) &&
-            (!endDate.value || new Date(row.issued) <= new Date(endDate.value)) &&
             row.dispatchPVZ === selectedPVZ.value
         )
         .sort((a, b) => new Date(b.issued) - new Date(a.issued));
@@ -568,25 +520,13 @@ async function updateRow() {
               </div>
             </div>
 
-            <div class="">
-              <!-- <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
-                <h1>Баланс "Наш Выкуп"</h1>
-                <h1 class="font-bold text-secondary-color text-4xl mt-3">
-                  {{ formatNumber(Math.ceil(sum1)) }} ₽
-                </h1>
-              </div> -->
+            <div>
               <div class="text-center text-2xl mt-10">
                 <h1>Баланс</h1>
                 <h1 class="font-bold text-secondary-color text-4xl mt-3">
                   {{ formatNumber(Math.ceil(allSum)) }} ₽
                 </h1>
               </div>
-              <!-- <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
-                <h1>Баланс "Выкуп Клиента"</h1>
-                <h1 class="font-bold text-secondary-color text-4xl mt-3">
-                  {{ formatNumber(Math.ceil(sum2)) }} ₽
-                </h1>
-              </div> -->
             </div>
           </div>
 
@@ -696,25 +636,13 @@ async function updateRow() {
               </div>
             </div>
 
-            <div class="">
-              <!-- <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
-                <h1>Баланс "Наш Выкуп"</h1>
-                <h1 class="font-bold text-secondary-color text-4xl mt-3">
-                  {{ formatNumber(Math.ceil(sum1)) }} ₽
-                </h1>
-              </div> -->
+            <div>
               <div class="text-center text-2xl mt-10">
                 <h1>Баланс</h1>
                 <h1 class="font-bold text-secondary-color text-4xl mt-3">
                   {{ formatNumber(Math.ceil(allSum)) }} ₽
                 </h1>
               </div>
-              <!-- <div class="text-center text-2xl mt-10" v-if="selectedTypeOfTransaction !== 'Заказано'">
-                <h1>Баланс "Выкуп Клиента"</h1>
-                <h1 class="font-bold text-secondary-color text-4xl mt-3">
-                  {{ formatNumber(Math.ceil(sum2)) }} ₽
-                </h1>
-              </div> -->
             </div>
           </div>
 

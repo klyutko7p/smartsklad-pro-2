@@ -198,6 +198,11 @@ model OrderAccount {
   name String
 }
 
+model SumOfRejection {
+  id    Int   @id @default(autoincrement())
+  value Float
+}
+
 enum Role {
   USER
   ADMIN

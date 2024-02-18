@@ -3,6 +3,7 @@ import { read, utils, writeFile } from "xlsx";
 
 const router = useRouter();
 const storeUsers = useUsersStore();
+const storeRansom = useRansomStore()
 
 const emit = defineEmits([
     "openModal",
@@ -147,6 +148,8 @@ onMounted(() => {
         perPage.value = totalRows.value;
         updateCurrentPageData();
     }
+
+    await storeRansom.getSumOfRejection()
 
 })
 

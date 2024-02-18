@@ -23,6 +23,52 @@ function generateLink(phoneNumber: string, flag: string) {
 
 export const useRansomStore = defineStore("ransom", () => {
 
+    let cachedSumOfRejection: any = null
+
+
+    async function getSumOfRejection() {
+        if (cachedSumOfRejection) {
+            return cachedSumOfRejection;
+        } else {
+            try {
+                const { data }: any = await useFetch('/api/sum-of-rejection/get-sum', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                cachedSumOfRejection = data.value;
+                return cachedSumOfRejection;
+            } catch (error) {
+                console.error(error);
+                if (error instanceof Error) {
+                    toast.error(error.message);
+                } else {
+                    toast.error("An error occurred while fetching the sum of rejection.");
+                }
+                throw error;
+            }
+        }
+    }
+
+    async function updateSumOfRejection(sumOfRejection: any) {
+        try {
+            let data = await useFetch('/api/sum-of-rejection/edit-sum', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ sumOfRejection: sumOfRejection }),
+            });
+            cachedSumOfRejection = null;
+            toast.success("Сумма успешно обновлена!")
+        } catch (error) {
+            if (error instanceof Error) {
+                toast.error(error.message);
+            }
+        }
+    }
+
 
     async function createCopyRow(id: number, flag: string) {
         try {
@@ -224,8 +270,8 @@ export const useRansomStore = defineStore("ransom", () => {
                 }
 
                 if (row.additionally === 'Отказ клиент') {
-                    row.amountFromClient1 = 100
-                    row.profit1 = 100
+                    row.amountFromClient1 = cachedSumOfRejection.value
+                    row.profit1 = cachedSumOfRejection.value
                 } else if (row.additionally === 'Отказ брак') {
                     row.amountFromClient1 = 0
                     row.profit1 = 0
@@ -339,7 +385,7 @@ export const useRansomStore = defineStore("ransom", () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ idArray: idArray, flag: flag, flagRansom: flagRansom, username: username }),
+                body: JSON.stringify({ idArray: idArray, flag: flag, flagRansom: flagRansom, username: username, sumOfReject: cachedSumOfRejection }),
             })
             if (data.data.value === undefined) {
                 toast.success("Доставка у записей успешно обновлена!")
@@ -465,5 +511,5 @@ export const useRansomStore = defineStore("ransom", () => {
         return Array.from(uniqueNonEmptyValues);
     };
 
-    return { createRansomRow, getRansomRows, updateRansomRow, deleteRansomRow, updateDeliveryStatus, getUniqueNonEmptyValues, getRansomRow, deleteRansomSelectedRows, getRansomRowsByLink, updateDeliveryRowsStatus, createCopyRow, deleteIssuedRows, getOldRansomRow, getRansomRowsByPVZ, getRansomRowsByFromName }
+    return { createRansomRow, getRansomRows, updateRansomRow, deleteRansomRow, updateDeliveryStatus, getUniqueNonEmptyValues, getRansomRow, deleteRansomSelectedRows, getRansomRowsByLink, updateDeliveryRowsStatus, createCopyRow, deleteIssuedRows, getOldRansomRow, getRansomRowsByPVZ, getRansomRowsByFromName, getSumOfRejection, updateSumOfRejection }
 })

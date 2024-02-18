@@ -3,7 +3,7 @@ import type { PropType } from "vue";
 
 const router = useRouter();
 const storeUsers = useUsersStore();
-
+const storeRansom = useRansomStore()
 
 const props = defineProps({
   user: { type: Object as PropType<User>, required: true },
@@ -47,13 +47,15 @@ const toggleShowDeletedRows = () => {
 };
 
 
-onMounted(() => {
+onMounted(async () => {
 
   updateRowsByFromName();
 
   if (props.user.role === 'SORTIROVKA') {
     perPage.value = totalRows.value;
   }
+
+  await storeRansom.getSumOfRejection()
 
 })
 
