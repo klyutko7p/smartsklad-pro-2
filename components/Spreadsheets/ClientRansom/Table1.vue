@@ -138,7 +138,7 @@ const toggleShowDeletedRows = () => {
 
 let isVisiblePages = ref(true)
 
-onMounted(() => {
+onMounted(async () => {
 
   updateCurrentPageData()
 
