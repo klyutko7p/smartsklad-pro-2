@@ -91,7 +91,7 @@ const handleCheckboxChange = (row: IOurRansom): void => {
         allSum.value = allSum.value.filter((obj) => obj.rowId !== row.id);
     } else {
         checkedRows.value.push(row.id);
-        allSum.value.push({ rowId: row.id, amount: Math.ceil(row.amountFromClient1 / 10) * 10, issued: row.issued, deliveredPVZ: row.deliveredPVZ, orderPVZ: row.orderPVZ, deliveredSC: row.deliveredSC });
+        allSum.value.push({ rowId: row.id, amount: row.amountFromClient1, issued: row.issued, deliveredPVZ: row.deliveredPVZ, orderPVZ: row.orderPVZ, deliveredSC: row.deliveredSC });
     }
     getAllSum.value = allSum.value.filter((obj) => obj.issued === null).reduce((sum, obj) => sum + obj.amount, 0);
     showButton.value = allSum.value.every(obj => obj.issued === null);
