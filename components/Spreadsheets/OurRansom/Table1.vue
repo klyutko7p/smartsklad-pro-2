@@ -95,8 +95,8 @@ const handleCheckboxChange = (row: IOurRansom): void => {
     }
     getAllSum.value = allSum.value.filter((obj) => obj.issued === null).reduce((sum, obj) => sum + obj.amount, 0);
     showButton.value = allSum.value.every(obj => obj.issued === null);
-    showButtonPVZ.value = allSum.value.every(obj => obj.deliveredPVZ === null && obj.deliveredSC !== null);
-    showButtonSC.value = allSum.value.every(obj => obj.orderPVZ === null);
+    showButtonPVZ.value = allSum.value.every(obj => obj.deliveredPVZ === null);
+    showButtonSC.value = allSum.value.every(obj => obj.deliveredSC === null);
 };
 
 const showDeletedRows = ref(false);
