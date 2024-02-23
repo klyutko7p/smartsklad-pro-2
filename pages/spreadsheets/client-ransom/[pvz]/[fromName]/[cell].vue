@@ -61,11 +61,6 @@ async function updateDeliveryRow(obj: any) {
     cellString,
     "ClientRansom"
   );
-  rows.value = await storeRansom.getRansomRowsByFromName(
-    fromNameString,
-    cellString,
-    "ClientRansom"
-  );
 }
 
 async function updateDeliveryRows(obj: any) {
@@ -92,11 +87,6 @@ async function deleteRow(id: number) {
     cellString,
     "ClientRansom"
   );
-  rows.value = await storeRansom.getRansomRowsByFromName(
-    fromNameString,
-    cellString,
-    "ClientRansom"
-  );
 }
 
 async function deleteSelectedRows(idArray: number[]) {
@@ -109,51 +99,31 @@ async function deleteSelectedRows(idArray: number[]) {
     cellString,
     "ClientRansom"
   );
-  rows.value = await storeRansom.getRansomRowsByFromName(
-    fromNameString,
-    cellString,
-    "ClientRansom"
-  );
 }
 
 async function updateRow() {
   await storeRansom.updateRansomRow(rowData.value, user.value.username, "ClientRansom");
+  await closeModal();
   filteredRows.value = await storeRansom.getRansomRowsByFromName(
     fromNameString,
     cellString,
     "ClientRansom"
   );
-  rows.value = await storeRansom.getRansomRowsByFromName(
-    fromNameString,
-    cellString,
-    "ClientRansom"
-  );
-  closeModal();
 }
 
 async function createRow() {
   await storeRansom.createRansomRow(rowData.value, user.value.username, "ClientRansom");
+  await closeModal();
   filteredRows.value = await storeRansom.getRansomRowsByFromName(
     fromNameString,
     cellString,
     "ClientRansom"
   );
-  rows.value = await storeRansom.getRansomRowsByFromName(
-    fromNameString,
-    cellString,
-    "ClientRansom"
-  );
-  closeModal();
 }
 
 async function createCopyRow(id: number) {
   await storeRansom.createCopyRow(id, "ClientRansom");
   filteredRows.value = await storeRansom.getRansomRowsByFromName(
-    fromNameString,
-    cellString,
-    "ClientRansom"
-  );
-  rows.value = await storeRansom.getRansomRowsByFromName(
     fromNameString,
     cellString,
     "ClientRansom"

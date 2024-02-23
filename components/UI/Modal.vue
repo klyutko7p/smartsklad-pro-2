@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-overlay">
+  <div class="fixed top-0 bottom-0 left-0 right-0 flex justify-center bg-[#000000da] z-[100] max-sm:absolute">
 
     <div class="modal text-black" @click.stop>
       <div class="text-secondary-color flex justify-end">
@@ -14,7 +14,6 @@
 </template>
 
 <style scoped>
-
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -35,10 +34,6 @@
   padding: 20px 20px;
   border-radius: 20px;
   border: 4px solid orange;
-}
-.close {
-  margin: 10% 0 0 16px;
-  cursor: pointer;
 }
 
 .close-img {

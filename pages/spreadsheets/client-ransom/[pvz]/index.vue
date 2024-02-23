@@ -57,7 +57,6 @@ async function updateDeliveryRow(obj: any) {
   let answer = confirm("Вы точно хотите изменить статус доставки?");
   if (answer) await storeRansom.updateDeliveryStatus(obj.row, obj.flag, "ClientRansom", user.value.username);
   filteredRows.value = await storeRansom.getRansomRowsByPVZ(pvzString, "ClientRansom");
-  rows.value = await storeRansom.getRansomRowsByPVZ(pvzString, "ClientRansom");
 }
 
 async function updateDeliveryRows(obj: any) {
@@ -67,14 +66,12 @@ async function updateDeliveryRows(obj: any) {
   if (answer)
     await storeRansom.updateDeliveryRowsStatus(obj.idArray, obj.flag, "ClientRansom", user.value.username);
   filteredRows.value = await storeRansom.getRansomRowsByPVZ(pvzString, "ClientRansom");
-  rows.value = await storeRansom.getRansomRowsByPVZ(pvzString, "OurRansom");
 }
 
 async function deleteRow(id: number) {
   let answer = confirm("Вы точно хотите удалить данную строку?");
   if (answer) await storeRansom.deleteRansomRow(id, "ClientRansom");
   filteredRows.value = await storeRansom.getRansomRowsByPVZ(pvzString, "ClientRansom");
-  rows.value = await storeRansom.getRansomRowsByPVZ(pvzString, "ClientRansom");
 }
 
 async function deleteSelectedRows(idArray: number[]) {
@@ -83,27 +80,23 @@ async function deleteSelectedRows(idArray: number[]) {
   );
   if (answer) await storeRansom.deleteRansomSelectedRows(idArray, "ClientRansom");
   filteredRows.value = await storeRansom.getRansomRowsByPVZ(pvzString, "ClientRansom");
-  rows.value = await storeRansom.getRansomRowsByPVZ(pvzString, "ClientRansom");
 }
 
 async function updateRow() {
   await storeRansom.updateRansomRow(rowData.value, user.value.username, "ClientRansom");
+  await closeModal();
   filteredRows.value = await storeRansom.getRansomRowsByPVZ(pvzString, "ClientRansom");
-  rows.value = await storeRansom.getRansomRowsByPVZ(pvzString, "ClientRansom");
-  closeModal();
 }
 
 async function createRow() {
   await storeRansom.createRansomRow(rowData.value, user.value.username, "ClientRansom");
+  await closeModal();
   filteredRows.value = await storeRansom.getRansomRowsByPVZ(pvzString, "ClientRansom");
-  rows.value = await storeRansom.getRansomRowsByPVZ(pvzString, "ClientRansom");
-  closeModal();
 }
 
 async function createCopyRow(id: number) {
   await storeRansom.createCopyRow(id, "ClientRansom");
   filteredRows.value = await storeRansom.getRansomRowsByPVZ(pvzString, "ClientRansom");
-  rows.value = await storeRansom.getRansomRowsByPVZ(pvzString, "ClientRansom");
 }
 
 async function deleteIssuedRows() {
