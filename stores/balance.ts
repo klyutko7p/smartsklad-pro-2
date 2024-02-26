@@ -28,7 +28,6 @@ export const useBalanceStore = defineStore("balance", () => {
                 cachedBalanceRows = null;
                 toast.success("Запись успешно создана!");
             } else {
-                console.log(data.data.value);
                 toast.error("Произошла ошибка при создании записи");
             }
         } catch (error) {

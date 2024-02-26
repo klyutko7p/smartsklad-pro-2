@@ -15,16 +15,6 @@ function signOut() {
 
 function editMenu() {
   isOpen.value = !isOpen.value;
-  const screenWidth = window.innerWidth;
-  if (isOpen.value && screenWidth < 1280) {
-    useHead({
-      bodyAttrs: {
-        class: 'overflow-hidden'
-      }
-    });
-  } else {
-    document.body.classList.remove('overflow-hidden');
-  }
 }
 
 onBeforeMount(async () => {
@@ -88,6 +78,14 @@ function formatPhoneNumber(phoneNumber: string) {
         </div>
         <h1>Выкуп Клиента</h1>
       </div>
+      <div v-if="(user.role === 'ADMIN' || user.role === 'PVZ')" role="button" @click="router.push('/acceptance')"
+        tabindex="0"
+        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
+        <div class="grid place-items-center mr-4">
+          <Icon name="material-symbols:call-received-rounded" size="20" />
+        </div>
+        <h1>Приёмка</h1>
+      </div>
       <div
         v-if="(user.role === 'ADMIN' && user.username !== 'Светлана') || user.role === 'ADMINISTRATOR' || user.role === 'PVZ'"
         role="button" @click="router.push('/balance')" tabindex="0"
@@ -149,6 +147,14 @@ function formatPhoneNumber(phoneNumber: string) {
           </svg>
         </div>
         <h1>Выкуп Клиента</h1>
+      </div>
+      <div v-if="(user.role === 'ADMIN' || user.role === 'PVZ')" role="button" @click="router.push('/acceptance')"
+        tabindex="0"
+        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
+        <div class="grid place-items-center mr-4">
+          <Icon name="material-symbols:call-received-rounded" size="20" />
+        </div>
+        <h1>Приёмка</h1>
       </div>
       <div
         v-if="(user.role === 'ADMIN' && user.username !== 'Светлана') || user.role === 'ADMINISTRATOR' || user.role === 'PVZ'"

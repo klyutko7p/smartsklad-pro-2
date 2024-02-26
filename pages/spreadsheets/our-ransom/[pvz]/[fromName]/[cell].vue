@@ -43,7 +43,6 @@ function openModal(row: IOurRansom) {
     rowData.value.issued = rowData.value.issued
       ? storeUsers.getISODateTime(rowData.value.issued)
       : null;
-    console.log(rowData.value.deliveredSC);
   } else {
     rowData.value = {} as IOurRansom;
     rowData.value.fromName = "";
@@ -92,16 +91,25 @@ async function deleteSelectedRows(idArray: number[]) {
 }
 
 async function updateRow() {
+  isLoading.value = true;
+  
   await storeRansom.updateRansomRow(rowData.value, user.value.username, "OurRansom");
-  await closeModal();
   filteredRows.value = await storeRansom.getRansomRowsByFromName(fromNameString, cellString, "OurRansom");
+  closeModal();
+
+  isLoading.value = false;
 }
 
 async function createRow() {
+  isLoading.value = true;
+  
   await storeRansom.createRansomRow(rowData.value, user.value.username, "OurRansom");
-  await closeModal();
   filteredRows.value = await storeRansom.getRansomRowsByFromName(fromNameString, cellString, "OurRansom");
+  closeModal();
+
+  isLoading.value = false;
 }
+
 
 async function createCopyRow(id: number) {
   await storeRansom.createCopyRow(id, "OurRansom");
@@ -151,43 +159,20 @@ function handleFilteredRows(filteredRowsData: IOurRansom[]) {
     }
   }
 }
-
-async function deleteIssuedRows() {
-  isLoading.value = true;
-  await storeRansom.deleteIssuedRows("OurRansom");
-  filteredRows.value = await storeRansom.getRansomRows("OurRansom");
-  rows.value = await storeRansom.getRansomRows("OurRansom");
-  isLoading.value = false;
-}
-
-function deleteIssuedRowsTimer() {
-  const currentTime = new Date();
-  const currentHour = currentTime.getHours();
-  const currentMinute = currentTime.getMinutes();
-  if (currentHour === 22 && currentMinute >= 0 || currentHour === 23 && currentMinute <= 59) {
-    deleteIssuedRows();
-  }
-}
-
 let originallyRows = ref<Array<IOurRansom>>()
 
 onMounted(async () => {
   isLoading.value = true;
   user.value = await storeUsers.getUser();
-  // rows.value = await storeRansom.getRansomRowsByFromName(fromNameString, cellString, "OurRansom");
-  originallyRows.value = await storeRansom.getRansomRows("OurRansom");
 
   if (user.value.role !== 'PVZ') {
-    rows.value = originallyRows.value?.filter((row) => row.fromName === fromNameString && row.cell === cellString)
+    rows.value = await storeRansom.getRansomRowsByFromName(fromNameString, cellString, "OurRansom")
     filteredRows.value = rows.value
   } else {
-    rows.value = originallyRows.value?.filter((row) => row.fromName === fromNameString && row.cell === cellString && row.deliveredSC !== null && row.issued === null)
+    rows.value = await storeRansom.getRansomRowsByFromName(fromNameString, cellString, "OurRansom")
+    rows.value = rows.value?.filter((row) => row.deliveredSC !== null && row.issued === null)
     filteredRows.value = rows.value
   }
-  
-  pvz.value = await storePVZ.getPVZ();
-  sortingCenters.value = await storeSortingCenters.getSortingCenters();
-  orderAccounts.value = await storeOrderAccounts.getOrderAccounts();
 
   if (rows.value) {
     handleFilteredRows(rows.value);
@@ -198,9 +183,12 @@ onMounted(async () => {
     router.push("/spreadsheets/our-ransom");
   }
 
-  deleteIssuedRowsTimer()
-
   isLoading.value = false;
+
+  originallyRows.value = await storeRansom.getRansomRowsForModal("OurRansom");
+  pvz.value = await storePVZ.getPVZ();
+  sortingCenters.value = await storeSortingCenters.getSortingCenters();
+  orderAccounts.value = await storeOrderAccounts.getOrderAccounts();
 });
 
 onBeforeMount(() => {
@@ -330,10 +318,6 @@ async function getFromNameFromCell() {
         <div v-if="!isLoading" class="mt-3">
           <div>
             <SpreadsheetsOurRansomFilters v-if="rows" @filtered-rows="handleFilteredRows" :rows="rows" :user="user" />
-            <div class="mt-5 flex items-center gap-3" v-if="user.dataOurRansom === 'WRITE'">
-              <UIMainButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'" @click="openModal">
-                Создать новую запись</UIMainButton>
-            </div>
           </div>
 
           <SpreadsheetsOurRansomTable1 @update-delivery-row="updateDeliveryRow" :rows="filteredRows" :user="user"
@@ -523,10 +507,6 @@ async function getFromNameFromCell() {
           <div>
             <SpreadsheetsOurRansomFilters v-if="rows && user.role !== 'PVZ'" @filtered-rows="handleFilteredRows"
               :rows="rows" :user="user" />
-            <div class="mt-5 flex items-center gap-3" v-if="user.dataOurRansom === 'WRITE'">
-              <UIMainButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'" @click="openModal">
-                Создать новую запись</UIMainButton>
-            </div>
           </div>
 
           <SpreadsheetsOurRansomTable1 @update-delivery-row="updateDeliveryRow" :rows="filteredRows" :user="user"

@@ -15,16 +15,6 @@ function signOut() {
 
 function editMenu() {
   isOpen.value = !isOpen.value;
-  const screenWidth = window.innerWidth;
-  if (isOpen.value && screenWidth < 1280) {
-    useHead({
-      bodyAttrs: {
-        class: 'overflow-hidden'
-      }
-    });
-  } else {
-    document.body.classList.remove('overflow-hidden');
-  }
 }
 
 onBeforeMount(async () => {
@@ -62,7 +52,9 @@ function formatPhoneNumber(phoneNumber: string) {
         class="hover:text-orange-300 duration-200 cursor-pointer" />
     </div>
     <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700 overflow-y-auto">
-      <div role="button" @click="user.role !== 'SORTIROVKA' ? router.push('/spreadsheets/our-ransom/info') : router.push('/spreadsheets/our-ransom')" tabindex="0"
+      <div role="button"
+        @click="user.role !== 'SORTIROVKA' ? router.push('/spreadsheets/our-ransom/info') : router.push('/spreadsheets/our-ransom')"
+        tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none"
         v-if="user.dataOurRansom === 'READ' || user.dataOurRansom === 'WRITE'">
         <div class="grid place-items-center mr-4">
@@ -75,7 +67,8 @@ function formatPhoneNumber(phoneNumber: string) {
         </div>
         <h1>Наш Выкуп</h1>
       </div>
-      <div role="button" tabindex="0" @click="user.role !== 'SORTIROVKA' ? router.push('/spreadsheets/client-ransom/info') : router.push('/spreadsheets/client-ransom')"
+      <div role="button" tabindex="0"
+        @click="user.role !== 'SORTIROVKA' ? router.push('/spreadsheets/client-ransom/info') : router.push('/spreadsheets/client-ransom')"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none"
         v-if="user.dataClientRansom === 'READ' || user.dataClientRansom === 'WRITE'">
         <div class="grid place-items-center mr-4">
@@ -87,6 +80,14 @@ function formatPhoneNumber(phoneNumber: string) {
           </svg>
         </div>
         <h1>Выкуп Клиента</h1>
+      </div>
+      <div v-if="(user.role === 'ADMIN' || user.role === 'PVZ')" role="button" @click="router.push('/acceptance')"
+        tabindex="0"
+        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
+        <div class="grid place-items-center mr-4">
+          <Icon name="material-symbols:call-received-rounded" size="20" />
+        </div>
+        <h1>Приёмка</h1>
       </div>
       <div
         v-if="(user.role === 'ADMIN' && user.username !== 'Светлана') || user.role === 'ADMINISTRATOR' || user.role === 'PVZ'"
@@ -122,6 +123,13 @@ function formatPhoneNumber(phoneNumber: string) {
           <Icon name="icon-park-outline:market-analysis" size="20" />
         </div>
         <h1>Маркетплейсы</h1>
+      </div>
+      <div v-if="user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/cells')" tabindex="0"
+        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
+        <div class="grid place-items-center mr-4">
+          <Icon name="material-symbols:cell-merge-rounded" size="20" />
+        </div>
+        <h1>Ячейки</h1>
       </div>
       <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
         @click="router.push('/admin/pvz')" tabindex="0"
@@ -169,7 +177,9 @@ function formatPhoneNumber(phoneNumber: string) {
       size="40" @click="editMenu" />
     <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-black">
       <h1 class="text-center font-bold text-3xl text-secondary-color mb-5">SMARTSKLAD</h1>
-      <div role="button" @click="user.role !== 'SORTIROVKA' ? router.push('/spreadsheets/our-ransom/info') : router.push('/spreadsheets/our-ransom')" tabindex="0"
+      <div role="button"
+        @click="user.role !== 'SORTIROVKA' ? router.push('/spreadsheets/our-ransom/info') : router.push('/spreadsheets/our-ransom')"
+        tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none"
         v-if="user.dataOurRansom === 'READ' || user.dataOurRansom === 'WRITE'">
         <div class="grid place-items-center mr-4">
@@ -182,7 +192,8 @@ function formatPhoneNumber(phoneNumber: string) {
         </div>
         <h1>Наш Выкуп</h1>
       </div>
-      <div role="button" tabindex="0" @click="user.role !== 'SORTIROVKA' ? router.push('/spreadsheets/client-ransom/info') : router.push('/spreadsheets/client-ransom')"
+      <div role="button" tabindex="0"
+        @click="user.role !== 'SORTIROVKA' ? router.push('/spreadsheets/client-ransom/info') : router.push('/spreadsheets/client-ransom')"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none"
         v-if="user.dataClientRansom === 'READ' || user.dataClientRansom === 'WRITE'">
         <div class="grid place-items-center mr-4">
@@ -194,6 +205,14 @@ function formatPhoneNumber(phoneNumber: string) {
           </svg>
         </div>
         <h1>Выкуп Клиента</h1>
+      </div>
+      <div v-if="(user.role === 'ADMIN' || user.role === 'PVZ')" role="button" @click="router.push('/acceptance')"
+        tabindex="0"
+        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
+        <div class="grid place-items-center mr-4">
+          <Icon name="material-symbols:call-received-rounded" size="20" />
+        </div>
+        <h1>Приёмка</h1>
       </div>
       <div
         v-if="(user.role === 'ADMIN' && user.username !== 'Светлана') || user.role === 'ADMINISTRATOR' || user.role === 'PVZ'"
@@ -222,32 +241,35 @@ function formatPhoneNumber(phoneNumber: string) {
         </div>
         <h1>Пользователи</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
-        @click="router.push('/admin/marketplaces')" tabindex="0"
+      <div v-if="user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/marketplaces')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="icon-park-outline:market-analysis" size="20" />
         </div>
         <h1>Маркетплейсы</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
-        @click="router.push('/admin/pvz')" tabindex="0"
+      <div v-if="user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/cells')" tabindex="0"
+        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
+        <div class="grid place-items-center mr-4">
+          <Icon name="material-symbols:cell-merge-rounded" size="20" />
+        </div>
+        <h1>Ячейки</h1>
+      </div>
+      <div v-if="user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/pvz')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="tabler:reorder" size="20" />
         </div>
         <h1>Пункты выдачи заказов</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
-        @click="router.push('/admin/sorting-centers')" tabindex="0"
+      <div v-if="user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/sorting-centers')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="material-symbols-light:box-sharp" size="20" />
         </div>
         <h1>Сортировочные центры</h1>
       </div>
-      <div v-if="user.username !== 'Светлана' && user.role !== 'ADMINISTRATOR'" role="button"
-        @click="router.push('/admin/order-accounts')" tabindex="0"
+      <div v-if="user.role !== 'ADMINISTRATOR'" role="button" @click="router.push('/admin/order-accounts')" tabindex="0"
         class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-orange-50 hover:bg-opacity-80 focus:bg-orange-50 focus:bg-opacity-80 active:bg-gray-50 active:bg-opacity-80 hover:text-orange-900 focus:text-orange-900 active:text-orange-900 outline-none">
         <div class="grid place-items-center mr-4">
           <Icon name="material-symbols:deployed-code-account-outline-rounded" size="20" />

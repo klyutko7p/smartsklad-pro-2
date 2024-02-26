@@ -83,13 +83,13 @@ interface RowData {
   orderPVZ: Date | null | string | number;
 }
 
-const handleCheckboxChange = (row: IOurRansom): void => {
+const handleCheckboxChange = (row: IClientRansom): void => {
   if (isChecked(row.id)) {
     checkedRows.value = checkedRows.value.filter((id) => id !== row.id);
     allSum.value = allSum.value.filter((obj) => obj.rowId !== row.id);
   } else {
     checkedRows.value.push(row.id);
-    allSum.value.push({ rowId: row.id, amount: Math.ceil(row.amountFromClient1 / 10) * 10, issued: row.issued, deliveredPVZ: row.deliveredPVZ, orderPVZ: row.orderPVZ, deliveredSC: row.deliveredSC, });
+    allSum.value.push({ rowId: row.id, amount: Math.ceil(row.amountFromClient2 / 10) * 10, issued: row.issued, deliveredPVZ: row.deliveredPVZ, orderPVZ: row.orderPVZ, deliveredSC: row.deliveredSC, });
   }
   getAllSum.value = allSum.value.filter((obj) => obj.issued === null).reduce((sum, obj) => sum + obj.amount, 0);
   showButton.value = allSum.value.every(obj => obj.issued === null);
@@ -254,7 +254,7 @@ let showOthersVariants = ref(false)
             Выделение
           </th>
           <th scope="col" class="exclude-row border-2 text-[10px]"
-            v-if="user.dataClientRansom === 'WRITE' && (user.role === 'ADMIN' || user.role === 'ADMINISTRATOR')">
+            v-if="(user.dataClientRansom === 'WRITE' && (user.role === 'ADMIN' || user.role === 'ADMINISTRATOR')) || user.role === 'SORTIROVKA'">
             изменение
           </th>
           <th scope="col" class="border-2 px-3">id</th>
@@ -327,14 +327,15 @@ let showOthersVariants = ref(false)
             <input type="checkbox" :value="row.id" :checked="isChecked(row.id)" @change="handleCheckboxChange(row)" />
           </td>
           <td class="border-2"
-            v-if="user.dataClientRansom === 'WRITE' && (user.role === 'ADMIN' || user.role === 'ADMINISTRATOR')">
+          v-if="(user.dataClientRansom === 'WRITE' && (user.role === 'ADMIN' || user.role === 'ADMINISTRATOR')) || user.role === 'SORTIROVKA'">
             <Icon @click="openModal(row)" class="text-green-600 cursor-pointer hover:text-green-300 duration-200"
               name="material-symbols:edit" size="32" />
           </td>
           <th scope="row" class="border-2 font-medium underline text-secondary-color whitespace-nowrap">
-            <NuxtLink class="cursor-pointer hover:text-orange-200 duration-200" :to="`/spreadsheets/record/2/${row.id}`">
+            <NuxtLink v-if="user.role !== 'PVZ' && user.role !== 'ADMINISTRATOR'" class="cursor-pointer hover:text-orange-200 duration-200" :to="`/spreadsheets/record/2/${row.id}`">
               {{ row.id }}
             </NuxtLink>
+            <h1 v-else>{{ row.id }}</h1>
           </th>
           <td
             class="px-3 py-4 border-2 underline text-secondary-color whitespace-nowrap uppercase overflow-hidden max-w-[50px]"

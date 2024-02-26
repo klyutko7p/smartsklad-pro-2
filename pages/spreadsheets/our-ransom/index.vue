@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import Cookies from "js-cookie";
 import { useToast } from 'vue-toastification';
+import { useCellsStore } from "~/stores/cell";
 
 const toast = useToast()
 
 const storeUsers = useUsersStore();
 const storeRansom = useRansomStore();
 const storePVZ = usePVZStore();
+const storeCells = useCellsStore();
 const storeSortingCenters = useSortingCentersStore();
 const storeOrderAccounts = useOrderAccountStore();
 
@@ -20,8 +22,10 @@ let rows = ref<Array<IOurRansom>>();
 let pvz = ref<Array<PVZ>>();
 let sortingCenters = ref<Array<SortingCenter>>();
 let orderAccounts = ref<Array<OrderAccount>>();
+let cells = ref<Array<Cell>>()
 
 let rowData = ref({} as IOurRansom);
+let cellData = ref({} as Cell)
 
 let isOpen = ref(false);
 
@@ -38,7 +42,6 @@ function openModal(row: IOurRansom) {
     rowData.value.issued = rowData.value.issued
       ? storeUsers.getISODateTime(rowData.value.issued)
       : null;
-    console.log(rowData.value.deliveredSC);
   } else {
     rowData.value = {} as IOurRansom;
     rowData.value.fromName = "";
@@ -79,15 +82,34 @@ async function deleteSelectedRows(idArray: number[]) {
 }
 
 async function updateRow() {
+  isLoading.value = true;
+
   await storeRansom.updateRansomRow(rowData.value, user.value.username, "OurRansom");
-  await closeModal();
   filteredRows.value = await storeRansom.getRansomRows("OurRansom");
+
+  if (cellData) {
+    await storeCells.updateCell(cellData.value, "Занято", rowData.value.fromName)
+  }
+
+  closeModal();
+  isLoading.value = false;
+  originallyRows.value = await storeRansom.getRansomRowsForModal("OurRansom");
 }
 
 async function createRow() {
+  isLoading.value = true;
+
   await storeRansom.createRansomRow(rowData.value, user.value.username, "OurRansom");
   filteredRows.value = await storeRansom.getRansomRows("OurRansom");
-  await closeModal();
+
+  if (cellData) {
+    await storeCells.updateCell(cellData.value, "Занято", rowData.value.fromName)
+  }
+  closeModal();
+
+  isLoading.value = false;
+  originallyRows.value = await storeRansom.getRansomRowsForModal("OurRansom");
+  cells.value = await storeCells.getCells()
 }
 
 async function createCopyRow(id: number) {
@@ -155,21 +177,26 @@ function deleteIssuedRowsTimer() {
   }
 }
 
+let originallyRows = ref<Array<IOurRansom>>()
+
 onMounted(async () => {
   isLoading.value = true;
   user.value = await storeUsers.getUser();
   rows.value = await storeRansom.getRansomRows("OurRansom");
-  pvz.value = await storePVZ.getPVZ();
-  sortingCenters.value = await storeSortingCenters.getSortingCenters();
-  orderAccounts.value = await storeOrderAccounts.getOrderAccounts();
+
+  deleteIssuedRowsTimer();
 
   if (rows.value) {
     handleFilteredRows(rows.value);
   }
 
-  deleteIssuedRowsTimer();
-
   isLoading.value = false;
+
+  originallyRows.value = await storeRansom.getRansomRowsForModal("OurRansom");
+  cells.value = await storeCells.getCells();
+  pvz.value = await storePVZ.getPVZ();
+  sortingCenters.value = await storeSortingCenters.getSortingCenters();
+  orderAccounts.value = await storeOrderAccounts.getOrderAccounts();
 });
 
 onBeforeMount(() => {
@@ -197,7 +224,7 @@ async function sleep(ms: number) {
 async function getCellFromName() {
   if (rowData.value.fromName.trim().length === 4) {
     let phoneNum = rowData.value.fromName.trim().toString().slice(-4);
-    let row = rows.value?.filter((row) => row.fromName ? row.fromName.slice(-4) === phoneNum : '');
+    let row = originallyRows.value?.filter((row) => row.fromName ? row.fromName.slice(-4) === phoneNum : '');
 
     if (row && row.length > 0) {
       if (row.some(r => r.fromName !== row[0].fromName)) {
@@ -209,7 +236,7 @@ async function getCellFromName() {
   }
 
   if (rowData.value.fromName.trim().length === 12 && isAutoPVZ.value === true) {
-    let row = rows.value?.filter((row) => row.fromName === rowData.value.fromName);
+    let row = originallyRows.value?.filter((row) => row.fromName === rowData.value.fromName);
     if (row && row.length > 0) {
       if (row.some(r => r.dispatchPVZ !== row[0].dispatchPVZ)) {
         toast.warning("У клиента есть товары на разных ПВЗ! Выберите ПВЗ самостоятельно");
@@ -220,24 +247,24 @@ async function getCellFromName() {
   }
 
   if (rowData.value.fromName.trim().length === 12 && isAutoFromName.value === true) {
-    let row = rows.value?.filter((row) => row.fromName === rowData.value.fromName && row.dispatchPVZ === rowData.value.dispatchPVZ && (row.deliveredPVZ === null || row.deliveredSC === null));
+    let row = originallyRows.value?.filter((row) => row.fromName === rowData.value.fromName && row.dispatchPVZ === rowData.value.dispatchPVZ && (row.deliveredPVZ === null || row.deliveredSC === null));
     if (row && row.length > 0) {
       rowData.value.cell = row[0].cell;
-    } 
+    }
   }
 }
 
 async function changePVZ() {
-
   if (rowData.value.fromName.trim().length === 12 && isAutoFromName.value === true) {
-    let row = rows.value?.filter((row) => row.fromName === rowData.value.fromName && row.dispatchPVZ === rowData.value.dispatchPVZ && (row.deliveredPVZ === null || row.deliveredSC === null));
+    let row = originallyRows.value?.filter((row) => row.fromName === rowData.value.fromName && row.dispatchPVZ === rowData.value.dispatchPVZ && (row.deliveredPVZ === null || row.deliveredSC === null));
     if (row && row.length > 0) {
       rowData.value.cell = row[0].cell;
     } else {
-      const unoccupiedCellsAndPVZ = await getUnoccupiedCellsAndPVZ();
-      const freeCell = unoccupiedCellsAndPVZ.find(cell => cell.dispatchPVZ === rowData.value.dispatchPVZ);
+      const unoccupiedCellsAndPVZ = cells.value?.filter((cell) => cell.status === 'Свободно');
+      const freeCell = unoccupiedCellsAndPVZ?.find(cell => cell.PVZ === rowData.value.dispatchPVZ);
       if (freeCell) {
-        rowData.value.cell = freeCell.cell;
+        rowData.value.cell = freeCell.name;
+        cellData.value = freeCell;
       } else {
         toast.warning("Нет свободных ячеек для выбранного ПВЗ");
       }
@@ -245,35 +272,10 @@ async function changePVZ() {
   }
 }
 
-
-async function getUnoccupiedCellsAndPVZ() {
-  const unoccupiedCells = new Map();
-
-  rows.value?.forEach(row => {
-    const { cell, issued, dispatchPVZ } = row;
-    if (!unoccupiedCells.has(cell)) {
-      unoccupiedCells.set(cell, { dispatchPVZ, hasEmptyIssued: issued === null });
-    } else {
-      const currentInfo = unoccupiedCells.get(cell);
-      currentInfo.hasEmptyIssued = currentInfo.hasEmptyIssued || issued === null;
-      unoccupiedCells.set(cell, currentInfo);
-    }
-  });
-
-  const result: any[] = [];
-  unoccupiedCells.forEach((value, key) => {
-    if (!value.hasEmptyIssued) {
-      result.push({ cell: key, dispatchPVZ: value.dispatchPVZ });
-    }
-  });
-
-  return result;
-}
-
 async function getFromNameFromCell() {
   await sleep(3000);
   if (rowData.value.cell.trim() && isAutoCell.value === true) {
-    let rowFromName = rows.value?.filter((row) => row.cell === rowData.value.cell);
+    let rowFromName = originallyRows.value?.filter((row) => row.cell === rowData.value.cell);
     if (rowFromName) {
       rowData.value.fromName = rowFromName[0].fromName;
     }
@@ -291,7 +293,8 @@ async function getFromNameFromCell() {
       <NuxtLayout name="admin">
         <div v-if="!isLoading" class="mt-3">
           <div>
-            <SpreadsheetsOurRansomFilters v-if="rows" @filtered-rows="handleFilteredRows" :rows="rows" :user="user" />
+            <SpreadsheetsOurRansomFilters v-if="rows" @filtered-rows="handleFilteredRows" :rows="rows"
+              :user="user" />
             <div class="mt-5 flex items-center gap-3" v-if="user.dataOurRansom === 'WRITE'">
               <UIMainButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'" @click="openModal">Создать новую
                 запись</UIMainButton>
