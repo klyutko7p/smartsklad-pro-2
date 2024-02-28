@@ -181,7 +181,6 @@ onMounted(async () => {
     router.push("/spreadsheets/our-ransom");
   }
 
-  deleteIssuedRowsTimer()
 
   isLoading.value = false;
 });

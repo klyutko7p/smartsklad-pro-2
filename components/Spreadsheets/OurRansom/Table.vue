@@ -15,7 +15,7 @@ const props = defineProps({
 
 const showDeletedRows = ref(false);
 
-const perPage = ref(100)
+const perPage = ref(2000)
 const currentPage = ref(1)
 const totalRows = computed(() => Math.ceil(props.rows?.filter((row) => row.deleted === null).length || 0));
 let returnRows = ref<Array<IOurRansom>>()
@@ -31,12 +31,12 @@ function updateCurrentPageData() {
   }
 
   if (searchQuery.value !== '') {
-    returnRows.value = props.rows?.filter((row) => {
-      const fromNameMatch = row.fromName && row.fromName.includes(searchQuery.value);
-      const cellMatch = row.cell && row.cell.includes(searchQuery.value.trim().toUpperCase());
-      return fromNameMatch || cellMatch;
-    });
+    returnRows.value = props.rows?.filter((row) => (row.cell && row.cell.includes(searchQuery.value.trim())));
+    if (returnRows.value?.length === 0) {
+      returnRows.value = props.rows?.filter((row) => (row.fromName && row.fromName.includes(searchQuery.value.trim())));
+    }
   }
+
 }
 
 watch([currentPage, totalRows, props.rows], updateCurrentPageData)
@@ -52,6 +52,7 @@ function updateRowsByFromName() {
   returnRows.value = returnRows.value?.filter((element, index) => {
     return returnRows.value?.findIndex(i => i.cell === element.cell && i.fromName === element.fromName) === index;
   })
+  returnRows.value = returnRows.value?.sort((a, b) => +b.cell - +a.cell)
 }
 
 let searchQuery = ref('')

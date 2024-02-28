@@ -30,11 +30,10 @@ function updateCurrentPageData() {
   }
 
   if (searchQuery.value !== '') {
-    returnRows.value = props.rows?.filter((row) => {
-      const fromNameMatch = row.fromName && row.fromName.includes(searchQuery.value);
-      const cellMatch = row.cell && row.cell.includes(searchQuery.value.trim().toUpperCase());
-      return fromNameMatch || cellMatch;
-    });
+    returnRows.value = props.rows?.filter((row) => (row.cell && row.cell.includes(searchQuery.value.trim())));
+    if (returnRows.value?.length === 0) {
+      returnRows.value = props.rows?.filter((row) => (row.fromName && row.fromName.includes(searchQuery.value.trim())));
+    }
   }
 }
 

@@ -159,8 +159,6 @@ onMounted(async () => {
     handleFilteredRows(rows.value)
   }
 
-  deleteIssuedRowsTimer()
-
   isLoading.value = false;
 });
 

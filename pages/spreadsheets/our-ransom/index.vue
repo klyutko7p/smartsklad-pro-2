@@ -184,7 +184,6 @@ onMounted(async () => {
   user.value = await storeUsers.getUser();
   rows.value = await storeRansom.getRansomRows("OurRansom");
 
-  deleteIssuedRowsTimer();
 
   if (rows.value) {
     handleFilteredRows(rows.value);
@@ -297,7 +296,8 @@ async function getFromNameFromCell() {
               :user="user" />
             <div class="mt-5 flex items-center gap-3" v-if="user.dataOurRansom === 'WRITE'">
               <UIMainButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'" @click="openModal">Создать новую
-                запись</UIMainButton>
+                запись
+              </UIMainButton>
             </div>
           </div>
 
