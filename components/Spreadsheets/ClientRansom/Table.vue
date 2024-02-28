@@ -70,6 +70,7 @@ function updateRowsByFromName() {
   returnRows.value = returnRows.value?.filter((element, index) => {
     return returnRows.value?.findIndex(i => i.cell === element.cell && i.fromName === element.fromName) === index;
   })
+  returnRows.value = returnRows.value?.sort((a, b) => +b.cell - +a.cell)
 }
 
 let searchQuery = ref('')

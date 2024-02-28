@@ -181,7 +181,7 @@ function printPage() {
     <div class="flex flex-col print-content">
       <div class="gap-0 flex flex-col absolute mr-10">
         <CodeQR :value="value" class="mt-10" />
-        <h1 class="text-base"> {{ row.id }} </h1>
+        <h1 class="text-2xl"> {{ row.id }} </h1>
         <h1 class="text-7xl max-w-[500px] text-center relative mb-3" v-if="row.cell">{{ row.cell }}</h1>
         <h1 class="text-8xl text-center max-w-[500px] relative">{{ row.dispatchPVZ }}</h1>
       </div>
