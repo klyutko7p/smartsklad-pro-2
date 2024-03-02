@@ -63,22 +63,37 @@ async function updateDeliveryRows(obj: any) {
   let answer = confirm(
     `Вы точно хотите изменить статус доставки? Количество записей: ${obj.idArray.length}`
   );
-  if (answer) await storeRansom.updateDeliveryRowsStatus(obj.idArray, obj.flag, "OurRansom", user.value.username);
-  filteredRows.value = await storeRansom.getRansomRows("OurRansom");
+  if (answer) {
+    isLoading.value = true;
+    await storeRansom.updateDeliveryRowsStatus(obj.idArray, obj.flag, "OurRansom", user.value.username);
+    filteredRows.value = await storeRansom.getRansomRows("OurRansom");
+    rows.value = filteredRows.value;
+    isLoading.value = false;
+  }
 }
 
 async function deleteRow(id: number) {
   let answer = confirm("Вы точно хотите удалить данную строку?");
-  if (answer) await storeRansom.deleteRansomRow(id, "OurRansom");
-  filteredRows.value = await storeRansom.getRansomRows("OurRansom");
+  if (answer) {
+    isLoading.value = true;
+    await storeRansom.deleteRansomRow(id, "OurRansom");
+    filteredRows.value = await storeRansom.getRansomRows("OurRansom");
+    rows.value = filteredRows.value;
+    isLoading.value = false;
+  }
 }
 
 async function deleteSelectedRows(idArray: number[]) {
   let answer = confirm(
     `Вы точно хотите удалить данные строки? Количество записей: ${idArray.length}`
   );
-  if (answer) await storeRansom.deleteRansomSelectedRows(idArray, "OurRansom");
-  filteredRows.value = await storeRansom.getRansomRows("OurRansom");
+  if (answer) {
+    isLoading.value = true;
+    await storeRansom.deleteRansomSelectedRows(idArray, "OurRansom");
+    filteredRows.value = await storeRansom.getRansomRows("OurRansom");
+    rows.value = filteredRows.value;
+    isLoading.value = false;
+  }
 }
 
 async function updateRow() {
@@ -92,8 +107,11 @@ async function updateRow() {
   }
 
   closeModal();
+
+  rows.value = filteredRows.value;
   isLoading.value = false;
   originallyRows.value = await storeRansom.getRansomRowsForModal("OurRansom");
+
 }
 
 async function createRow() {
@@ -105,16 +123,22 @@ async function createRow() {
   if (cellData) {
     await storeCells.updateCell(cellData.value, "Занято", rowData.value.fromName)
   }
+
   closeModal();
 
   isLoading.value = false;
+
+  rows.value = filteredRows.value;
   originallyRows.value = await storeRansom.getRansomRowsForModal("OurRansom");
   cells.value = await storeCells.getCells()
 }
 
 async function createCopyRow(id: number) {
+  isLoading.value = true;
   await storeRansom.createCopyRow(id, "OurRansom");
   filteredRows.value = await storeRansom.getRansomRows("OurRansom");
+  rows.value = filteredRows.value;
+  isLoading.value = false;
 }
 
 const filteredRows = ref<Array<IOurRansom>>();
