@@ -85,6 +85,36 @@ interface RowData {
     orderPVZ: Date | null | string | number;
 }
 
+let scanStringItem = ref('')
+
+let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+function scanItem() {
+    if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+    }
+
+    timeoutId = setTimeout(async () => {
+        let scannedLink = scanStringItem.value.trim();
+        scannedLink = convertToURL(scannedLink);
+        let rowData = await storeRansom.getRansomRowsById(+scannedLink, "OurRansom");
+        handleCheckboxChange(rowData);
+        scanStringItem.value = "";
+    }, 1000);
+}
+
+function convertToURL(inputString: string) {
+    if (inputString.includes("/")) {
+        const parts = inputString.split("/");
+        const entryID = parts[parts.length - 1];
+        return entryID;
+    } else if (inputString.includes(".")) {
+        const parts = inputString.split(".");
+        const entryID = parts[parts.length - 1];
+        return entryID;
+    }
+}
+
 const handleCheckboxChange = (row: IOurRansom): void => {
     if (isChecked(row.id)) {
         checkedRows.value = checkedRows.value.filter((id) => id !== row.id);
@@ -152,6 +182,7 @@ let isVisiblePages = ref(true)
 
 
 onMounted(async () => {
+    focusInput()
 
     updateCurrentPageData();
 
@@ -164,20 +195,33 @@ onMounted(async () => {
 
 })
 
+const myInput = ref(null);
+
+let isScanActive = ref(false)
+function focusInput() {
+    myInput.value.focus();
+    isScanActive.value = true;
+}
 
 let showOthersVariants = ref(false)
 
 </script>
+
 <template>
     <div class="flex items-center justify-between max-lg:block mt-10">
         <div>
+            <div class="flex items-center gap-5">
+                <UIMainButton @click="focusInput">СКАНИРОВАТЬ</UIMainButton>
+                <Icon v-if="isScanActive" name="eos-icons:bubble-loading" class="text-secondary-color" />
+            </div>
+            <input class="opacity-0" ref="myInput" autofocus v-model="scanStringItem" @input="scanItem" />
             <div class="flex items-center max-sm:flex-col max-sm:items-start gap-5 mb-5">
                 <h1 class="text-xl" v-if="user.role !== 'PVZ'">Товаров в работе: <span
                         class="text-secondary-color font-bold">{{
-                            totalRows }}</span> </h1>
+                    totalRows }}</span> </h1>
                 <h1 class="text-xl" v-if="user.role === 'PVZ'">Товаров к выдаче: <span
                         class="text-secondary-color font-bold">{{
-                            totalRows }}</span> </h1>
+                    totalRows }}</span> </h1>
             </div>
 
             <div class="flex items-center gap-5" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
@@ -208,23 +252,18 @@ let showOthersVariants = ref(false)
     </div>
 
     <div class="fixed top-16 z-40 left-1/2 translate-x-[-50%] translate-y-[-50%]" v-if="getAllSum > 0">
-        <h1 class="text-base backdrop-blur-xl p-2 rounded-xl border-2 text-secondary-color font-bold">К оплате: {{
-            getAllSum }} </h1>
+        <h1 class="text-base text-center backdrop-blur-xl p-2 rounded-xl border-2 text-secondary-color font-bold">
+            К оплате: {{ getAllSum }} <br>
+            Количество товаров: {{ checkedRows.length }}
+        </h1>
     </div>
 
     <div class="fixed z-40 flex flex-col gap-3 left-1/2 translate-x-[-50%] translate-y-[-50%]"
         v-if="user.dataOurRansom === 'WRITE' && checkedRows.length > 0 && user.role !== 'PVZ'">
-        <UIActionButton
-            v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN' || user.role === 'ADMINISTRATOR' && checkedRows.length === 1"
-            @click="createCopyRow">Скопировать запись</UIActionButton>
         <UIActionButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR' && user.dataOurRansom === 'WRITE'"
             @click="deleteSelectedRows">Удалить
             выделенные записи</UIActionButton>
-        <UIActionButton v-if="user.deliveredSC1 === 'WRITE' && showButtonSC" @click="updateDeliveryRows('SC')">Доставить на
-            сц
-        </UIActionButton>
-        <UIActionButton v-if="user.deliveredPVZ1 === 'WRITE' && showButtonPVZ" @click="updateDeliveryRows('PVZ')">Доставить
-            на пвз
+        <UIActionButton v-if="user.deliveredSC1 === 'WRITE' && showButtonSC" @click="updateDeliveryRows('SC')">Доставить на сц
         </UIActionButton>
         <UIActionButton v-if="user.issued1 === 'WRITE' && showButton" @click="showOthersVariants = !showOthersVariants">
             Выдать клиенту
@@ -237,9 +276,11 @@ let showOthersVariants = ref(false)
             <UIActionButton2 v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally')">Оплата
                 онлайн
             </UIActionButton2>
-            <UIActionButton2 v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally1')">Отказ клиент
+            <UIActionButton2 v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally1')">Отказ
+                клиент
             </UIActionButton2>
-            <UIActionButton2 v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally2')">Отказ брак
+            <UIActionButton2 v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally2')">Отказ
+                брак
             </UIActionButton2>
         </div>
     </div>
@@ -257,15 +298,16 @@ let showOthersVariants = ref(false)
             <UIActionButton2 v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally')">Оплата
                 онлайн
             </UIActionButton2>
-            <UIActionButton2 v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally1')">Отказ клиент
+            <UIActionButton2 v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally1')">Отказ
+                клиент
             </UIActionButton2>
-            <UIActionButton2 v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally2')">Отказ брак
+            <UIActionButton2 v-if="user.additionally1 === 'WRITE'" @click="updateDeliveryRows('additionally2')">Отказ
+                брак
             </UIActionButton2>
         </div>
     </div>
 
     <div class="relative max-h-[610px] mt-5 mb-10 mr-5">
-        <div id="up"></div>
         <table v-if="totalRows > 0" id="theTable"
             class="w-full border-x-2 border-gray-50 text-sm text-left rtl:text-right text-gray-500">
             <thead class="text-xs sticky top-0 z-30 text-gray-700 uppercase text-center bg-gray-50">
@@ -278,7 +320,8 @@ let showOthersVariants = ref(false)
                         изменение
                     </th>
                     <th scope="col" class="border-2 px-3">id</th>
-                    <th scope="col" class=" border-2" v-if="user.clientLink1 === 'READ' || user.clientLink1 === 'WRITE'">
+                    <th scope="col" class=" border-2"
+                        v-if="user.clientLink1 === 'READ' || user.clientLink1 === 'WRITE'">
                         ссылка для клиента
                     </th>
                     <th scope="col" class=" border-2" v-if="user.cell1 === 'READ' || user.cell1 === 'WRITE'">
@@ -287,10 +330,12 @@ let showOthersVariants = ref(false)
                     <th scope="col" class="border-2" v-if="user.fromName1 === 'READ' || user.fromName1 === 'WRITE'">
                         телефон
                     </th>
-                    <th scope="col" class="border-2" v-if="user.productLink1 === 'READ' || user.productLink1 === 'WRITE'">
+                    <th scope="col" class="border-2"
+                        v-if="user.productLink1 === 'READ' || user.productLink1 === 'WRITE'">
                         товар (ссылка)
                     </th>
-                    <th scope="col" class="border-2" v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'">
+                    <th scope="col" class="border-2"
+                        v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'">
                         название товара
                     </th>
                     <th scope="col" class="border-2" v-if="user.notation1 === 'READ' || user.notation1 === 'WRITE'">
@@ -310,42 +355,52 @@ let showOthersVariants = ref(false)
                         v-if="user.amountFromClient1 === 'READ' || user.amountFromClient1 === 'WRITE'">
                         сумма с клиента
                     </th>
-                    <th scope="col" class="border-2" v-if="user.dispatchPVZ1 === 'READ' || user.dispatchPVZ1 === 'WRITE'">
+                    <th scope="col" class="border-2"
+                        v-if="user.dispatchPVZ1 === 'READ' || user.dispatchPVZ1 === 'WRITE'">
                         отправка в пвз
                     </th>
                     <th scope="col" class="border-2" v-if="user.orderPVZ1 === 'READ' || user.orderPVZ1 === 'WRITE'">
                         заказано на сц
                     </th>
-                    <th scope="col" class="border-2" v-if="user.orderAccount === 'READ' || user.orderAccount === 'WRITE'">
+                    <th scope="col" class="border-2"
+                        v-if="user.orderAccount === 'READ' || user.orderAccount === 'WRITE'">
                         аккаунт заказа
                     </th>
-                    <th scope="col" class="border-2" v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
+                    <th scope="col" class="border-2"
+                        v-if="user.deliveredSC1 === 'READ' || user.deliveredSC1 === 'WRITE'">
                         доставлено на сц
                     </th>
-                    <th scope="col" class="border-2" v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'">
+                    <th scope="col" class="border-2"
+                        v-if="user.deliveredPVZ1 === 'READ' || user.deliveredPVZ1 === 'WRITE'">
                         доставлено на пвз
                     </th>
                     <th scope="col" class="border-2" v-if="user.issued1 === 'READ' || user.issued1 === 'WRITE'">
                         выдан клиенту
                     </th>
-                    <th scope="col" class="border-2" v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'">
+                    <th scope="col" class="border-2"
+                        v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'">
                         дополнительно
                     </th>
                     <th scope="col" class="border-2" v-if="user.profit1 === 'READ' || user.profit1 === 'WRITE'">
                         прибыль (доход)
                     </th>
-                    <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">создан
+                    <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
+                        создан
                         (время)
                     </th>
-                    <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">изменен
+                    <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
+                        изменен
                         (время)
                     </th>
-                    <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">удален
+                    <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
+                        удален
                         (время)
                     </th>
-                    <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">создан
+                    <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
+                        создан
                     </th>
-                    <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">изменен
+                    <th scope="col" class="border-2" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
+                        изменен
                     </th>
                     <th scope="col" class="exclude-row px-6 py-3 border-2"
                         v-if="user.dataOurRansom === 'WRITE' && (user.role === 'ADMIN' || user.role === 'ADMINISTRATOR')">
@@ -354,7 +409,6 @@ let showOthersVariants = ref(false)
                 </tr>
             </thead>
             <tbody>
-                <div id="left"></div>
                 <tr :class="{ 'bg-orange-100': isChecked(row.id) }" class="border-b text-center text-sm"
                     v-for="row in returnRows">
                     <td v-if="user.dataOurRansom === 'WRITE'" class="border-2 text-secondary-color">
@@ -391,12 +445,11 @@ let showOthersVariants = ref(false)
                     <td class="underline border-2 text-secondary-color whitespace-nowrap overflow-hidden max-w-[30px]"
                         v-if="user.productLink1 === 'READ' || user.productLink1 === 'WRITE'">
                         <a :href="row.productLink" target="_blank" class="hover:text-orange-200 duration-200">{{
-                            row.productLink
-                        }}</a>
+                    row.productLink
+                }}</a>
                     </td>
-                    <td class="border-2 overflow-hidden max-h-[40px]"
-                        v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'">
-                        {{ row.productName }}
+                    <td class="border-2 max-h-[10px]" v-if="user.productName1 === 'READ' || user.productName1 === 'WRITE'">
+                        <span class="max-h-[10px] overflow-hidden">{{ row.productName }}</span>
                     </td>
                     <td class="border-2" v-if="user.notation1 === 'READ' || user.notation1 === 'WRITE'">
                         {{ row.notation ? row.notation : "Пусто" }}
@@ -437,24 +490,26 @@ let showOthersVariants = ref(false)
                             {{ row.issued ? storeUsers.getNormalizedDate(row.issued) : "" }}
                         </h1>
                     </td>
-                    <td class="px-6 py-4 border-2" v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'">
+                    <td class="px-6 py-4 border-2"
+                        v-if="user.additionally1 === 'READ' || user.additionally1 === 'WRITE'">
                         {{ row.additionally ? row.additionally : "Пусто" }}
                     </td>
 
                     <td class="px-1 py-4 border-2" v-if="(user.profit1 === 'READ' || user.profit1 === 'WRITE') &&
-                        (row.additionally !== 'Отказ клиент' && row.additionally !== 'Отказ брак') && !row.prepayment">
+                    (row.additionally !== 'Отказ клиент' && row.additionally !== 'Отказ брак') && !row.prepayment">
                         {{ row.percentClient !== 0 ? row.amountFromClient1 - row.priceSite +
-                            row.deliveredKGT : row.deliveredKGT }}
+                    row.deliveredKGT : row.deliveredKGT }}
                     </td>
 
                     <td class="px-1 py-4 border-2" v-if="(user.profit1 === 'READ' || user.profit1 === 'WRITE') &&
-                        (row.additionally !== 'Отказ клиент' && row.additionally !== 'Отказ брак') && row.prepayment">
-                        {{ row.percentClient !== 0 ? Math.ceil((row.priceSite * row.percentClient / 100) + row.deliveredKGT) :
-                            row.deliveredKGT }}
+                    (row.additionally !== 'Отказ клиент' && row.additionally !== 'Отказ брак') && row.prepayment">
+                        {{ row.percentClient !== 0 ? Math.ceil((row.priceSite * row.percentClient / 100) +
+                    row.deliveredKGT) :
+                    row.deliveredKGT }}
                     </td>
 
                     <td class="px-1 py-4 border-2" v-if="(user.profit1 === 'READ' || user.profit1 === 'WRITE') &&
-                        (row.additionally === 'Отказ клиент' || row.additionally === 'Отказ брак')">
+                    (row.additionally === 'Отказ клиент' || row.additionally === 'Отказ брак')">
                         {{ row.profit1 }}
                     </td>
 
@@ -476,10 +531,10 @@ let showOthersVariants = ref(false)
 
                     <td class="px-6 py-4 border-2"
                         v-if="user.dataOurRansom === 'WRITE' && user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
-                        <Icon @click="deleteRow(row.id)" class="text-red-600 cursor-pointer hover:text-red-300 duration-200"
+                        <Icon @click="deleteRow(row.id)"
+                            class="text-red-600 cursor-pointer hover:text-red-300 duration-200"
                             name="material-symbols:playlist-remove-rounded" size="32" />
                     </td>
-                    <div id="right"></div>
                 </tr>
             </tbody>
         </table>
@@ -488,7 +543,6 @@ let showOthersVariants = ref(false)
             <h1>Извините, записи по данным фильтрам не были найдены!</h1>
             <h1>Попробуйте поставить другие фильтры или очистить их</h1>
         </div>
-        <div id="down"></div>
     </div>
 </template>
 

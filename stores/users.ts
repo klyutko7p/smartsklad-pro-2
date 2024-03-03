@@ -57,6 +57,7 @@ export const useUsersStore = defineStore("users", () => {
     async function signOut() {
         Cookies.remove('token')
         Cookies.remove('user')
+        localStorage.clear();
         userData = {} as User
         router.push('/auth/login')
     }

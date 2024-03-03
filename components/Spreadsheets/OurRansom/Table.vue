@@ -146,16 +146,11 @@ function isValidUrl(url: string): boolean {
 <template>
   <div class="flex items-center justify-between max-lg:block mt-10">
     <div>
-      <div class="flex items-center max-sm:flex-col max-sm:items-start gap-5 mb-5">
+      <div class="flex items-center max-sm:flex-col max-sm:items-start gap-5">
         <h1 class="text-xl" v-if="user.role !== 'PVZ'">Товаров в работе: <span class="text-secondary-color font-bold">{{
           totalRows }}</span> </h1>
         <h1 class="text-xl" v-if="user.role === 'PVZ'">Товаров к выдаче: <span class="text-secondary-color font-bold">{{
           totalRows }}</span> </h1>
-      </div>
-      <div class="flex items-center gap-5" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
-        <UIActionButton @click="toggleShowDeletedRows">
-          {{ showDeletedRows ? 'Скрыть удаленное' : 'Показать удаленное' }}
-        </UIActionButton>
       </div>
     </div>
   </div>
@@ -163,9 +158,6 @@ function isValidUrl(url: string): boolean {
   <div class="mt-10">
     <div class="flex flex-col gap-10 mb-5">
       <h1 class="text-2xl">Режим выдачи товаров ({{ pvzLink }}) </h1>
-      <input
-        class="block w-full bg-transparent mb-5 border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 rounded-2xl focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"
-        placeholder="Отсканируйте товар" v-model="scanStringItem" @input="scanItem" />
     </div>
     <input type="text" v-model="searchQuery"
       class="block w-full bg-transparent mb-5 border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 rounded-2xl focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6"

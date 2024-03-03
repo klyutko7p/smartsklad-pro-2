@@ -135,6 +135,18 @@ function reduceArray(array: any, flag: string) {
 }
 
 function getAllSum() {
+  let newStartingDate = new Date(startingDate.value);
+  newStartingDate.setHours(0);
+  newStartingDate.setMinutes(0);
+  newStartingDate.setSeconds(0);
+  newStartingDate.setMilliseconds(0);
+
+  let newEndDate = new Date(endDate.value)
+  newEndDate.setHours(23);
+  newEndDate.setMinutes(59);
+  newEndDate.setSeconds(59);
+  newEndDate.setMilliseconds(0);
+  
   if (selectedTypeOfTransaction.value === "Доход") {
     if (selectedPVZ.value === "Все ПВЗ") {
       copyArrayOurRansom.value = ourRansomRows.value
@@ -142,8 +154,8 @@ function getAllSum() {
           (row) =>
             row.issued !== null &&
             (!startingDate.value ||
-              new Date(row.issued) >= new Date(startingDate.value)) &&
-            (!endDate.value || new Date(row.issued) <= new Date(endDate.value))
+              new Date(row.issued) >= new Date(newStartingDate)) &&
+            (!endDate.value || new Date(row.issued) <= new Date(newEndDate))
         )
 
       copyArrayClientRansom.value = clientRansomRows.value
@@ -151,8 +163,8 @@ function getAllSum() {
           (row) =>
             row.issued !== null &&
             (!startingDate.value ||
-              new Date(row.issued) >= new Date(startingDate.value)) &&
-            (!endDate.value || new Date(row.issued) <= new Date(endDate.value))
+              new Date(row.issued) >= new Date(newStartingDate)) &&
+            (!endDate.value || new Date(row.issued) <= new Date(newEndDate))
         )
 
       sum1.value = reduceArray(copyArrayOurRansom.value, "OurRansom");
@@ -165,8 +177,8 @@ function getAllSum() {
             row.dispatchPVZ === selectedPVZ.value &&
             row.issued !== null &&
             (!startingDate.value ||
-              new Date(row.issued) >= new Date(startingDate.value)) &&
-            (!endDate.value || new Date(row.issued) <= new Date(endDate.value))
+              new Date(row.issued) >= new Date(newStartingDate)) &&
+            (!endDate.value || new Date(row.issued) <= new Date(newEndDate))
         )
 
       copyArrayClientRansom.value = clientRansomRows.value
@@ -175,8 +187,8 @@ function getAllSum() {
             row.dispatchPVZ === selectedPVZ.value &&
             row.issued !== null &&
             (!startingDate.value ||
-              new Date(row.issued) >= new Date(startingDate.value)) &&
-            (!endDate.value || new Date(row.issued) <= new Date(endDate.value))
+              new Date(row.issued) >= new Date(newStartingDate)) &&
+            (!endDate.value || new Date(row.issued) <= new Date(newEndDate))
         )
 
       sum1.value = reduceArray(copyArrayOurRansom.value, "OurRansom");
@@ -191,8 +203,8 @@ function getAllSum() {
             row.issued === null &&
             row.deleted === null &&
             (!startingDate.value ||
-              new Date(row.created_at) >= new Date(startingDate.value)) &&
-            (!endDate.value || new Date(row.created_at) <= new Date(endDate.value))
+              new Date(row.created_at) >= new Date(newStartingDate)) &&
+            (!endDate.value || new Date(row.created_at) <= new Date(newEndDate))
       )
         
       sum1.value = reduceArray(copyArrayOurRansom.value, "OurRansom");
@@ -205,8 +217,8 @@ function getAllSum() {
             row.issued === null &&
             row.deleted === null &&
             (!startingDate.value ||
-              new Date(row.created_at) >= new Date(startingDate.value)) &&
-            (!endDate.value || new Date(row.created_at) <= new Date(endDate.value))
+              new Date(row.created_at) >= new Date(newStartingDate)) &&
+            (!endDate.value || new Date(row.created_at) <= new Date(newEndDate))
         )
 
       sum1.value = reduceArray(copyArrayOurRansom.value, "OurRansom");
@@ -219,8 +231,8 @@ function getAllSum() {
           (row) =>
             row.issued !== null &&
             (!startingDate.value ||
-              new Date(row.issued) >= new Date(startingDate.value)) &&
-            (!endDate.value || new Date(row.issued) <= new Date(endDate.value)) &&
+              new Date(row.issued) >= new Date(newStartingDate)) &&
+            (!endDate.value || new Date(row.issued) <= new Date(newEndDate)) &&
             (row.additionally === "Оплата наличными" || row.additionally === "Отказ клиент")
         )
 
@@ -229,8 +241,8 @@ function getAllSum() {
           (row) =>
             row.issued !== null &&
             (!startingDate.value ||
-              new Date(row.issued) >= new Date(startingDate.value)) &&
-            (!endDate.value || new Date(row.issued) <= new Date(endDate.value)) &&
+              new Date(row.issued) >= new Date(newStartingDate)) &&
+            (!endDate.value || new Date(row.issued) <= new Date(newEndDate)) &&
             (row.additionally === "Оплата наличными" || row.additionally === "Отказ клиент")
         )
 
@@ -244,8 +256,8 @@ function getAllSum() {
           (row) =>
             row.issued !== null &&
             (!startingDate.value ||
-              new Date(row.issued) >= new Date(startingDate.value)) &&
-            (!endDate.value || new Date(row.issued) <= new Date(endDate.value)) &&
+              new Date(row.issued) >= new Date(newStartingDate)) &&
+            (!endDate.value || new Date(row.issued) <= new Date(newEndDate)) &&
             (row.additionally === "Оплата наличными" || row.additionally === "Отказ клиент") &&
             row.dispatchPVZ === selectedPVZ.value
         )
@@ -255,8 +267,8 @@ function getAllSum() {
           (row) =>
             row.issued !== null &&
             (!startingDate.value ||
-              new Date(row.issued) >= new Date(startingDate.value)) &&
-            (!endDate.value || new Date(row.issued) <= new Date(endDate.value)) &&
+              new Date(row.issued) >= new Date(newStartingDate)) &&
+            (!endDate.value || new Date(row.issued) <= new Date(newEndDate)) &&
             (row.additionally === "Оплата наличными" || row.additionally === "Отказ клиент") &&
             row.dispatchPVZ === selectedPVZ.value
         )
@@ -273,8 +285,8 @@ function getAllSum() {
           (row) =>
             row.issued !== null &&
             (!startingDate.value ||
-              new Date(row.issued) >= new Date(startingDate.value)) &&
-            (!endDate.value || new Date(row.issued) <= new Date(endDate.value)) &&
+              new Date(row.issued) >= new Date(newStartingDate)) &&
+            (!endDate.value || new Date(row.issued) <= new Date(newEndDate)) &&
             row.additionally === "Оплачено онлайн"
         )
 
@@ -283,8 +295,8 @@ function getAllSum() {
           (row) =>
             row.issued !== null &&
             (!startingDate.value ||
-              new Date(row.issued) >= new Date(startingDate.value)) &&
-            (!endDate.value || new Date(row.issued) <= new Date(endDate.value)) &&
+              new Date(row.issued) >= new Date(newStartingDate)) &&
+            (!endDate.value || new Date(row.issued) <= new Date(newEndDate)) &&
             row.additionally === "Оплачено онлайн"
         )
 
@@ -297,8 +309,8 @@ function getAllSum() {
           (row) =>
             row.issued !== null &&
             (!startingDate.value ||
-              new Date(row.issued) >= new Date(startingDate.value)) &&
-            (!endDate.value || new Date(row.issued) <= new Date(endDate.value)) &&
+              new Date(row.issued) >= new Date(newStartingDate)) &&
+            (!endDate.value || new Date(row.issued) <= new Date(newEndDate)) &&
             row.additionally === "Оплачено онлайн" &&
             row.dispatchPVZ === selectedPVZ.value
         )
@@ -308,8 +320,8 @@ function getAllSum() {
           (row) =>
             row.issued !== null &&
             (!startingDate.value ||
-              new Date(row.issued) >= new Date(startingDate.value)) &&
-            (!endDate.value || new Date(row.issued) <= new Date(endDate.value)) &&
+              new Date(row.issued) >= new Date(newStartingDate)) &&
+            (!endDate.value || new Date(row.issued) <= new Date(newEndDate)) &&
             row.additionally === "Оплачено онлайн" &&
             row.dispatchPVZ === selectedPVZ.value
         )

@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 const storeUsers = useUsersStore();
 const storeRansom = useRansomStore();
 const router = useRouter();
+const storeCells = useCellsStore()
 
 let user = ref({} as User);
 let rowsOurRansom = ref<Array<IOurRansom>>();
@@ -19,6 +20,9 @@ onBeforeMount(async () => {
   }
 
   isLoading.value = false;
+  
+  let rowsWithDeleted = await storeRansom.getRansomRowsWithDeletedForCells("OurRansom")
+  await storeCells.updateCellsStatus(rowsWithDeleted)
 });
 
 onMounted(() => {
