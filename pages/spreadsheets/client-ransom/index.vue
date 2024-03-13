@@ -189,14 +189,7 @@ function getCellFromName() {
   }
 }
 
-function getFromNameFromCell() {
-  if (rowData.value.cell.trim() && isAutoCell.value === true) {
-    let rowFromName = rows.value?.filter((row) => row.cell === rowData.value.cell);
-    if (rowFromName) {
-      rowData.value.fromName = rowFromName[0].fromName;
-    }
-  }
-}
+
 
 </script>
 
@@ -247,11 +240,7 @@ function getFromNameFromCell() {
                   <div>
                     <input :disabled="user.cell2 === 'READ'"
                       class="bg-transparent w-full rounded-md border-2 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                      v-model="rowData.cell" @input="getFromNameFromCell" type="text" />
-                    <div class="flex gap-3 items-center justify-center mt-1">
-                      <h1 class="max-sm:text-sm">АВТО</h1>
-                      <input type="checkbox" v-model="isAutoCell" />
-                    </div>
+                      v-model="rowData.cell" type="text" />
                   </div>
                 </div>
   
@@ -412,11 +401,7 @@ function getFromNameFromCell() {
                 <div>
                   <input :disabled="user.cell2 === 'READ'"
                     class="bg-transparent w-full rounded-md border-2 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 sm:text-sm sm:leading-6 disabled:text-gray-400"
-                    v-model="rowData.cell" @input="getFromNameFromCell" type="text" />
-                  <div class="flex gap-3 items-center justify-center mt-1">
-                    <h1 class="max-sm:text-sm">АВТО</h1>
-                    <input type="checkbox" v-model="isAutoCell" />
-                  </div>
+                    v-model="rowData.cell" type="text" />
                 </div>
               </div>
 

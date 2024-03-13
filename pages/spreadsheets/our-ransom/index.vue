@@ -339,16 +339,6 @@ async function changePVZ() {
   }
 }
 
-async function getFromNameFromCell() {
-  await sleep(3000);
-  if (rowData.value.cell.trim() && isAutoCell.value === true) {
-    let rowFromName = originallyRows.value?.filter((row) => row.cell === rowData.value.cell && !row.cell.includes('-'));
-    if (rowFromName) {
-      rowData.value.fromName = rowFromName[0].fromName;
-    }
-  }
-}
-
 </script>
 
 <template>
@@ -417,11 +407,7 @@ async function getFromNameFromCell() {
                 <div>
                   <input :disabled="user.cell1 === 'READ'"
                     class="bg-transparent w-full rounded-md border-2 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 text-sm sm:leading-6 disabled:text-gray-400"
-                    v-model="rowData.cell" @input="getFromNameFromCell" type="text" />
-                  <div class="flex gap-3 items-center justify-center mt-1">
-                    <h1 class="max-sm:text-sm">АВТО</h1>
-                    <input type="checkbox" v-model="isAutoCell" />
-                  </div>
+                    v-model="rowData.cell" type="text" />
                 </div>
               </div>
 
@@ -610,11 +596,7 @@ async function getFromNameFromCell() {
                 <div>
                   <input :disabled="user.cell1 === 'READ'"
                     class="bg-transparent w-full rounded-md border-2 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-yellow-600 text-sm sm:leading-6 disabled:text-gray-400"
-                    v-model="rowData.cell" @input="getFromNameFromCell" type="text" />
-                  <div class="flex gap-3 items-center justify-center mt-1">
-                    <h1 class="max-sm:text-sm">АВТО</h1>
-                    <input type="checkbox" v-model="isAutoCell" />
-                  </div>
+                    v-model="rowData.cell" type="text" />
                 </div>
               </div>
 
