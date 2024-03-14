@@ -23,6 +23,7 @@ onBeforeMount(async () => {
   
   let rowsWithDeleted = await storeRansom.getRansomRowsWithDeletedForCells("OurRansom")
   await storeCells.updateCellsStatus(rowsWithDeleted)
+
 });
 
 onMounted(() => {
@@ -62,6 +63,7 @@ definePageMeta({
   layout: false,
   name: "Выбор ПВЗ (Наш Выкуп)"
 });
+
 
 </script>
 
