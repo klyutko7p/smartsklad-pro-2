@@ -564,9 +564,9 @@ async function updateCellStatusFull() {
             <SpreadsheetsOurRansomFilters v-if="rows && user.role !== 'PVZ'" @filtered-rows="handleFilteredRows"
               :rows="rows" :user="user" />
             <div class="mt-5 flex items-center gap-3" v-if="user.dataOurRansom === 'WRITE'">
-              <UIMainButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'" @click="openModal">Создать новую
-                запись</UIMainButton>
-                <UIMainButton @click="updateCellStatusFull">Обновить статус ячеек</UIMainButton>
+              <UIMainButton v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'" @click="openModal">
+                Создать новую запись
+              </UIMainButton>
             </div>
           </div>
 
