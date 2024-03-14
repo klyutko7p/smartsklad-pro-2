@@ -351,8 +351,10 @@ async function getFromNameFromCell() {
 }
 
 async function updateCellStatusFull() {
+  isLoading.value = true;
   let rowsWithDeleted = await storeRansom.getRansomRowsWithDeletedForCells("OurRansom")
   await storeCells.updateCellsStatusWithNoSpeed(rowsWithDeleted)
+  isLoading.value = false;
 }
 
 </script>

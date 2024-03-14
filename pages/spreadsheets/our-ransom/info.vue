@@ -34,7 +34,7 @@ onMounted(() => {
 
 function getCountOfItemsByPVZOurRansom(PVZ: string) {
   if (user.value.role !== "PVZ") {
-    return rowsOurRansom.value?.filter((row) => row.dispatchPVZ === PVZ && row.issued === null).length;
+    return rowsOurRansom.value?.filter((row) => row.dispatchPVZ === PVZ && row.deliveredPVZ === null && row.deleted === null).length;
   } else if (user.value.role === "PVZ") {
     let today = new Date().toLocaleDateString("ru-RU", {
       day: "2-digit",
@@ -50,13 +50,13 @@ function getCountOfItemsByPVZOurRansom(PVZ: string) {
           month: "2-digit",
           year: "2-digit",
         }) === today ||
-          row.issued === null)
+          row.issued === null) 
     ).length;
   }
 }
 
 function getCountOfItemsByPVZOurRansomIssued(PVZ: string) {
-  return rowsOurRansom.value?.filter((row) => row.dispatchPVZ === PVZ && row.deliveredSC !== null && row.issued === null).length;
+  return rowsOurRansom.value?.filter((row) => row.dispatchPVZ === PVZ && row.deliveredSC !== null && row.deliveredPVZ !== null && row.issued === null && row.deleted === null).length;
 }
 
 definePageMeta({
