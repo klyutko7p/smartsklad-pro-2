@@ -103,7 +103,7 @@ function getNumber(phoneNumberData: string) {
           Оставшаяся сумма к оплате: {{ getAmountToBePaid("NONE") }} руб.
         </h1>
         <h1 class="text-xl" v-if="!link.startsWith('3')">
-          Сумма к оплате на выдачу: {{ Math.ceil(getAmountToBePaid("PVZ") / 10) * 10 }} руб.
+          Сумма к оплате на выдачу: {{ getAmountToBePaid("PVZ") }} руб.
         </h1>
         <UIMainButton v-if="showReceivedItems && !link.startsWith('3')" class="mt-5" @click="disableReceivedItems">Скрыть
           полученные товары</UIMainButton>
