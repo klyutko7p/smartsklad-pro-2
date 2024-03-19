@@ -3,6 +3,7 @@ import { read, utils, writeFile } from "xlsx";
 
 const router = useRouter();
 const storeUsers = useUsersStore();
+const route = useRoute();
 const storeRansom = useRansomStore();
 
 const emit = defineEmits([
