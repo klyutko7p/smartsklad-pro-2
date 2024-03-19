@@ -358,6 +358,19 @@ async function updateCellStatusFull() {
   isLoading.value = false;
 }
 
+async function showDeletedRows(flag: boolean) {
+  if (flag) {
+    let deletedRows = await storeRansom.getRansomRowsWithDeleted("OurRansom");
+    filteredRows.value = deletedRows;
+    rows.value = filteredRows.value;
+  } else {
+    isLoading.value = true;
+    filteredRows.value = await storeRansom.getRansomRows("OurRansom");
+    rows.value = filteredRows.value;
+    isLoading.value = false;
+  }
+}
+
 </script>
 
 <template>
@@ -381,7 +394,7 @@ async function updateCellStatusFull() {
 
           <SpreadsheetsOurRansomTable1 @update-delivery-row="updateDeliveryRow" :rows="filteredRows" :user="user"
             @delete-row="deleteRow" @open-modal="openModal" @delete-selected-rows="deleteSelectedRows"
-            @update-delivery-rows="updateDeliveryRows" @create-copy-row="createCopyRow" />
+            @update-delivery-rows="updateDeliveryRows" @create-copy-row="createCopyRow" @show-deleted-rows="showDeletedRows" />
 
           <UIModal v-show="isOpen" @close-modal="closeModal">
             <template v-slot:header>
@@ -575,7 +588,7 @@ async function updateCellStatusFull() {
 
           <SpreadsheetsOurRansomTable1 @update-delivery-row="updateDeliveryRow" :rows="filteredRows" :user="user"
             @delete-row="deleteRow" @open-modal="openModal" @delete-selected-rows="deleteSelectedRows"
-            @update-delivery-rows="updateDeliveryRows" @create-copy-row="createCopyRow" />
+            @update-delivery-rows="updateDeliveryRows" @create-copy-row="createCopyRow" @show-deleted-rows="showDeletedRows" />
 
             <UIModal v-show="isOpen" @close-modal="closeModal">
               <template v-slot:header>

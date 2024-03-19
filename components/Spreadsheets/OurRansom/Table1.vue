@@ -11,7 +11,18 @@ const emit = defineEmits([
     "deleteSelectedRows",
     "updateDeliveryRows",
     "createCopyRow",
+    "showDeletedRows",
 ]);
+
+function showDeletedRowsEmit(flag: boolean) {
+  emit("showDeletedRows", flag);
+}
+
+const toggleShowDeletedRows = () => {
+  showDeletedRows.value = !showDeletedRows.value;
+  perPage.value = 4000;
+  showDeletedRowsEmit(showDeletedRows.value)
+};
 
 function updateDeliveryRows(flag: string) {
     emit("updateDeliveryRows", { idArray: checkedRows.value, flag: flag });
@@ -173,10 +184,6 @@ const nextPage = () => {
     }
 }
 
-const toggleShowDeletedRows = () => {
-    showDeletedRows.value = !showDeletedRows.value;
-    updateCurrentPageData();
-};
 
 let isVisiblePages = ref(true)
 
@@ -226,7 +233,7 @@ let showOthersVariants = ref(false)
 
             <div class="flex items-center gap-5" v-if="user.role === 'ADMIN' || user.role === 'ADMINISTRATOR'">
                 <UIActionButton @click="toggleShowDeletedRows">
-                    {{ showDeletedRows ? 'Скрыть удаленное' : 'Показать удаленное' }}
+                    {{ showDeletedRows ? 'Скрыть удаленное' : 'Показать удаленное за неделю' }}
                 </UIActionButton>
             </div>
 
